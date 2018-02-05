@@ -4,4 +4,4 @@ Instalação dos pacotes:
 
 Gerar slides:
 
-    prez symfony output/symfony --theme=league
+    prez symfony docs/symfony --theme=league
