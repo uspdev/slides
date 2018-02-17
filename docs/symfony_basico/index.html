@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Prez</title>
+
+    <meta name="description" content="-- DESCRIPTION HERE --">
+    <meta name="author" content="thiago">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/league.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="css/highlight/styles/zenburn.css" id="highlight-theme">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <link rel="stylesheet" href="css/custom.css">
+
+  </head>
+
+  <body>
+
+    <div class="reveal">
+      <div class="slides"><section id="intro" class="slide" data-has-notes="false">
+<h2>Symfony Básico</h2><p><img src="./images/uspdev.png" height="200px" /></p>
+<ul>
+<li>Preparando infra para desenvolvimento</li>
+<li><em>M</em>odel</li>
+<li><em>C</em>ontroller</li>
+<li><em>V</em>iew</li>
+<li>Autenticação</li>
+</ul>
+</section>
+
+<section id="chapter-infra" class="chapter">
+<section id="infra-infra" class="slide" data-has-notes="false">
+<h1>Preparação da infra</h1>
+
+<p><img src="./images/construction-company.png" height="400px" /></p>
+</section>
+
+<section id="infra-ondrej" class="slide" data-has-notes="false">
+<p><img src="./images/php7.jpg" height="300px"></p>
+<p>Usar PHP em versões superiores &gt;= 7.1. </p>
+<p>Dica, usar o PPA do ondrej:</p>
+<pre><code>sudo<span class="hljs-built_in"> add-apt-repository </span>-y ppa:ondrej/php
+sudo apt-get update
+</code></pre>
+</section>
+
+<section id="infra-php" class="slide" data-has-notes="false">
+<p>Instalação do PHP:</p>
+<pre><code>sudo apt-<span class="hljs-builtin-name">get</span> -y install php7.2
+</code></pre><p>Bibliotecas mínimas para o symfony:</p>
+<pre><code>sudo apt-get -y install php7.<span class="hljs-number">2</span>-<span class="hljs-keyword">xml</span> <span class="hljs-title">php7</span>.<span class="hljs-number">2</span>-intl php7.<span class="hljs-number">2</span>-mbstring
+</code></pre><p>Bibliotecas de conexão para bancos de dados:</p>
+<pre><code><span class="hljs-selector-tag">sudo</span> <span class="hljs-selector-tag">apt-get</span> <span class="hljs-selector-tag">-y</span> <span class="hljs-selector-tag">install</span> <span class="hljs-selector-tag">php7</span><span class="hljs-selector-class">.2-pgsql</span> <span class="hljs-selector-tag">php7</span><span class="hljs-selector-class">.2-mysql</span> <span class="hljs-selector-tag">php7</span><span class="hljs-selector-class">.2-sqlite3</span>
+</code></pre>
+</section>
+
+<section id="infra-composer" class="slide" data-has-notes="false">
+<h2>Composer</h2><p><img src="./images/orchestra.jpg" height="300px"></p>
+<p>Instalação do composer globalmente:</p>
+<pre><code>curl -s <span class="hljs-string">https:</span><span class="hljs-comment">//getcomposer.org/installer | php</span>
+sudo mv composer.phar <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/bin/</span>composer
+</code></pre>
+</section>
+
+<section id="infra-git" class="slide" data-has-notes="false">
+<p>Instalação do git:</p>
+<pre><code>sudo apt-<span class="hljs-builtin-name">get</span> install -y git
+</code></pre><p>Configurações globais:</p>
+<pre><code>git<span class="hljs-built_in"> config </span>--global user.name <span class="hljs-string">"joazinho"</span>
+git<span class="hljs-built_in"> config </span>--global user.email <span class="hljs-string">"joaozinho@usp.br"</span>
+</code></pre>
+</section>
+
+<section id="infra-mysql" class="slide" data-has-notes="false">
+<h3>MariaDB</h3><p>Dependências mínimas:</p>
+<pre><code>sudo apt-<span class="hljs-builtin-name">get</span> -y install mariadb-server
+</code></pre><p>Criando usuário e banco:</p>
+<pre><code>sudo mysql
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">DATABASE</span> uspdev;
+<span class="hljs-keyword">GRANT</span> ALL PROVILEGES <span class="hljs-keyword">ON</span> uspdev.* <span class="hljs-keyword">to</span> uspdev@<span class="hljs-string">'localhost'</span> <span class="hljs-keyword">identified</span> <span class="hljs-keyword">by</span> <span class="hljs-string">'uspdev'</span>;
+quit
+</code></pre>
+</section>
+
+<section id="infra-postgresql" class="slide" data-has-notes="false">
+<h3>PostgreSQL</h3><p>Dependências mínimas:</p>
+<pre><code>sudo apt-<span class="hljs-builtin-name">get</span> -y install postgresql
+</code></pre><p>Criando usuário e banco:</p>
+<pre><code>sudo su posgtres
+psql
+CREATE USER uspdev WITH PASSWORD <span class="hljs-string">'uspdev'</span>;
+CREATE DATABASE uspdev OWNER uspdev;
+\q
+<span class="hljs-keyword">exit</span>
+</code></pre>
+</section>
+</section>
+
+<section id="chapter-symfony" class="chapter">
+<section id="symfony-setup_symfony" class="slide" data-has-notes="false">
+<h3>Symfony</h3><p>Projeto symfony e suas dependências:</p>
+<pre><code><span class="hljs-string">composer </span><span class="hljs-built_in">create-project</span> <span class="hljs-string">symfony/</span><span class="hljs-string">skeleton </span><span class="hljs-string">uspdev
+</span><span class="hljs-string">cd </span><span class="hljs-string">usp
+</span><span class="hljs-string">composer </span><span class="hljs-string">require </span><span class="hljs-string">doctrine </span><span class="hljs-string">maker </span><span class="hljs-string">annotations </span><span class="hljs-string">twig </span><span class="hljs-string">form </span><span class="hljs-string">validator
+</span><span class="hljs-string">composer </span><span class="hljs-string">require </span><span class="hljs-string">encore </span><span class="hljs-string">asset </span><span class="hljs-string">webprofiler </span><span class="hljs-string">server </span><span class="hljs-string">web-server-</span><span class="hljs-string">bundle</span>
+</code></pre><p>Exemplo de entrada no .env para postgresql e mysql:</p>
+<pre><code><span class="hljs-attr">DATABASE_URL</span>=<span class="hljs-string">"pgsql://uspdev:uspdev@localhost:5432/uspdev?charset=utf8"</span>
+<span class="hljs-attr">DATABASE_URL</span>=<span class="hljs-string">"mysql://uspdev:uspdev@localhost:3306/uspdev"</span>
+</code></pre><div style="font-size: 14px;"> <em>Documentação:</em> 
+<a href="https://symfony.com/doc/current/best_practices/creating-the-project.html">https://symfony.com/doc/current/best_practices/creating-the-project.html</a> <br>
+<a href="https://symfony.com/doc/current/setup.html">https://symfony.com/doc/current/setup.html</a> <br>
+<a href="https://symfony.com/doc/master/configuration/external_parameters.html">https://symfony.com/doc/master/configuration/external_parameters.html</a> <br>
+<a href="http://symfony.com/doc/current/setup/built_in_web_server.html">http://symfony.com/doc/current/setup/built_in_web_server.html</a>
+</div>
+</section>
+
+<section id="symfony-git" class="slide" data-has-notes="false">
+<p>Commit das mudanças:</p>
+<pre><code>git init
+git add <span class="hljs-comment">--all</span>
+git commit -m <span class="hljs-symbol">'The</span> best project <span class="hljs-keyword">in</span> the world <span class="hljs-keyword">is</span> alive'
+git push origin master
+</code></pre>
+</section>
+</section>
+
+<section id="chapter-model" class="chapter">
+<section id="model-models" class="slide" data-has-notes="false">
+<p><br>
+<br>
+<br>
+<br></p>
+<h1>Models</h1>
+</section>
+
+<section id="model-intro" class="slide" data-has-notes="false">
+<p>Criar seguintes issues no projeto:</p>
+<ul>
+<li>Create Rede entity with fields: nome, iprede e cidr</li>
+<li>Create get and set for all fields in Rede Entity</li>
+<li>Create Equipamento entity with fields: patrimonio, macaddress, local, vencimento e ip. (vencimento type: datetimetz)</li>
+<li>Create get and set for all fields in entity Equipamento</li>
+</ul>
+<p>Checkout para branch master para issue1-RedeEntity</p>
+<pre><code>git checkout -<span class="hljs-selector-tag">b</span> issue1-RedeEntity
+</code></pre>
+</section>
+
+<section id="model-rede_entity" class="slide" data-has-notes="false">
+<h3>Tabela Rede</h3><pre><code>php bin<span class="hljs-built_in">/console </span>make:entity Rede
+</code></pre><p>Aplicar schema no banco de dados:</p>
+<pre><code>php bin<span class="hljs-built_in">/console </span>doctrine:migrations:diff
+php bin<span class="hljs-built_in">/console </span>doctrine:migrations:migrate
+</code></pre><p>devmaster:</p>
+<ul>
+<li>Adicionar nome, iprede e cidr em Rede.php</li>
+<li>Refatorar banco de dados</li>
+<li>Commit e merge das mudanças</li>
+</ul>
+<p><br></p>
+<div style="font-size: 16px;"> <em>Documentação:</em> <a href="https://symfony.com/doc/current/doctrine.html">https://symfony.com/doc/current/doctrine.html</a> </div>
+</section>
+
+<section id="model-persisir_rede" class="slide" data-has-notes="false">
+<h3>Getters e Setters:</h3><p>issue2: Exemplo de <em>get</em> e <em>set</em> pata o campo nome:</p>
+<pre><code><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setNome</span><span class="hljs-params">($nome)</span>
+</span>{
+    <span class="hljs-keyword">$this</span>-&gt;nome = $nome;
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getNome</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;nome;
+}
+</code></pre>
+</section>
+
+<section id="model-exercicio-entity" class="slide" data-has-notes="false">
+<p>Tarefa: </p>
+<ul>
+<li>Distribuição das issues 2,3 e 4 para os/as demais devs</li>
+<li>Commits e push das resoluções das issues</li>
+<li>Criação de pull/merge requests</li>
+</ul>
+</section>
+
+<section id="model-relationship_equipamento" class="slide" data-has-notes="false">
+<p>Um equipamento pode pertencer a uma rede, certo? Então, na entidade Equipamento:</p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@ORM</span>\ManyToOne(targetEntity="Rede", inversedBy="equipamentos")
+ * <span class="hljs-doctag">@ORM</span>\JoinColumn(nullable=true)
+ */</span>
+<span class="hljs-keyword">private</span> $rede;
+
+<span class="hljs-comment">/* get e set */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setRede</span><span class="hljs-params">($rede)</span>
+</span>{
+    <span class="hljs-keyword">$this</span>-&gt;rede = $rede;
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRede</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;rede;
+}
+</code></pre><div style="font-size: 16px;"> <em>Documentação:</em> <a href="https://symfony.com/doc/current/doctrine/associations.html">https://symfony.com/doc/current/doctrine/associations.html</a> </div>
+</section>
+
+<section id="model-relationship_rede" class="slide" data-has-notes="false">
+<p>Relacionamento inverso na entidade de Rede: </p>
+<pre><code><span class="hljs-keyword">use</span> <span class="hljs-title">Doctrine</span>\<span class="hljs-title">Common</span>\<span class="hljs-title">Collections</span>\<span class="hljs-title">ArrayCollection</span>;
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">$this</span>-&gt;equipamentos = <span class="hljs-keyword">new</span> ArrayCollection();
+}
+
+<span class="hljs-comment">/**
+ * <span class="hljs-doctag">@ORM</span>\OneToMany(targetEntity="Equipamento",mappedBy="rede")
+ */</span>
+<span class="hljs-keyword">private</span> $equipamentos;
+
+
+<span class="hljs-comment">/* get e set */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setEquipamentos</span><span class="hljs-params">($equipamentos)</span>
+</span>{
+    <span class="hljs-keyword">$this</span>-&gt;equipamentos = $equipamentos;
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getEquipamentos</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;equipamentos;
+}
+</code></pre><div style="font-size: 16px;"> <em>Documentação:</em> <a href="http://symfony.com/doc/current/form/form_collections.html">http://symfony.com/doc/current/form/form_collections.html</a> </div>
+</section>
+</section>
+
+<section id="chapter-controller" class="chapter">
+<section id="controller-controllers" class="slide" data-has-notes="false">
+<h2>Controllers</h2>
+
+<p>Criar issues sobre controllers: </p>
+<ul>
+<li>Create EquipamentoController</li>
+<li>Create form EquipamentoType with fields: nome, iprede e cidr</li>
+<li>Create newAction in EquipamentoController that receive request from EquipamentoType</li>
+</ul>
+<p>Checkout para branch master para issues5-6-7-EquipamentoNewAction</p>
+<pre><code>git checkout -b issues5<span class="hljs-number">-6</span><span class="hljs-number">-7</span>-EquipamentoNewAction
+</code></pre>
+</section>
+
+<section id="controller-equipamentocontroller" class="slide" data-has-notes="false">
+<p>Criar controller para Equipamento: </p>
+<pre><code>php bin<span class="hljs-built_in">/console </span>make:controller EquipamentoController
+</code></pre><p>Subir um server local:</p>
+<pre><code>php -S 0.0.0.0:8888 -t public/
+php bin<span class="hljs-built_in">/console </span>server:<span class="hljs-builtin-name">run</span> *:8888
+</code></pre><p>Form para cadastro de equipamentos:</p>
+<pre><code>php bin<span class="hljs-built_in">/console </span>make:form EquipamentoType
+</code></pre><p>Adicionar os campos no form criado:</p>
+<pre><code>$builder-&gt;add<span class="hljs-function"><span class="hljs-params">(<span class="hljs-string">'patrimonio'</span>)</span>-&gt;</span>add<span class="hljs-function"><span class="hljs-params">(<span class="hljs-string">'macaddress'</span>)</span>-&gt;</span>add<span class="hljs-function"><span class="hljs-params">(<span class="hljs-string">'local'</span>)</span>
+        -&gt;</span>add(<span class="hljs-string">'vencimento'</span>);
+</code></pre><div style="font-size: 16px;"> <em>Documentação:</em> <a href="https://symfony.com/doc/current/controller.html">https://symfony.com/doc/current/controller.html</a>
+<br> <a href="http://symfony.com/doc/current/forms.html">http://symfony.com/doc/current/forms.html</a></div>
+</section>
+
+<section id="controller-equipamento_newaction" class="slide" data-has-notes="false">
+<h3>Rota para cadastrar novos <em>equipamentos</em>:</h3><pre><code><span class="hljs-keyword">use</span> App\Entity\Equipamento; 
+<span class="hljs-keyword">use</span> App\<span class="hljs-keyword">Form</span>\EquipamentoType; 
+</code></pre><p>Controler:</p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@Route</span>("/equipamento/new", name="equipamento_new")
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">newAction</span><span class="hljs-params">()</span>
+</span>{
+    $equipamento = <span class="hljs-keyword">new</span> Equipamento();
+    $form = <span class="hljs-keyword">$this</span>-&gt;createForm(EquipamentoType::class,$equipamento);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'equipamento/new.html.twig'</span>, <span class="hljs-keyword">array</span>(
+        <span class="hljs-string">'form'</span> =&gt; $form-&gt;createView(),
+    ));
+}
+</code></pre>
+</section>
+
+<section id="controller-equipamento_template" class="slide" data-has-notes="false">
+<p>Criar um arquivo de template <br> <em>templates/equipamento/new.html.twig</em>:</p>
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+</span><span class="hljs-template-variable">{{ form_start(form) }}</span><span class="xml">
+    </span><span class="hljs-template-variable">{{ form_widget(form) }}</span><span class="xml">
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"Cadastrar"</span> /&gt;</span>
+</span><span class="hljs-template-variable">{{ form_end(form) }}</span><span class="xml">
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span>
+</code></pre><p>Acessar rota no browser:</p>
+<pre><code>http:<span class="hljs-regexp">//</span><span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">8000</span><span class="hljs-regexp">/equipamento/</span>new
+</code></pre><p><em>Sim, está horrível, mas aguardem!</em></p>
+</section>
+
+<section id="controller-equipamento_persistir" class="slide" data-has-notes="false">
+<p>Tratar a requisição no controller:</p>
+<pre><code>-&gt; <span class="hljs-keyword">use</span> <span class="hljs-title">Symfony</span>\<span class="hljs-title">Component</span>\<span class="hljs-title">HttpFoundation</span>\<span class="hljs-title">Request</span>;
+-&gt; <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">newAction</span><span class="hljs-params">(Request $request)</span></span>
+</code></pre><p>Persistir campos no banco de dados:</p>
+<pre><code>$form-&gt;handleRequest($request);
+<span class="hljs-keyword">if</span> ($form-&gt;isSubmitted() &amp;&amp; $form-&gt;isValid()) {
+    $em = <span class="hljs-keyword">$this</span>-&gt;getDoctrine()-&gt;getManager();
+    $em-&gt;persist($equipamento);
+    $em-&gt;flush();
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;redirectToRoute(<span class="hljs-string">'equipamento_new'</span>);
+}
+</code></pre><p>Persistiu?</p>
+<pre><code>php bin<span class="hljs-built_in">/console </span>doctrine:query:sql <span class="hljs-string">"select * from equipamento;"</span>
+</code></pre>
+</section>
+
+<section id="controller-exercicio_controller" class="slide" data-has-notes="false">
+<p>Finalizando issues:</p>
+<ul>
+<li>devmaster: commit e merge da mudanças</li>
+</ul>
+<p><em>Criação, distribuição e pull/merge requests das issues entre os/as devs:</em> </p>
+<ul>
+<li>Create RedeController</li>
+<li>Create form RedeType with fields: nome, iprede e cidr</li>
+<li>Create newAction in RedeController that receive request from RedeType form</li>
+</ul>
+</section>
+
+<section id="controller-tostring" class="slide" data-has-notes="false">
+<h3>Relacionamento entre equipamento e rede</h3><ul>
+<li>Adicionar campo <em>rede</em> no form de equipamento</li>
+<li><p>Boom? Método <em>__toString</em> na entity Rede:</p>
+<p> public funtion __toString()
+ {</p>
+<pre><code> <span class="hljs-keyword">return</span> $<span class="hljs-keyword">this</span>-&gt;nome;
+</code></pre><p> }</p>
+</li>
+<li><p>Cadastrar novo equipamento</p>
+</li>
+<li>Mágica: verificar no banco de dados!</li>
+</ul>
+</section>
+
+<section id="controller-showaction_equipamento" class="slide" data-has-notes="false">
+<p>nova issue: showAction e indexAction para EquipamentoController:</p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@Route</span>("/equipamento/{id}", name="equipamento_show")
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">showAction</span><span class="hljs-params">(Equipamento $equipamento)</span>
+</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'equipamento/show.html.twig'</span>, <span class="hljs-keyword">array</span>(
+        <span class="hljs-string">'equipamento'</span> =&gt; $equipamento,
+    ));
+}
+</code></pre><p>Criar arquivo <em>equipamento/show.html.twig</em>: </p>
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span> 
+    </span><span class="hljs-template-variable">{{ equipamento.macaddress}}</span><span class="xml">
+    </span><span class="hljs-template-variable">{{ equipamento.vencimento|<span class="hljs-name">date</span>('d/m/Y') }}</span><span class="xml">
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span>
+</code></pre>
+</section>
+
+<section id="controller-indexaction_equipamento" class="slide" data-has-notes="false">
+<p>Criação de página que lista todos equipamentos:</p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@Route</span>("/equipamento", name="equipamento_index")
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">indexAction</span><span class="hljs-params">()</span>
+</span>{
+    $repository = <span class="hljs-keyword">$this</span>-&gt;getDoctrine()-&gt;getRepository(Equipamento::class);
+    $equipamentos = $repository-&gt;findAll();
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'equipamento/index.html.twig'</span>, <span class="hljs-keyword">array</span>(
+        <span class="hljs-string">'equipamentos'</span> =&gt; $equipamentos,
+    ));
+}
+</code></pre><p>Criar arquivo <em>equipamento/index.html.twig</em>: </p>
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span> 
+</span><span class="hljs-template-tag">{% <span class="hljs-name"><span class="hljs-name">for</span></span> equipamento <span class="hljs-keyword">in</span> equipamentos %}</span><span class="xml"> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{{ path('equipamento_show', { 'id': equipamento.id }) }}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span> </span><span class="hljs-template-variable">{{equipamento.macaddress}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span> <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+</span><span class="hljs-template-tag">{% <span class="hljs-name"><span class="hljs-name">endfor</span></span> %}</span><span class="xml">
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span>
+</code></pre>
+</section>
+
+<section id="controller-filtrar_equipamento_ativos" class="slide" data-has-notes="false">
+<p>Filtrando equipamentos ativos via repository:</p>
+<pre><code>public <span class="hljs-keyword">function</span> ativos()
+{
+    $now = <span class="hljs-keyword">new</span> <span class="hljs-string">\DateTime();</span>
+    <span class="hljs-keyword">return</span> $<span class="hljs-keyword">this</span>-&gt;createQueryBuilder<span class="hljs-function"><span class="hljs-params">(<span class="hljs-string">'e'</span>)</span>
+        -&gt;</span>where<span class="hljs-function"><span class="hljs-params">(<span class="hljs-string">'e.vencimento &gt;= :now'</span>)</span>
+        -&gt;</span>setParameter<span class="hljs-function"><span class="hljs-params">(<span class="hljs-string">'now'</span>, $now)</span>
+        -&gt;</span>getQuery<span class="hljs-function"><span class="hljs-params">()</span>
+        -&gt;</span>getResult();
+}
+</code></pre><p>Corrigir controller</p>
+<pre><code><span class="hljs-variable">$equipamentos</span> = <span class="hljs-variable">$repository</span>-&gt;ativos();
+</code></pre>
+</section>
+
+<section id="controller-repository_rawsql" class="slide" data-has-notes="false">
+<p>Ok, você quer usar SQL na raça... </p>
+<pre><code><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ativosSql</span><span class="hljs-params">()</span>
+</span>{
+    $now_obj = <span class="hljs-keyword">new</span> \DateTime();
+    $now = $now_obj-&gt;format(<span class="hljs-string">'Y-m-d H:i:s'</span>);
+    $conn = <span class="hljs-keyword">$this</span>-&gt;getEntityManager()-&gt;getConnection();
+    $sql = <span class="hljs-string">'SELECT * FROM equipamento e WHERE e.vencimento &gt;= :now'</span>;
+    $stmt = $conn-&gt;prepare($sql);
+    $stmt-&gt;execute([<span class="hljs-string">'now'</span> =&gt; $now]);
+    <span class="hljs-keyword">return</span> $stmt-&gt;fetchAll();
+}
+</code></pre><p>No Controller:</p>
+<pre><code><span class="hljs-variable">$equipamentos</span> = <span class="hljs-variable">$repository</span>-&gt;ativosSql();
+</code></pre>
+</section>
+
+<section id="controller-exercicio" class="slide" data-has-notes="false">
+<p><em>Criação, distribuição e pull/merge requests das issues entre os/as devs: </em></p>
+<ul>
+<li>Create showAction and template for RedeController</li>
+<li>Create indexAction and template for RedeController</li>
+</ul>
+<p><em>Criação das seguintes issues para o/a devmaster:</em></p>
+<ul>
+<li>Create editAction and template for EquipamentoController</li>
+<li>Create deleteAction and template for EquipamentoController</li>
+</ul>
+</section>
+
+<section id="controller-editaction" class="slide" data-has-notes="false">
+<p>Edição dos registros de equipamento:</p>
+<pre><code><span class="hljs-comment">/**
+  * <span class="hljs-doctag">@Route</span>("/equipamento/{id}/edit", name="equipamento_edit")
+  */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">editAction</span><span class="hljs-params">(Request $request, Equipamento $equipamento)</span>
+</span>{
+    $form = <span class="hljs-keyword">$this</span>-&gt;createForm(EquipamentoType::class,$equipamento);
+    $form-&gt;handleRequest($request);
+
+    <span class="hljs-keyword">if</span> ($form-&gt;isSubmitted() &amp;&amp; $form-&gt;isValid()) {
+        <span class="hljs-keyword">$this</span>-&gt;getDoctrine()-&gt;getManager()-&gt;flush();
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;redirectToRoute(<span class="hljs-string">'equipamento_show'</span>,[<span class="hljs-string">'id'</span> =&gt; $equipamento-&gt;getId()]);
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'equipamento/edit.html.twig'</span>, <span class="hljs-keyword">array</span>(
+        <span class="hljs-string">'equipamento'</span> =&gt; $equipamento,
+        <span class="hljs-string">'form'</span> =&gt; $form-&gt;createView(),
+    ));
+}
+</code></pre><p>Colocar link em equipamento/show.html.twig:</p>
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{{ path('equipamento_edit', { 'id': equipamento.id }) }}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>Editar<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
+</code></pre>
+</section>
+
+<section id="controller-deleteactionwrong" class="slide" data-has-notes="false">
+<p>Para deletar, <em>sério</em>, nunca faça isso:</p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@Route</span>("/equipamento/{id}/delete", name="equipamento_delete")
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deleteAction</span><span class="hljs-params">(equipamento $equipamento)</span> </span>{
+    $em = <span class="hljs-keyword">$this</span>-&gt;getDoctrine()-&gt;getManager();
+    $em-&gt;remove($equipamento);
+    $em-&gt;flush();
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;redirectToRoute(<span class="hljs-string">'equipamento_index'</span>);
+}
+</code></pre>
+</section>
+
+<section id="controller-deleteaction_deleteform" class="slide" data-has-notes="false">
+<p>The Right Way: Criar um formulário para enviar requisição HTTP DELETE</p>
+<pre><code><span class="hljs-keyword">use</span> <span class="hljs-title">Symfony</span>\<span class="hljs-title">Component</span>\<span class="hljs-title">Form</span>\<span class="hljs-title">Extension</span>\<span class="hljs-title">Core</span>\<span class="hljs-title">Type</span>\<span class="hljs-title">CheckboxType</span>;
+...
+<span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createDeleteForm</span><span class="hljs-params">(Equipamento $equipamento)</span>
+</span>{
+    $id = $equipamento-&gt;getId();
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;createFormBuilder()
+        -&gt;setAction(<span class="hljs-keyword">$this</span>-&gt;generateUrl(<span class="hljs-string">'equipamento_delete'</span>, [<span class="hljs-string">'id'</span> =&gt; $id]))
+        -&gt;setMethod(<span class="hljs-string">'DELETE'</span>)
+        -&gt;add(<span class="hljs-string">'message'</span>,CheckboxType::class, [
+             <span class="hljs-string">'label'</span>    =&gt; <span class="hljs-string">"Quer mesmo deletar ?"</span>,
+             <span class="hljs-string">'required'</span> =&gt; <span class="hljs-keyword">true</span>,])
+        -&gt;getForm();
+}
+</code></pre><p><div style="font-size: 16px;"> <em>Documentação:</em>
+<a href="https://symfony.com/doc/current/form/without_class.html">https://symfony.com/doc/current/form/without_class.html</a></p>
+</section>
+
+<section id="controller-deleteaction_deleterequest" class="slide" data-has-notes="false">
+<p>Método HTTP DELETE </p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@Route</span>("/equipamento/{id}/delete", name="equipamento_delete",methods="DELETE")
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deleteAction</span><span class="hljs-params">(Request $request, Equipamento $equipamento)</span>
+</span>{
+    $form = <span class="hljs-keyword">$this</span>-&gt;createDeleteForm($equipamento);
+    $form-&gt;handleRequest($request);
+    <span class="hljs-keyword">if</span> ($form-&gt;isSubmitted() &amp;&amp; $form-&gt;isValid()) {
+        $em = <span class="hljs-keyword">$this</span>-&gt;getDoctrine()-&gt;getManager();
+        $em-&gt;remove($equipamento);
+        $em-&gt;flush();
+}
+<span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;redirectToRoute(<span class="hljs-string">'equipamento_index'</span>);
+</code></pre>
+</section>
+
+<section id="controller-deleteaction_template" class="slide" data-has-notes="false">
+<p>Tela de confirmação:</p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@Route</span>("/equipamento/{id}/delete/confirm", name="equipamento_delete_confirm")
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">confirmDeleteAction</span><span class="hljs-params">(Equipamento $equipamento)</span>
+</span>{
+    $form = <span class="hljs-keyword">$this</span>-&gt;createDeleteForm($equipamento);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'equipamento/delete.html.twig'</span>, <span class="hljs-keyword">array</span>(
+        <span class="hljs-string">'equipamento'</span> =&gt; $equipamento,
+        <span class="hljs-string">'form'</span> =&gt; $form-&gt;createView(),
+    ));
+}
+</code></pre><p>No template:</p>
+<pre><code><span class="xml"></span><span class="hljs-template-variable">{{ form_start(form) }}</span><span class="xml">
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span>&gt;</span>Deletar<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+</span><span class="hljs-template-variable">{{ form_end(form) }}</span><span class="xml"></span>
+</code></pre>
+</section>
+
+<section id="controller-exerciciodeleteentity" class="slide" data-has-notes="false">
+<p>Criação, distribuição e pull/merge requests das issues entre os/as devs: </p>
+<ul>
+<li>Create editAction and template fir RedeController</li>
+<li>Create deleteAction and template fir RedeController</li>
+</ul>
+<p>Dica para deixar equipamentos órfãos:</p>
+<pre><code>$equipamentos = $rede-&gt;getEquipamentos();
+<span class="hljs-keyword">foreach</span>($equipamentos <span class="hljs-keyword">as</span> $equipamento){
+    $equipamento-&gt;setRede(<span class="hljs-keyword">null</span>);
+}
+</code></pre>
+</section>
+
+<section id="controller-dhcpconf" class="slide" data-has-notes="false">
+<p>Modelo para dhcp.conf para múltiplas networks:</p>
+<pre><code>ddns-update-style none<span class="hljs-comment">;</span>
+<span class="hljs-meta">default</span>-lease-time <span class="hljs-number">86400</span><span class="hljs-comment">;</span>
+max-lease-time <span class="hljs-number">86400</span><span class="hljs-comment">;</span>
+authoritative<span class="hljs-comment">;</span>
+<span class="hljs-meta">option</span> domain-name-servers <span class="hljs-number">143.107</span><span class="hljs-meta">.253</span><span class="hljs-meta">.3</span>,<span class="hljs-number">143.107</span><span class="hljs-meta">.253</span><span class="hljs-meta">.5</span><span class="hljs-comment">;</span>
+
+shared-network <span class="hljs-string">"default"</span> {
+
+    subnet <span class="hljs-number">10.0</span><span class="hljs-meta">.184</span><span class="hljs-meta">.0</span> netmask <span class="hljs-number">255.255</span><span class="hljs-meta">.255</span><span class="hljs-meta">.0</span> {
+        range <span class="hljs-number">10.0</span><span class="hljs-meta">.184</span><span class="hljs-meta">.2</span> <span class="hljs-number">10.0</span><span class="hljs-meta">.184</span><span class="hljs-meta">.254</span><span class="hljs-comment">;</span>
+        <span class="hljs-meta">option</span> routers <span class="hljs-number">10.0</span><span class="hljs-meta">.184</span><span class="hljs-meta">.1</span><span class="hljs-comment">;          </span>
+        <span class="hljs-meta">option</span> broadcast-address <span class="hljs-number">10.0</span><span class="hljs-meta">.184</span><span class="hljs-meta">.255</span><span class="hljs-comment">;</span>
+        deny unknown-clients<span class="hljs-comment">;</span>
+        host cliente1 {
+            hardware ethernet <span class="hljs-number">00</span>:1C:C0:<span class="hljs-number">99</span>:0A:<span class="hljs-number">04</span><span class="hljs-comment">;</span>
+            fixed-address <span class="hljs-number">10.0</span><span class="hljs-meta">.184</span><span class="hljs-meta">.51</span><span class="hljs-comment">;</span>
+        }
+    }
+
+   subnet <span class="hljs-number">10.0</span><span class="hljs-meta">.188</span><span class="hljs-meta">.0</span> netmask <span class="hljs-number">255.255</span><span class="hljs-meta">.255</span><span class="hljs-meta">.0</span> {
+        range <span class="hljs-number">10.0</span><span class="hljs-meta">.188</span><span class="hljs-meta">.2</span> <span class="hljs-number">10.0</span><span class="hljs-meta">.188</span><span class="hljs-meta">.254</span><span class="hljs-comment">;</span>
+        <span class="hljs-meta">option</span> routers <span class="hljs-number">10.0</span><span class="hljs-meta">.188</span><span class="hljs-meta">.1</span><span class="hljs-comment">;</span>
+        <span class="hljs-meta">option</span> broadcast-address <span class="hljs-number">10.0</span><span class="hljs-meta">.188</span><span class="hljs-meta">.255</span><span class="hljs-comment">;</span>
+        deny unknown-clients<span class="hljs-comment">;</span>
+        host cliente2 {
+            hardware ethernet <span class="hljs-number">00</span>:1C:C0:<span class="hljs-number">98</span>:FB:3C<span class="hljs-comment">;</span>
+            fixed-address <span class="hljs-number">10.0</span><span class="hljs-meta">.188</span><span class="hljs-meta">.69</span><span class="hljs-comment">;</span>
+        }
+    }
+}
+</code></pre>
+</section>
+
+<section id="controller-dhcpconf-1" class="slide" data-has-notes="false">
+<p>Controller que monta o dhcp.conf:</p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@Route</span>("/dhcpconf", name="dhcpconf")
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">dhcpconf</span><span class="hljs-params">()</span>
+</span>{
+    $response = <span class="hljs-keyword">new</span> Response(<span class="hljs-string">'teste'</span>);
+    $response-&gt;headers-&gt; set(<span class="hljs-string">'Content-Type'</span>, <span class="hljs-string">'text/plain'</span>); 
+    <span class="hljs-keyword">return</span> $response;
+}
+</code></pre>
+</section>
+
+<section id="controller-service" class="slide" data-has-notes="false">
+<p>Em <em>src/Service/Dhcpconf.php</em></p>
+<pre><code><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Service</span>;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Dhcpconf</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">build</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"ok, I amworking"</span>;
+    }
+}
+</code></pre><p>No Controller:</p>
+<pre><code><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Service</span>\<span class="hljs-title">Dhcpconf</span>;
+$dhcpconf = <span class="hljs-keyword">new</span> Dhcpconf();
+$dhcpconf-&gt;build();
+</code></pre>
+</section>
+
+<section id="controller-external_library" class="slide" data-has-notes="false">
+<p>Necessidades: A partir do ip da rede e cidr:</p>
+<ul>
+<li>Encontrar primeiro ip (gateway) e broadcast</li>
+<li>Converter cidr para máscara</li>
+<li>Encontrar range</li>
+</ul>
+<p>Instalando e usando biblioteca externa: </p>
+<pre><code><span class="hljs-meta">#https:<span class="hljs-comment">//github.com/S1lentium/IPTools</span></span>
+sudo apt-<span class="hljs-built_in">get</span> install php7<span class="hljs-number">.2</span>-bcmath
+composer require s1lentium/iptools
+</code></pre><p>Classes disponíveis nessa lib:</p>
+<pre><code><span class="hljs-keyword">use</span> <span class="hljs-title">IPTools</span>\<span class="hljs-title">IP</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">IPTools</span>\<span class="hljs-title">Network</span>;
+</code></pre>
+</section>
+
+<section id="controller-iptools" class="slide" data-has-notes="false">
+<p>Array com IPs do range:</p>
+<pre><code>$network = Network::parse(<span class="hljs-string">'192.168.1.0/24'</span>);
+$ips = [];
+<span class="hljs-keyword">foreach</span>($network <span class="hljs-keyword">as</span> $ip) {
+    array_push($ips,(string)$ip);
+}
+<span class="hljs-comment">// <span class="hljs-doctag">todo:</span> gateway,broadcast,range_begin,range_end</span>
+</code></pre><p>Issues: </p>
+<ul>
+<li>Allocate available IP to <em>Equipamento</em> in newAction/editAction</li>
+<li>Generate dhcp.conf</li>
+</ul>
+</section>
+</section></div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      transition: Reveal.getQueryHash().transition || 'slide', // none/fade/slide/convex/concave/zoom
+
+      // Optional reveal.js plugins
+      dependencies: [
+        //{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        //{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        //{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/zoom-js/zoom.js', async: true },
+        { src: 'plugin/notes/notes.js', async: true }
+      ]
+    });
+    </script>
+
+    <script src="js/dynamic-theme.js"></script><script src="js/custom.js"></script>
+
+  </body>
+</html>
