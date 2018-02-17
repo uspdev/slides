@@ -54,10 +54,22 @@
 <p><img src="./images/construction-company.png" height="400px" /></p>
 </section>
 
+<section id="infra-vagrant" class="slide" data-has-notes="false">
+<h3>Dica para começar:</h3><p><img src="./images/vagrant.png" height="130px"></p>
+<pre><code><span class="hljs-built_in">mkdir</span> vmsymfony
+vagrant init bento/ubuntu<span class="hljs-number">-16.04</span>
+</code></pre><p>Adicionar IP para acesso externo:</p>
+<pre><code><span class="hljs-selector-tag">config</span><span class="hljs-selector-class">.vm</span><span class="hljs-selector-class">.network</span> <span class="hljs-selector-pseudo">:private_network</span>, <span class="hljs-selector-tag">ip</span>: "192<span class="hljs-selector-class">.168</span><span class="hljs-selector-class">.100</span><span class="hljs-selector-class">.200</span>"
+</code></pre><p>Logar na nova VM:</p>
+<pre><code><span class="hljs-attribute">vagrant up
+vagrant ssh</span>
+</code></pre>
+</section>
+
 <section id="infra-ondrej" class="slide" data-has-notes="false">
 <p><img src="./images/php7.jpg" height="300px"></p>
 <p>Usar PHP em versões superiores &gt;= 7.1. </p>
-<p>Dica, usar o PPA do ondrej:</p>
+<p>Dica: usar o PPA do ondrej:</p>
 <pre><code>sudo<span class="hljs-built_in"> add-apt-repository </span>-y ppa:ondrej/php
 sudo apt-get update
 </code></pre>
