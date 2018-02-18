@@ -1,6 +1,6 @@
 Instalação dos pacotes:
 
-    sudo npm install -g prez phantomjs
+    sudo npm install -g prez
 
 Gerar slides:
 
