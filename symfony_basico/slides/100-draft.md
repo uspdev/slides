@@ -6,14 +6,11 @@ php7.1+, composer, mysql e git*
 
 composer create-project symfony/skeleton symfony_basico
 
-criar repo, commitar e enviar mudanças
-
 symfony require maker
-git status # commit
-symfony require doctrine 
-git status # commit
 
-composer require --dev theofidry/psysh-bundle
+symfony require doctrine 
+
+composer require theofidry/psysh-bundle
 
 create database symfony;
 grant all privileges on symfony.* to symfony@localhost identified by 'symfony';

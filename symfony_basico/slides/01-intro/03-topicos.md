@@ -1,5 +1,4 @@
-##  Symfony Básico
-<img src="./images/uspdev.png" height="200px" />
+## Tópicos
 
  - Preparando infra para desenvolvimento
  - *M*odel

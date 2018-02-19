@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
     <link rel="stylesheet" href="css/reveal.css">
-    <link rel="stylesheet" href="css/theme/league.css" id="theme">
+    <link rel="stylesheet" href="css/theme/moon.css" id="theme">
 
     <!-- Code syntax highlighting -->
     <link rel="stylesheet" href="css/highlight/styles/zenburn.css" id="highlight-theme">
@@ -36,15 +36,20 @@
   <body>
 
     <div class="reveal">
-      <div class="slides"><section id="intro" class="slide" data-has-notes="false">
-<h2>Symfony Básico</h2><p><img src="./images/uspdev.png" height="200px" /></p>
-<ul>
+      <div class="slides"><section id="chapter-intro" class="chapter">
+<section id="intro-uspdev" class="slide" data-has-notes="false">
+<h2>Symfony Básico</h2><p><img src="./images/uspdev.png" height="220px" /></p>
+</section>
+
+<section id="intro-topicos" class="slide" data-has-notes="false">
+<h2>Tópicos</h2><ul>
 <li>Preparando infra para desenvolvimento</li>
 <li><em>M</em>odel</li>
 <li><em>C</em>ontroller</li>
 <li><em>V</em>iew</li>
 <li>Autenticação</li>
 </ul>
+</section>
 </section>
 
 <section id="chapter-infra" class="chapter">
@@ -665,6 +670,338 @@ $ips = [];
 <li>Generate dhcp.conf</li>
 </ul>
 </section>
+</section>
+
+<section id="draft" class="slide" data-has-notes="false">
+<h1>Symfony Básico - Parte 1 - hasMany relationship e psych</h1><p>Tenha instalado:</p>
+<p>php7.1+, composer, mysql e git*</p>
+<p>composer create-project symfony/skeleton symfony_basico</p>
+<p>symfony require maker</p>
+<p>symfony require doctrine </p>
+<p>composer require theofidry/psysh-bundle</p>
+<p>create database symfony;
+grant all privileges on symfony.* to symfony@localhost identified by &#39;symfony&#39;;
+inserir informações no .env</p>
+<p>php bin/console make:entity Post
+php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate
+show tables</p>
+<p>php bin/console make:entity Comment
+php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate</p>
+<p>Adicionar os campos title e content na entity Post (as public)
+Adicionar os campos title, content, author_email e post_id (unsigned e referenciando um post) na entity Comment (as public)
+@ORM\ManyToOne(targetEntity=&quot;Rede&quot;, inversedBy=&quot;equipamentos&quot;)</p>
+<h1>Frizar que no relacionamento do symfony, a configuração vale tanto para o modelo quando para o db</h1><p>use Doctrine\Common\Collections\ArrayCollection;
+public function __construct()
+    {
+        $this-&gt;comments = new ArrayCollection();
+    }
+    /**</p>
+<pre><code> * @<span class="hljs-keyword">ORM</span>\<span class="hljs-keyword">OneToMany</span>(<span class="hljs-keyword">targetEntity</span>="<span class="hljs-keyword">Equipamento</span>",<span class="hljs-keyword">mappedBy</span>="<span class="hljs-keyword">rede</span>")
+ */
+private $equipamentos;
+</code></pre><p>Array collection em POst apontando para Comments</p>
+<p>php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate
+show tables
+desc Comment;
+desc Post;</p>
+<p>php bin/console psysh</p>
+<p>$post = new App\Entity\Post
+$post-&gt;title = &quot;primeiro post&quot;
+$post-&gt;content = &quot;texto maravilhoso sobre um super post.&quot;</p>
+<p>ls
+$em = $container-&gt;get(&#39;doctrine&#39;)-&gt;getManager()
+$em-&gt;persist($post)
+$em-&gt;flush()</p>
+<p>$p = $em-&gt;getRepository(&#39;App\Entity\Post&#39;)
+$posts = $p-&gt;findAll()</p>
+<h1>listar todos títulos</h1><p>foreach ($posts as $post) echo $post-&gt;title</p>
+<p>$comment = new App\Entity\Comment
+$comment-&gt;author_email = &#39;fulano@eu.com&#39;
+$comment-&gt;title = &#39;meu comentário&#39;
+$comment-&gt;content = &#39;Gostei muito do seu post&#39;
+$comment-&gt;post_id = $posts[&#39;id&#39;==1]
+$em-&gt;persist($comment)
+em-&gt;flush()</p>
+<p>select * from comment;</p>
+<p>$comment2 = new App\Entity\Comment
+$comment2-&gt;author_email = &#39;ciclano@eu.com&#39;
+$comment2-&gt;title = &#39;meu comentário 2&#39;
+$comment2-&gt;content = &#39;Eu não gostei&#39;
+$comment2-&gt;post = $posts[&#39;id&#39;==1]
+$em-&gt;persist($comment2)
+$em-&gt;flush()</p>
+<p>select * from comment;</p>
+<p>$c = $em-&gt;getRepository(&#39;App\Entity\Comment&#39;)
+$comments = $c-&gt;findAll()</p>
+<p>select * from Comment;</p>
+<p>$p-&gt;find(1)-&gt;comments-&gt;toArray()</p>
+<p>$c-&gt;find(2)
+$c-&gt;find(2)-&gt;post
+$c-&gt;find(2)-&gt;post-&gt;title</p>
+<p>[extra]
+$em-&gt;createQuery(&#39;SELECT A.title FROM App:Post A WHERE A.id=2&#39;)-&gt;getResult()</p>
+<p>$qb = $em-&gt;createQueryBuilder()
+$qb-&gt;select(&#39;u&#39;)-&gt;from(&#39;App\Entity\Post&#39;, &#39;u&#39;)-&gt;where(&#39;u.id = 2&#39;)-&gt;getQuery()-&gt;getResult()</p>
+<p>Criar um método em 
+src/Repository/CommentRepository.php
+e testar no console</p>
+<p>####################################################3</p>
+<h1>Laravel Básico - Parte 2 (hasManyThrough)</h1><ul>
+<li><a href="https://github.com/leandroramos/laravel_basico/tree/part1">Parte 1 - Setup do projeto, hasMany relationship e Laravel Tinker</a></li>
+<li><a href="https://github.com/leandroramos/laravel_basico/tree/part3">Parte 3 - Usando Factories</a></li>
+</ul>
+<h2>Criar o model Authors</h2><ul>
+<li>php artisan make:model Author -m</li>
+<li>Colocar as colunas na tabela authors em database/migrations/create_authors_table.php<pre><code class="lang-php">  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">up</span><span class="hljs-params">()</span>
+  </span>{
+      Schema::create(<span class="hljs-string">'authors'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Blueprint $table)</span> </span>{
+          $table-&gt;increments(<span class="hljs-string">'id'</span>);
+          $table-&gt;string(<span class="hljs-string">'name'</span>);
+          $table-&gt;string(<span class="hljs-string">'email'</span>);
+          $table-&gt;string(<span class="hljs-string">'bio'</span>)-&gt;nullable();
+          $table-&gt;timestamps();
+      });
+  }
+</code></pre>
+</li>
+</ul>
+<h2>Adicionar o ID do autor ao Post</h2><ul>
+<li>php artisan make:migration add_author_id_to_posts --table=posts</li>
+<li><p>Colocar a coluna de chave estrangeira em database/migrations/add_author_id_to_posts.php</p>
+<pre><code class="lang-php">  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">up</span><span class="hljs-params">()</span>
+  </span>{
+          Schema::table(<span class="hljs-string">'posts'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Blueprint $table)</span> </span>{
+              $table-&gt;integer(<span class="hljs-string">'author_id'</span>)-&gt;unsigned();
+
+              $table-&gt;foreign(<span class="hljs-string">'author_id'</span>)-&gt;references(<span class="hljs-string">'id'</span>)-&gt;on(<span class="hljs-string">'authors'</span>);
+          });
+      }
+
+      <span class="hljs-comment">/**
+       * Reverse the migrations.
+       *
+       * <span class="hljs-doctag">@return</span> void
+       */</span>
+      <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">down</span><span class="hljs-params">()</span>
+      </span>{
+          Schema::table(<span class="hljs-string">'posts'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Blueprint $table)</span> </span>{
+              $table-&gt;dropColumn(<span class="hljs-string">'author_id'</span>);
+          });
+      }
+  }
+</code></pre>
+</li>
+</ul>
+<h2>Rodar as migrations</h2><ul>
+<li>Antes de rodar as migrations, temos que dar refresh no banco de dados, pois podem existir dados que impediriam a adição de novas chaves estrangeiras (PDOException::(&quot;SQLSTATE[23000]):<ul>
+<li>php artisan migrate:refresh</li>
+<li>php artisan migrate</li>
+</ul>
+</li>
+</ul>
+<h2>Adicionar os relacionamentos</h2><ul>
+<li><p>app/Post.php</p>
+<pre><code class="lang-php">  <span class="hljs-meta">&lt;?php</span>
+
+  <span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>;
+
+  <span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Database</span>\<span class="hljs-title">Eloquent</span>\<span class="hljs-title">Model</span>;
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Post</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Model</span>
+  </span>{
+      <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">comments</span><span class="hljs-params">()</span>
+      </span>{
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;hasMany(<span class="hljs-string">'App\Comment'</span>);
+      }
+
+      <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">author</span><span class="hljs-params">()</span>
+      </span>{
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;belongsTo(<span class="hljs-string">'App\Author'</span>);
+      }
+  }
+</code></pre>
+<ul>
+<li><p>app/Author.php</p>
+<pre><code class="lang-php">  <span class="hljs-meta">&lt;?php</span>
+
+  <span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>;
+
+  <span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Database</span>\<span class="hljs-title">Eloquent</span>\<span class="hljs-title">Model</span>;
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Author</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Model</span>
+  </span>{
+      <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">posts</span><span class="hljs-params">()</span>
+      </span>{
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;hasMany(<span class="hljs-string">'App\Post'</span>);
+      }
+      <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">comments</span><span class="hljs-params">()</span>
+      </span>{
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;hasManyThrough(<span class="hljs-string">'App\Comment'</span>, <span class="hljs-string">'App\Post'</span>);
+      }
+  }
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Sugestões para testar o banco de dados no Tinker</h2><pre><code>-<span class="ruby"> php artisan tinker
+</span>-<span class="ruby"> $author = new Author
+</span>-<span class="ruby"> $author-&gt;name = <span class="hljs-string">'Leandro Ramos'</span>
+</span>-<span class="ruby"> $author-&gt;email = <span class="hljs-string">'leandroramos@usp.br'</span>
+</span>-<span class="ruby"> $author-&gt;save()
+</span>-<span class="ruby"> $post = new Post
+</span>-<span class="ruby"> $post-&gt;title = <span class="hljs-string">'Um Grande Post!'</span>
+</span>-<span class="ruby"> $post-&gt;content = <span class="hljs-string">'Um excelente texto explicando sobre uma grande novidade'</span>
+</span>-<span class="ruby"> $post-&gt;author_id = <span class="hljs-number">1</span>
+</span>-<span class="ruby"> $post = new Post
+</span>-<span class="ruby"> $post-&gt;title = <span class="hljs-string">'Segundo Grande Post!'</span>
+</span>-<span class="ruby"> $post-&gt;content = <span class="hljs-string">'Segundo texto espetacular sobre um grande post.'</span>
+</span>-<span class="ruby"> $post-&gt;author_id = <span class="hljs-number">1</span>
+</span>-<span class="ruby"> $post = new Post
+</span>-<span class="ruby"> $post-&gt;title = <span class="hljs-string">'Um Grande Post!'</span>
+</span>-<span class="ruby"> $post-&gt;content = <span class="hljs-string">'Um excelente texto explicando sobre uma grande novidade'</span>
+</span>-<span class="ruby"> $post-&gt;author_id = <span class="hljs-number">1</span> 
+</span>-<span class="ruby"> $post-&gt;save()
+</span>-<span class="ruby"> $post = new Post
+</span>-<span class="ruby"> $post-&gt;title = <span class="hljs-string">'Segundo Grande Post!'</span>
+</span>-<span class="ruby"> $post-&gt;content = <span class="hljs-string">'Segundo texto espetacular sobre um grande post.'</span>
+</span>-<span class="ruby"> $post-&gt;author_id = <span class="hljs-number">1</span> 
+</span>-<span class="ruby"> $post-&gt;save()
+</span>-<span class="ruby"> $comment = new Comment
+</span>-<span class="ruby"> $comment-&gt;author_email = <span class="hljs-string">'comentador@site.com'</span>
+</span>-<span class="ruby"> $comment-&gt;content = <span class="hljs-string">'Mas que post sensacional!'</span>
+</span>-<span class="ruby"> $comment-&gt;post_id = <span class="hljs-number">1</span>
+</span>-<span class="ruby"> $comment-&gt;save()
+</span>-<span class="ruby"> $comment = new Comment
+</span>-<span class="ruby"> $comment-&gt;author_email = <span class="hljs-string">'oriboncina@site.com'</span>
+</span>-<span class="ruby"> $comment-&gt;content = <span class="hljs-string">'Sei não... estás enganado!!'</span>
+</span>-<span class="ruby"> $comment-&gt;post_id = <span class="hljs-number">1</span>
+</span>-<span class="ruby"> $comment-&gt;save()
+</span>-<span class="ruby"> $comment = new Comment
+</span>-<span class="ruby"> $comment-&gt;author_email = <span class="hljs-string">'eu@site.com'</span>
+</span>-<span class="ruby"> $comment-&gt;content = <span class="hljs-string">'Estão faltando alguns links no post.'</span>
+</span>-<span class="ruby"> $comment-&gt;post_id = <span class="hljs-number">1</span>
+</span>-<span class="ruby"> $comment-&gt;save()
+</span>-<span class="ruby"> $comment = new Comment
+</span>-<span class="ruby"> $comment-&gt;author_email = <span class="hljs-string">'eu@site.com'</span>
+</span>-<span class="ruby"> $comment-&gt;content = <span class="hljs-string">'Obrigado, ajudou muito.'</span>
+</span>-<span class="ruby"> $comment-&gt;post_id = <span class="hljs-number">2</span>
+</span>-<span class="ruby"> $comment-&gt;save()
+</span>-<span class="ruby"> 
+</span>-<span class="ruby"> Mais <span class="hljs-symbol">testes:</span>
+</span>    -<span class="ruby"> $author = Author::first()
+</span>    -<span class="ruby"> $author-&gt;posts
+</span>    -<span class="ruby"> $author-&gt;comments
+</span>    -<span class="ruby"> $author-&gt;comments-&gt;where(<span class="hljs-string">'post_id'</span>, <span class="hljs-string">'2'</span>)
+</span>    -<span class="ruby"> $comment = Comment::first()
+</span>    -<span class="ruby"> $comment-&gt;post
+</span>    -<span class="ruby"> $comment-&gt;post-&gt;author
+</span>    -<span class="ruby"> $comment-&gt;post-&gt;author-&gt;name</span>
+</code></pre><h2>Links de referência</h2><ul>
+<li><a href="https://laravel.com/docs/5.6/eloquent-relationships#has-many-through">Laravel 5.6 - Eloquent Relationships</a></li>
+<li><a href="https://laravel.com/docs/5.6/migrations#generating-migrations">Laravel 5.6 - Database Migrations</a></li>
+</ul>
+<h1>Parte 3 - Factories</h1><ul>
+<li><a href="https://github.com/leandroramos/laravel_basico/tree/part1">Parte 1 - Setup do projeto, hasMany relationship e Laravel Tinker</a></li>
+<li><a href="https://github.com/leandroramos/laravel_basico/tree/part2">Parte 2 - Adicionando colunas às tabelas e hasManyThrough relationship</a></li>
+</ul>
+<h2>Criar as factories</h2><pre><code>-<span class="ruby"> php artisan <span class="hljs-symbol">make:</span>factory AuthorFactory --model=<span class="hljs-string">"App\\Author"</span>
+</span>-<span class="ruby"> php artisan <span class="hljs-symbol">make:</span>factory PostFactory --model=<span class="hljs-string">"App\\Post"</span>
+</span>-<span class="ruby"> php artisan <span class="hljs-symbol">make:</span>factory CommentFactory --model=<span class="hljs-string">"App\\Comment"</span></span>
+</code></pre><h2>Código das factories</h2><ul>
+<li><p>AuthorFactory</p>
+<pre><code class="lang-php">  <span class="hljs-meta">&lt;?php</span>
+
+  <span class="hljs-keyword">use</span> <span class="hljs-title">Faker</span>\<span class="hljs-title">Generator</span> <span class="hljs-title">as</span> <span class="hljs-title">Faker</span>;
+
+  $factory-&gt;define(App\Author::class, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Faker $faker)</span> </span>{
+      <span class="hljs-keyword">return</span> [
+          <span class="hljs-string">'name'</span>  =&gt; $faker-&gt;name,
+          <span class="hljs-string">'email'</span> =&gt; $faker-&gt;unique()-&gt;safeEmail,
+          <span class="hljs-string">'bio'</span>   =&gt; $faker-&gt;paragraph(<span class="hljs-number">1</span>),
+      ];
+  });
+</code></pre>
+</li>
+<li><p>PostFactory</p>
+<pre><code class="lang-php">  <span class="hljs-meta">&lt;?php</span>
+
+  <span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Author</span>;
+  <span class="hljs-keyword">use</span> <span class="hljs-title">Faker</span>\<span class="hljs-title">Generator</span> <span class="hljs-title">as</span> <span class="hljs-title">Faker</span>;
+
+  $factory-&gt;define(App\Post::class, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Faker $faker)</span> </span>{
+      <span class="hljs-keyword">return</span> [
+          <span class="hljs-string">'title'</span>     =&gt; $faker-&gt;sentence(<span class="hljs-number">4</span>),
+          <span class="hljs-string">'content'</span>   =&gt; $faker-&gt;paragraph(<span class="hljs-number">4</span>),
+
+          <span class="hljs-string">'author_id'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+              <span class="hljs-keyword">return</span> Author::orderByRaw(<span class="hljs-string">"RAND()"</span>)
+                  -&gt;take(<span class="hljs-number">1</span>)
+                  -&gt;first()
+                  -&gt;id;
+          }
+      ];
+  });
+</code></pre>
+</li>
+<li><p>CommentFactory</p>
+<pre><code class="lang-php">  <span class="hljs-meta">&lt;?php</span>
+
+  <span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Post</span>;
+  <span class="hljs-keyword">use</span> <span class="hljs-title">Faker</span>\<span class="hljs-title">Generator</span> <span class="hljs-title">as</span> <span class="hljs-title">Faker</span>;
+
+  $factory-&gt;define(App\Comment::class, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Faker $faker)</span> </span>{
+      <span class="hljs-keyword">return</span> [
+          <span class="hljs-string">'author_email'</span>  =&gt; $faker-&gt;unique()-&gt;safeEmail,
+          <span class="hljs-string">'content'</span>       =&gt; $faker-&gt;paragraph(<span class="hljs-number">2</span>),
+
+          <span class="hljs-string">'post_id'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+              <span class="hljs-keyword">return</span> Post::orderByRaw(<span class="hljs-string">"RAND()"</span>)
+                  -&gt;take(<span class="hljs-number">1</span>)
+                  -&gt;first()
+                  -&gt;id;
+          }
+      ];
+  });
+</code></pre>
+</li>
+</ul>
+<h2>Código do DatabaseSeeder</h2><ul>
+<li><p>database/seeds/DatabaseSeeder.php</p>
+<pre><code class="lang-php">  <span class="hljs-meta">&lt;?php</span>
+
+  <span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Database</span>\<span class="hljs-title">Seeder</span>;
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DatabaseSeeder</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Seeder</span>
+  </span>{
+      <span class="hljs-comment">/**
+       * Run the database seeds.
+       *
+       * <span class="hljs-doctag">@return</span> void
+       */</span>
+      <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span><span class="hljs-params">()</span>
+      </span>{
+          <span class="hljs-comment">// $this-&gt;call(UsersTableSeeder::class);</span>
+          <span class="hljs-keyword">echo</span> <span class="hljs-string">"Criando 10 autores...\n"</span>;
+          factory(App\Author::class, <span class="hljs-number">10</span>)-&gt;create();
+
+          <span class="hljs-keyword">echo</span> <span class="hljs-string">"Criando 36 posts relacionados a autores aleatórios...\n"</span>;
+          factory(App\Post::class, <span class="hljs-number">36</span>)-&gt;create();
+
+          <span class="hljs-keyword">echo</span> <span class="hljs-string">"Criando 67 comentários relacionados a posts aleatórios...\n"</span>;
+          factory(App\Comment::class, <span class="hljs-number">67</span>)-&gt;create();
+      }
+  }
+</code></pre>
+</li>
+</ul>
+<h2>Links de referência</h2><ul>
+<li><a href="https://laravel.com/docs/5.6/database-testing">Laravel 5.6 - Database Testing</a></li>
+<li><a href="https://github.com/fzaninotto/Faker">Faker - Documentação (e repositório)</a></li>
+</ul>
 </section></div>
     </div>
 
