@@ -1,0 +1,1036 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Prez</title>
+
+    <meta name="description" content="-- DESCRIPTION HERE --">
+    <meta name="author" content="thiago">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/moon.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="css/highlight/styles/zenburn.css" id="highlight-theme">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <link rel="stylesheet" href="css/custom.css">
+
+  </head>
+
+  <body>
+
+    <div class="reveal">
+      <div class="slides"><section id="chapter-intro" class="chapter">
+<section id="intro-uspdev" class="slide" data-has-notes="false">
+<h2>Symfony Básico</h2><p><img src="./images/uspdev.png" height="220px" /></p>
+</section>
+
+<section id="intro-topicos" class="slide" data-has-notes="false">
+<h2>Tópicos</h2><ul>
+<li>Preparando infra para desenvolvimento</li>
+<li><em>M</em>odel</li>
+<li><em>C</em>ontroller</li>
+<li><em>V</em>iew</li>
+<li>Autenticação</li>
+</ul>
+</section>
+</section>
+
+<section id="chapter-infra" class="chapter">
+<section id="infra-infra" class="slide" data-has-notes="false">
+<h1>Preparação da infra</h1>
+
+<p><img src="./images/construction-company.png" height="400px" /></p>
+</section>
+
+<section id="infra-vagrant" class="slide" data-has-notes="false">
+<h3>Dica para começar:</h3><p><img src="./images/vagrant.png" height="130px"></p>
+<pre><code><span class="hljs-built_in">mkdir</span> vmsymfony
+vagrant init bento/ubuntu<span class="hljs-number">-16.04</span>
+</code></pre><p>Adicionar IP para acesso externo:</p>
+<pre><code><span class="hljs-selector-tag">config</span><span class="hljs-selector-class">.vm</span><span class="hljs-selector-class">.network</span> <span class="hljs-selector-pseudo">:private_network</span>, <span class="hljs-selector-tag">ip</span>: "192<span class="hljs-selector-class">.168</span><span class="hljs-selector-class">.100</span><span class="hljs-selector-class">.200</span>"
+</code></pre><p>Logar na nova VM:</p>
+<pre><code><span class="hljs-attribute">vagrant up
+vagrant ssh</span>
+</code></pre>
+</section>
+
+<section id="infra-ondrej" class="slide" data-has-notes="false">
+<p><img src="./images/php7.jpg" height="300px"></p>
+<p>Usar PHP em versões superiores &gt;= 7.1. </p>
+<p>Dica: usar o PPA do ondrej:</p>
+<pre><code>sudo<span class="hljs-built_in"> add-apt-repository </span>-y ppa:ondrej/php
+sudo apt-get update
+</code></pre>
+</section>
+
+<section id="infra-php" class="slide" data-has-notes="false">
+<p>Instalação do PHP:</p>
+<pre><code>sudo apt-<span class="hljs-builtin-name">get</span> -y install php7.2
+</code></pre><p>Bibliotecas mínimas para o symfony:</p>
+<pre><code>sudo apt-get -y install php7.<span class="hljs-number">2</span>-<span class="hljs-keyword">xml</span> <span class="hljs-title">php7</span>.<span class="hljs-number">2</span>-intl php7.<span class="hljs-number">2</span>-mbstring
+</code></pre><p>Bibliotecas de conexão para bancos de dados:</p>
+<pre><code><span class="hljs-selector-tag">sudo</span> <span class="hljs-selector-tag">apt-get</span> <span class="hljs-selector-tag">-y</span> <span class="hljs-selector-tag">install</span> <span class="hljs-selector-tag">php7</span><span class="hljs-selector-class">.2-pgsql</span> <span class="hljs-selector-tag">php7</span><span class="hljs-selector-class">.2-mysql</span> <span class="hljs-selector-tag">php7</span><span class="hljs-selector-class">.2-sqlite3</span>
+</code></pre>
+</section>
+
+<section id="infra-composer" class="slide" data-has-notes="false">
+<h2>Composer</h2><p><img src="./images/orchestra.jpg" height="300px"></p>
+<p>Instalação do composer globalmente:</p>
+<pre><code>curl -s <span class="hljs-string">https:</span><span class="hljs-comment">//getcomposer.org/installer | php</span>
+sudo mv composer.phar <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/bin/</span>composer
+</code></pre>
+</section>
+
+<section id="infra-git" class="slide" data-has-notes="false">
+<p>Instalação do git:</p>
+<pre><code>sudo apt-<span class="hljs-builtin-name">get</span> install -y git
+</code></pre><p>Configurações globais:</p>
+<pre><code>git<span class="hljs-built_in"> config </span>--global user.name <span class="hljs-string">"joazinho"</span>
+git<span class="hljs-built_in"> config </span>--global user.email <span class="hljs-string">"joaozinho@usp.br"</span>
+</code></pre>
+</section>
+
+<section id="infra-mysql" class="slide" data-has-notes="false">
+<h3>MariaDB</h3><p>Dependências mínimas:</p>
+<pre><code>sudo apt-<span class="hljs-builtin-name">get</span> -y install mariadb-server
+</code></pre><p>Criando usuário e banco:</p>
+<pre><code>sudo mysql
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">DATABASE</span> uspdev;
+<span class="hljs-keyword">GRANT</span> ALL PROVILEGES <span class="hljs-keyword">ON</span> uspdev.* <span class="hljs-keyword">to</span> uspdev@<span class="hljs-string">'localhost'</span> <span class="hljs-keyword">identified</span> <span class="hljs-keyword">by</span> <span class="hljs-string">'uspdev'</span>;
+quit
+</code></pre>
+</section>
+
+<section id="infra-postgresql" class="slide" data-has-notes="false">
+<h3>PostgreSQL</h3><p>Dependências mínimas:</p>
+<pre><code>sudo apt-<span class="hljs-builtin-name">get</span> -y install postgresql
+</code></pre><p>Criando usuário e banco:</p>
+<pre><code>sudo su posgtres
+psql
+CREATE USER uspdev WITH PASSWORD <span class="hljs-string">'uspdev'</span>;
+CREATE DATABASE uspdev OWNER uspdev;
+\q
+<span class="hljs-keyword">exit</span>
+</code></pre>
+</section>
+</section>
+
+<section id="chapter-symfony" class="chapter">
+<section id="symfony-setup_symfony" class="slide" data-has-notes="false">
+<h3>Symfony</h3><p>Projeto symfony e suas dependências:</p>
+<pre><code><span class="hljs-string">composer </span><span class="hljs-built_in">create-project</span> <span class="hljs-string">symfony/</span><span class="hljs-string">skeleton </span><span class="hljs-string">uspdev
+</span><span class="hljs-string">cd </span><span class="hljs-string">usp
+</span><span class="hljs-string">composer </span><span class="hljs-string">require </span><span class="hljs-string">doctrine </span><span class="hljs-string">maker </span><span class="hljs-string">annotations </span><span class="hljs-string">twig </span><span class="hljs-string">form </span><span class="hljs-string">validator
+</span><span class="hljs-string">composer </span><span class="hljs-string">require </span><span class="hljs-string">encore </span><span class="hljs-string">asset </span><span class="hljs-string">webprofiler </span><span class="hljs-string">server </span><span class="hljs-string">web-server-</span><span class="hljs-string">bundle</span>
+</code></pre><p>Exemplo de entrada no .env para postgresql e mysql:</p>
+<pre><code><span class="hljs-attr">DATABASE_URL</span>=<span class="hljs-string">"pgsql://uspdev:uspdev@localhost:5432/uspdev?charset=utf8"</span>
+<span class="hljs-attr">DATABASE_URL</span>=<span class="hljs-string">"mysql://uspdev:uspdev@localhost:3306/uspdev"</span>
+</code></pre><div style="font-size: 14px;"> <em>Documentação:</em> 
+<a href="https://symfony.com/doc/current/best_practices/creating-the-project.html">https://symfony.com/doc/current/best_practices/creating-the-project.html</a> <br>
+<a href="https://symfony.com/doc/current/setup.html">https://symfony.com/doc/current/setup.html</a> <br>
+<a href="https://symfony.com/doc/master/configuration/external_parameters.html">https://symfony.com/doc/master/configuration/external_parameters.html</a> <br>
+<a href="http://symfony.com/doc/current/setup/built_in_web_server.html">http://symfony.com/doc/current/setup/built_in_web_server.html</a>
+</div>
+</section>
+
+<section id="symfony-git" class="slide" data-has-notes="false">
+<p>Commit das mudanças:</p>
+<pre><code>git init
+git add <span class="hljs-comment">--all</span>
+git commit -m <span class="hljs-symbol">'The</span> best project <span class="hljs-keyword">in</span> the world <span class="hljs-keyword">is</span> alive'
+git push origin master
+</code></pre>
+</section>
+</section>
+
+<section id="chapter-model" class="chapter">
+<section id="model-models" class="slide" data-has-notes="false">
+<p><br>
+<br>
+<br>
+<br></p>
+<h1>Models</h1>
+</section>
+
+<section id="model-intro" class="slide" data-has-notes="false">
+<p>Criar seguintes issues no projeto:</p>
+<ul>
+<li>Create Rede entity with fields: nome, iprede e cidr</li>
+<li>Create get and set for all fields in Rede Entity</li>
+<li>Create Equipamento entity with fields: patrimonio, macaddress, local, vencimento e ip. (vencimento type: datetimetz)</li>
+<li>Create get and set for all fields in entity Equipamento</li>
+</ul>
+<p>Checkout para branch master para issue1-RedeEntity</p>
+<pre><code>git checkout -<span class="hljs-selector-tag">b</span> issue1-RedeEntity
+</code></pre>
+</section>
+
+<section id="model-rede_entity" class="slide" data-has-notes="false">
+<h3>Tabela Rede</h3><pre><code>php bin<span class="hljs-built_in">/console </span>make:entity Rede
+</code></pre><p>Aplicar schema no banco de dados:</p>
+<pre><code>php bin<span class="hljs-built_in">/console </span>doctrine:migrations:diff
+php bin<span class="hljs-built_in">/console </span>doctrine:migrations:migrate
+</code></pre><p>devmaster:</p>
+<ul>
+<li>Adicionar nome, iprede e cidr em Rede.php</li>
+<li>Refatorar banco de dados</li>
+<li>Commit e merge das mudanças</li>
+</ul>
+<p><br></p>
+<div style="font-size: 16px;"> <em>Documentação:</em> <a href="https://symfony.com/doc/current/doctrine.html">https://symfony.com/doc/current/doctrine.html</a> </div>
+</section>
+
+<section id="model-persisir_rede" class="slide" data-has-notes="false">
+<h3>Getters e Setters:</h3><p>issue2: Exemplo de <em>get</em> e <em>set</em> pata o campo nome:</p>
+<pre><code><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setNome</span><span class="hljs-params">($nome)</span>
+</span>{
+    <span class="hljs-keyword">$this</span>-&gt;nome = $nome;
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getNome</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;nome;
+}
+</code></pre>
+</section>
+
+<section id="model-exercicio-entity" class="slide" data-has-notes="false">
+<p>Tarefa: </p>
+<ul>
+<li>Distribuição das issues 2,3 e 4 para os/as demais devs</li>
+<li>Commits e push das resoluções das issues</li>
+<li>Criação de pull/merge requests</li>
+</ul>
+</section>
+
+<section id="model-relationship_equipamento" class="slide" data-has-notes="false">
+<p>Um equipamento pode pertencer a uma rede, certo? Então, na entidade Equipamento:</p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@ORM</span>\ManyToOne(targetEntity="Rede", inversedBy="equipamentos")
+ * <span class="hljs-doctag">@ORM</span>\JoinColumn(nullable=true)
+ */</span>
+<span class="hljs-keyword">private</span> $rede;
+
+<span class="hljs-comment">/* get e set */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setRede</span><span class="hljs-params">($rede)</span>
+</span>{
+    <span class="hljs-keyword">$this</span>-&gt;rede = $rede;
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRede</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;rede;
+}
+</code></pre><div style="font-size: 16px;"> <em>Documentação:</em> <a href="https://symfony.com/doc/current/doctrine/associations.html">https://symfony.com/doc/current/doctrine/associations.html</a> </div>
+</section>
+
+<section id="model-relationship_rede" class="slide" data-has-notes="false">
+<p>Relacionamento inverso na entidade de Rede: </p>
+<pre><code><span class="hljs-keyword">use</span> <span class="hljs-title">Doctrine</span>\<span class="hljs-title">Common</span>\<span class="hljs-title">Collections</span>\<span class="hljs-title">ArrayCollection</span>;
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">$this</span>-&gt;equipamentos = <span class="hljs-keyword">new</span> ArrayCollection();
+}
+
+<span class="hljs-comment">/**
+ * <span class="hljs-doctag">@ORM</span>\OneToMany(targetEntity="Equipamento",mappedBy="rede")
+ */</span>
+<span class="hljs-keyword">private</span> $equipamentos;
+
+
+<span class="hljs-comment">/* get e set */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">setEquipamentos</span><span class="hljs-params">($equipamentos)</span>
+</span>{
+    <span class="hljs-keyword">$this</span>-&gt;equipamentos = $equipamentos;
+}
+
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getEquipamentos</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;equipamentos;
+}
+</code></pre><div style="font-size: 16px;"> <em>Documentação:</em> <a href="http://symfony.com/doc/current/form/form_collections.html">http://symfony.com/doc/current/form/form_collections.html</a> </div>
+</section>
+</section>
+
+<section id="chapter-controller" class="chapter">
+<section id="controller-controllers" class="slide" data-has-notes="false">
+<h2>Controllers</h2>
+
+<p>Criar issues sobre controllers: </p>
+<ul>
+<li>Create EquipamentoController</li>
+<li>Create form EquipamentoType with fields: nome, iprede e cidr</li>
+<li>Create newAction in EquipamentoController that receive request from EquipamentoType</li>
+</ul>
+<p>Checkout para branch master para issues5-6-7-EquipamentoNewAction</p>
+<pre><code>git checkout -b issues5<span class="hljs-number">-6</span><span class="hljs-number">-7</span>-EquipamentoNewAction
+</code></pre>
+</section>
+
+<section id="controller-equipamentocontroller" class="slide" data-has-notes="false">
+<p>Criar controller para Equipamento: </p>
+<pre><code>php bin<span class="hljs-built_in">/console </span>make:controller EquipamentoController
+</code></pre><p>Subir um server local:</p>
+<pre><code>php -S 0.0.0.0:8888 -t public/
+php bin<span class="hljs-built_in">/console </span>server:<span class="hljs-builtin-name">run</span> *:8888
+</code></pre><p>Form para cadastro de equipamentos:</p>
+<pre><code>php bin<span class="hljs-built_in">/console </span>make:form EquipamentoType
+</code></pre><p>Adicionar os campos no form criado:</p>
+<pre><code>$builder-&gt;add<span class="hljs-function"><span class="hljs-params">(<span class="hljs-string">'patrimonio'</span>)</span>-&gt;</span>add<span class="hljs-function"><span class="hljs-params">(<span class="hljs-string">'macaddress'</span>)</span>-&gt;</span>add<span class="hljs-function"><span class="hljs-params">(<span class="hljs-string">'local'</span>)</span>
+        -&gt;</span>add(<span class="hljs-string">'vencimento'</span>);
+</code></pre><div style="font-size: 16px;"> <em>Documentação:</em> <a href="https://symfony.com/doc/current/controller.html">https://symfony.com/doc/current/controller.html</a>
+<br> <a href="http://symfony.com/doc/current/forms.html">http://symfony.com/doc/current/forms.html</a></div>
+</section>
+
+<section id="controller-equipamento_newaction" class="slide" data-has-notes="false">
+<h3>Rota para cadastrar novos <em>equipamentos</em>:</h3><pre><code><span class="hljs-keyword">use</span> App\Entity\Equipamento; 
+<span class="hljs-keyword">use</span> App\<span class="hljs-keyword">Form</span>\EquipamentoType; 
+</code></pre><p>Controler:</p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@Route</span>("/equipamento/new", name="equipamento_new")
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">newAction</span><span class="hljs-params">()</span>
+</span>{
+    $equipamento = <span class="hljs-keyword">new</span> Equipamento();
+    $form = <span class="hljs-keyword">$this</span>-&gt;createForm(EquipamentoType::class,$equipamento);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'equipamento/new.html.twig'</span>, <span class="hljs-keyword">array</span>(
+        <span class="hljs-string">'form'</span> =&gt; $form-&gt;createView(),
+    ));
+}
+</code></pre>
+</section>
+
+<section id="controller-equipamento_template" class="slide" data-has-notes="false">
+<p>Criar um arquivo de template <br> <em>templates/equipamento/new.html.twig</em>:</p>
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+</span><span class="hljs-template-variable">{{ form_start(form) }}</span><span class="xml">
+    </span><span class="hljs-template-variable">{{ form_widget(form) }}</span><span class="xml">
+    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"Cadastrar"</span> /&gt;</span>
+</span><span class="hljs-template-variable">{{ form_end(form) }}</span><span class="xml">
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span>
+</code></pre><p>Acessar rota no browser:</p>
+<pre><code>http:<span class="hljs-regexp">//</span><span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span>:<span class="hljs-number">8000</span><span class="hljs-regexp">/equipamento/</span>new
+</code></pre><p><em>Sim, está horrível, mas aguardem!</em></p>
+</section>
+
+<section id="controller-equipamento_persistir" class="slide" data-has-notes="false">
+<p>Tratar a requisição no controller:</p>
+<pre><code>-&gt; <span class="hljs-keyword">use</span> <span class="hljs-title">Symfony</span>\<span class="hljs-title">Component</span>\<span class="hljs-title">HttpFoundation</span>\<span class="hljs-title">Request</span>;
+-&gt; <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">newAction</span><span class="hljs-params">(Request $request)</span></span>
+</code></pre><p>Persistir campos no banco de dados:</p>
+<pre><code>$form-&gt;handleRequest($request);
+<span class="hljs-keyword">if</span> ($form-&gt;isSubmitted() &amp;&amp; $form-&gt;isValid()) {
+    $em = <span class="hljs-keyword">$this</span>-&gt;getDoctrine()-&gt;getManager();
+    $em-&gt;persist($equipamento);
+    $em-&gt;flush();
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;redirectToRoute(<span class="hljs-string">'equipamento_new'</span>);
+}
+</code></pre><p>Persistiu?</p>
+<pre><code>php bin<span class="hljs-built_in">/console </span>doctrine:query:sql <span class="hljs-string">"select * from equipamento;"</span>
+</code></pre>
+</section>
+
+<section id="controller-exercicio_controller" class="slide" data-has-notes="false">
+<p>Finalizando issues:</p>
+<ul>
+<li>devmaster: commit e merge da mudanças</li>
+</ul>
+<p><em>Criação, distribuição e pull/merge requests das issues entre os/as devs:</em> </p>
+<ul>
+<li>Create RedeController</li>
+<li>Create form RedeType with fields: nome, iprede e cidr</li>
+<li>Create newAction in RedeController that receive request from RedeType form</li>
+</ul>
+</section>
+
+<section id="controller-tostring" class="slide" data-has-notes="false">
+<h3>Relacionamento entre equipamento e rede</h3><ul>
+<li>Adicionar campo <em>rede</em> no form de equipamento</li>
+<li><p>Boom? Método <em>__toString</em> na entity Rede:</p>
+<p> public funtion __toString()
+ {</p>
+<pre><code> <span class="hljs-keyword">return</span> $<span class="hljs-keyword">this</span>-&gt;nome;
+</code></pre><p> }</p>
+</li>
+<li><p>Cadastrar novo equipamento</p>
+</li>
+<li>Mágica: verificar no banco de dados!</li>
+</ul>
+</section>
+
+<section id="controller-showaction_equipamento" class="slide" data-has-notes="false">
+<p>nova issue: showAction e indexAction para EquipamentoController:</p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@Route</span>("/equipamento/{id}", name="equipamento_show")
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">showAction</span><span class="hljs-params">(Equipamento $equipamento)</span>
+</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'equipamento/show.html.twig'</span>, <span class="hljs-keyword">array</span>(
+        <span class="hljs-string">'equipamento'</span> =&gt; $equipamento,
+    ));
+}
+</code></pre><p>Criar arquivo <em>equipamento/show.html.twig</em>: </p>
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span> 
+    </span><span class="hljs-template-variable">{{ equipamento.macaddress}}</span><span class="xml">
+    </span><span class="hljs-template-variable">{{ equipamento.vencimento|<span class="hljs-name">date</span>('d/m/Y') }}</span><span class="xml">
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span>
+</code></pre>
+</section>
+
+<section id="controller-indexaction_equipamento" class="slide" data-has-notes="false">
+<p>Criação de página que lista todos equipamentos:</p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@Route</span>("/equipamento", name="equipamento_index")
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">indexAction</span><span class="hljs-params">()</span>
+</span>{
+    $repository = <span class="hljs-keyword">$this</span>-&gt;getDoctrine()-&gt;getRepository(Equipamento::class);
+    $equipamentos = $repository-&gt;findAll();
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'equipamento/index.html.twig'</span>, <span class="hljs-keyword">array</span>(
+        <span class="hljs-string">'equipamentos'</span> =&gt; $equipamentos,
+    ));
+}
+</code></pre><p>Criar arquivo <em>equipamento/index.html.twig</em>: </p>
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span> 
+</span><span class="hljs-template-tag">{% <span class="hljs-name"><span class="hljs-name">for</span></span> equipamento <span class="hljs-keyword">in</span> equipamentos %}</span><span class="xml"> 
+    <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span> <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{{ path('equipamento_show', { 'id': equipamento.id }) }}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span> </span><span class="hljs-template-variable">{{equipamento.macaddress}}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span> <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+</span><span class="hljs-template-tag">{% <span class="hljs-name"><span class="hljs-name">endfor</span></span> %}</span><span class="xml">
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></span>
+</code></pre>
+</section>
+
+<section id="controller-filtrar_equipamento_ativos" class="slide" data-has-notes="false">
+<p>Filtrando equipamentos ativos via repository:</p>
+<pre><code>public <span class="hljs-keyword">function</span> ativos()
+{
+    $now = <span class="hljs-keyword">new</span> <span class="hljs-string">\DateTime();</span>
+    <span class="hljs-keyword">return</span> $<span class="hljs-keyword">this</span>-&gt;createQueryBuilder<span class="hljs-function"><span class="hljs-params">(<span class="hljs-string">'e'</span>)</span>
+        -&gt;</span>where<span class="hljs-function"><span class="hljs-params">(<span class="hljs-string">'e.vencimento &gt;= :now'</span>)</span>
+        -&gt;</span>setParameter<span class="hljs-function"><span class="hljs-params">(<span class="hljs-string">'now'</span>, $now)</span>
+        -&gt;</span>getQuery<span class="hljs-function"><span class="hljs-params">()</span>
+        -&gt;</span>getResult();
+}
+</code></pre><p>Corrigir controller</p>
+<pre><code><span class="hljs-variable">$equipamentos</span> = <span class="hljs-variable">$repository</span>-&gt;ativos();
+</code></pre>
+</section>
+
+<section id="controller-repository_rawsql" class="slide" data-has-notes="false">
+<p>Ok, você quer usar SQL na raça... </p>
+<pre><code><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">ativosSql</span><span class="hljs-params">()</span>
+</span>{
+    $now_obj = <span class="hljs-keyword">new</span> \DateTime();
+    $now = $now_obj-&gt;format(<span class="hljs-string">'Y-m-d H:i:s'</span>);
+    $conn = <span class="hljs-keyword">$this</span>-&gt;getEntityManager()-&gt;getConnection();
+    $sql = <span class="hljs-string">'SELECT * FROM equipamento e WHERE e.vencimento &gt;= :now'</span>;
+    $stmt = $conn-&gt;prepare($sql);
+    $stmt-&gt;execute([<span class="hljs-string">'now'</span> =&gt; $now]);
+    <span class="hljs-keyword">return</span> $stmt-&gt;fetchAll();
+}
+</code></pre><p>No Controller:</p>
+<pre><code><span class="hljs-variable">$equipamentos</span> = <span class="hljs-variable">$repository</span>-&gt;ativosSql();
+</code></pre>
+</section>
+
+<section id="controller-exercicio" class="slide" data-has-notes="false">
+<p><em>Criação, distribuição e pull/merge requests das issues entre os/as devs: </em></p>
+<ul>
+<li>Create showAction and template for RedeController</li>
+<li>Create indexAction and template for RedeController</li>
+</ul>
+<p><em>Criação das seguintes issues para o/a devmaster:</em></p>
+<ul>
+<li>Create editAction and template for EquipamentoController</li>
+<li>Create deleteAction and template for EquipamentoController</li>
+</ul>
+</section>
+
+<section id="controller-editaction" class="slide" data-has-notes="false">
+<p>Edição dos registros de equipamento:</p>
+<pre><code><span class="hljs-comment">/**
+  * <span class="hljs-doctag">@Route</span>("/equipamento/{id}/edit", name="equipamento_edit")
+  */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">editAction</span><span class="hljs-params">(Request $request, Equipamento $equipamento)</span>
+</span>{
+    $form = <span class="hljs-keyword">$this</span>-&gt;createForm(EquipamentoType::class,$equipamento);
+    $form-&gt;handleRequest($request);
+
+    <span class="hljs-keyword">if</span> ($form-&gt;isSubmitted() &amp;&amp; $form-&gt;isValid()) {
+        <span class="hljs-keyword">$this</span>-&gt;getDoctrine()-&gt;getManager()-&gt;flush();
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;redirectToRoute(<span class="hljs-string">'equipamento_show'</span>,[<span class="hljs-string">'id'</span> =&gt; $equipamento-&gt;getId()]);
+    }
+
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'equipamento/edit.html.twig'</span>, <span class="hljs-keyword">array</span>(
+        <span class="hljs-string">'equipamento'</span> =&gt; $equipamento,
+        <span class="hljs-string">'form'</span> =&gt; $form-&gt;createView(),
+    ));
+}
+</code></pre><p>Colocar link em equipamento/show.html.twig:</p>
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{{ path('equipamento_edit', { 'id': equipamento.id }) }}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>Editar<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
+</code></pre>
+</section>
+
+<section id="controller-deleteactionwrong" class="slide" data-has-notes="false">
+<p>Para deletar, <em>sério</em>, nunca faça isso:</p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@Route</span>("/equipamento/{id}/delete", name="equipamento_delete")
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deleteAction</span><span class="hljs-params">(equipamento $equipamento)</span> </span>{
+    $em = <span class="hljs-keyword">$this</span>-&gt;getDoctrine()-&gt;getManager();
+    $em-&gt;remove($equipamento);
+    $em-&gt;flush();
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;redirectToRoute(<span class="hljs-string">'equipamento_index'</span>);
+}
+</code></pre>
+</section>
+
+<section id="controller-deleteaction_deleteform" class="slide" data-has-notes="false">
+<p>The Right Way: Criar um formulário para enviar requisição HTTP DELETE</p>
+<pre><code><span class="hljs-keyword">use</span> <span class="hljs-title">Symfony</span>\<span class="hljs-title">Component</span>\<span class="hljs-title">Form</span>\<span class="hljs-title">Extension</span>\<span class="hljs-title">Core</span>\<span class="hljs-title">Type</span>\<span class="hljs-title">CheckboxType</span>;
+...
+<span class="hljs-keyword">private</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createDeleteForm</span><span class="hljs-params">(Equipamento $equipamento)</span>
+</span>{
+    $id = $equipamento-&gt;getId();
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;createFormBuilder()
+        -&gt;setAction(<span class="hljs-keyword">$this</span>-&gt;generateUrl(<span class="hljs-string">'equipamento_delete'</span>, [<span class="hljs-string">'id'</span> =&gt; $id]))
+        -&gt;setMethod(<span class="hljs-string">'DELETE'</span>)
+        -&gt;add(<span class="hljs-string">'message'</span>,CheckboxType::class, [
+             <span class="hljs-string">'label'</span>    =&gt; <span class="hljs-string">"Quer mesmo deletar ?"</span>,
+             <span class="hljs-string">'required'</span> =&gt; <span class="hljs-keyword">true</span>,])
+        -&gt;getForm();
+}
+</code></pre><p><div style="font-size: 16px;"> <em>Documentação:</em>
+<a href="https://symfony.com/doc/current/form/without_class.html">https://symfony.com/doc/current/form/without_class.html</a></p>
+</section>
+
+<section id="controller-deleteaction_deleterequest" class="slide" data-has-notes="false">
+<p>Método HTTP DELETE </p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@Route</span>("/equipamento/{id}/delete", name="equipamento_delete",methods="DELETE")
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">deleteAction</span><span class="hljs-params">(Request $request, Equipamento $equipamento)</span>
+</span>{
+    $form = <span class="hljs-keyword">$this</span>-&gt;createDeleteForm($equipamento);
+    $form-&gt;handleRequest($request);
+    <span class="hljs-keyword">if</span> ($form-&gt;isSubmitted() &amp;&amp; $form-&gt;isValid()) {
+        $em = <span class="hljs-keyword">$this</span>-&gt;getDoctrine()-&gt;getManager();
+        $em-&gt;remove($equipamento);
+        $em-&gt;flush();
+}
+<span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;redirectToRoute(<span class="hljs-string">'equipamento_index'</span>);
+</code></pre>
+</section>
+
+<section id="controller-deleteaction_template" class="slide" data-has-notes="false">
+<p>Tela de confirmação:</p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@Route</span>("/equipamento/{id}/delete/confirm", name="equipamento_delete_confirm")
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">confirmDeleteAction</span><span class="hljs-params">(Equipamento $equipamento)</span>
+</span>{
+    $form = <span class="hljs-keyword">$this</span>-&gt;createDeleteForm($equipamento);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;render(<span class="hljs-string">'equipamento/delete.html.twig'</span>, <span class="hljs-keyword">array</span>(
+        <span class="hljs-string">'equipamento'</span> =&gt; $equipamento,
+        <span class="hljs-string">'form'</span> =&gt; $form-&gt;createView(),
+    ));
+}
+</code></pre><p>No template:</p>
+<pre><code><span class="xml"></span><span class="hljs-template-variable">{{ form_start(form) }}</span><span class="xml">
+    <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span>&gt;</span>Deletar<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+</span><span class="hljs-template-variable">{{ form_end(form) }}</span><span class="xml"></span>
+</code></pre>
+</section>
+
+<section id="controller-exerciciodeleteentity" class="slide" data-has-notes="false">
+<p>Criação, distribuição e pull/merge requests das issues entre os/as devs: </p>
+<ul>
+<li>Create editAction and template fir RedeController</li>
+<li>Create deleteAction and template fir RedeController</li>
+</ul>
+<p>Dica para deixar equipamentos órfãos:</p>
+<pre><code>$equipamentos = $rede-&gt;getEquipamentos();
+<span class="hljs-keyword">foreach</span>($equipamentos <span class="hljs-keyword">as</span> $equipamento){
+    $equipamento-&gt;setRede(<span class="hljs-keyword">null</span>);
+}
+</code></pre>
+</section>
+
+<section id="controller-dhcpconf" class="slide" data-has-notes="false">
+<p>Modelo para dhcp.conf para múltiplas networks:</p>
+<pre><code>ddns-update-style none<span class="hljs-comment">;</span>
+<span class="hljs-meta">default</span>-lease-time <span class="hljs-number">86400</span><span class="hljs-comment">;</span>
+max-lease-time <span class="hljs-number">86400</span><span class="hljs-comment">;</span>
+authoritative<span class="hljs-comment">;</span>
+<span class="hljs-meta">option</span> domain-name-servers <span class="hljs-number">143.107</span><span class="hljs-meta">.253</span><span class="hljs-meta">.3</span>,<span class="hljs-number">143.107</span><span class="hljs-meta">.253</span><span class="hljs-meta">.5</span><span class="hljs-comment">;</span>
+
+shared-network <span class="hljs-string">"default"</span> {
+
+    subnet <span class="hljs-number">10.0</span><span class="hljs-meta">.184</span><span class="hljs-meta">.0</span> netmask <span class="hljs-number">255.255</span><span class="hljs-meta">.255</span><span class="hljs-meta">.0</span> {
+        range <span class="hljs-number">10.0</span><span class="hljs-meta">.184</span><span class="hljs-meta">.2</span> <span class="hljs-number">10.0</span><span class="hljs-meta">.184</span><span class="hljs-meta">.254</span><span class="hljs-comment">;</span>
+        <span class="hljs-meta">option</span> routers <span class="hljs-number">10.0</span><span class="hljs-meta">.184</span><span class="hljs-meta">.1</span><span class="hljs-comment">;          </span>
+        <span class="hljs-meta">option</span> broadcast-address <span class="hljs-number">10.0</span><span class="hljs-meta">.184</span><span class="hljs-meta">.255</span><span class="hljs-comment">;</span>
+        deny unknown-clients<span class="hljs-comment">;</span>
+        host cliente1 {
+            hardware ethernet <span class="hljs-number">00</span>:1C:C0:<span class="hljs-number">99</span>:0A:<span class="hljs-number">04</span><span class="hljs-comment">;</span>
+            fixed-address <span class="hljs-number">10.0</span><span class="hljs-meta">.184</span><span class="hljs-meta">.51</span><span class="hljs-comment">;</span>
+        }
+    }
+
+   subnet <span class="hljs-number">10.0</span><span class="hljs-meta">.188</span><span class="hljs-meta">.0</span> netmask <span class="hljs-number">255.255</span><span class="hljs-meta">.255</span><span class="hljs-meta">.0</span> {
+        range <span class="hljs-number">10.0</span><span class="hljs-meta">.188</span><span class="hljs-meta">.2</span> <span class="hljs-number">10.0</span><span class="hljs-meta">.188</span><span class="hljs-meta">.254</span><span class="hljs-comment">;</span>
+        <span class="hljs-meta">option</span> routers <span class="hljs-number">10.0</span><span class="hljs-meta">.188</span><span class="hljs-meta">.1</span><span class="hljs-comment">;</span>
+        <span class="hljs-meta">option</span> broadcast-address <span class="hljs-number">10.0</span><span class="hljs-meta">.188</span><span class="hljs-meta">.255</span><span class="hljs-comment">;</span>
+        deny unknown-clients<span class="hljs-comment">;</span>
+        host cliente2 {
+            hardware ethernet <span class="hljs-number">00</span>:1C:C0:<span class="hljs-number">98</span>:FB:3C<span class="hljs-comment">;</span>
+            fixed-address <span class="hljs-number">10.0</span><span class="hljs-meta">.188</span><span class="hljs-meta">.69</span><span class="hljs-comment">;</span>
+        }
+    }
+}
+</code></pre>
+</section>
+
+<section id="controller-dhcpconf-1" class="slide" data-has-notes="false">
+<p>Controller que monta o dhcp.conf:</p>
+<pre><code><span class="hljs-comment">/**
+ * <span class="hljs-doctag">@Route</span>("/dhcpconf", name="dhcpconf")
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">dhcpconf</span><span class="hljs-params">()</span>
+</span>{
+    $response = <span class="hljs-keyword">new</span> Response(<span class="hljs-string">'teste'</span>);
+    $response-&gt;headers-&gt; set(<span class="hljs-string">'Content-Type'</span>, <span class="hljs-string">'text/plain'</span>); 
+    <span class="hljs-keyword">return</span> $response;
+}
+</code></pre>
+</section>
+
+<section id="controller-service" class="slide" data-has-notes="false">
+<p>Em <em>src/Service/Dhcpconf.php</em></p>
+<pre><code><span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Service</span>;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Dhcpconf</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">build</span><span class="hljs-params">()</span>
+    </span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"ok, I amworking"</span>;
+    }
+}
+</code></pre><p>No Controller:</p>
+<pre><code><span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Service</span>\<span class="hljs-title">Dhcpconf</span>;
+$dhcpconf = <span class="hljs-keyword">new</span> Dhcpconf();
+$dhcpconf-&gt;build();
+</code></pre>
+</section>
+
+<section id="controller-external_library" class="slide" data-has-notes="false">
+<p>Necessidades: A partir do ip da rede e cidr:</p>
+<ul>
+<li>Encontrar primeiro ip (gateway) e broadcast</li>
+<li>Converter cidr para máscara</li>
+<li>Encontrar range</li>
+</ul>
+<p>Instalando e usando biblioteca externa: </p>
+<pre><code><span class="hljs-meta">#https:<span class="hljs-comment">//github.com/S1lentium/IPTools</span></span>
+sudo apt-<span class="hljs-built_in">get</span> install php7<span class="hljs-number">.2</span>-bcmath
+composer require s1lentium/iptools
+</code></pre><p>Classes disponíveis nessa lib:</p>
+<pre><code><span class="hljs-keyword">use</span> <span class="hljs-title">IPTools</span>\<span class="hljs-title">IP</span>;
+<span class="hljs-keyword">use</span> <span class="hljs-title">IPTools</span>\<span class="hljs-title">Network</span>;
+</code></pre>
+</section>
+
+<section id="controller-iptools" class="slide" data-has-notes="false">
+<p>Array com IPs do range:</p>
+<pre><code>$network = Network::parse(<span class="hljs-string">'192.168.1.0/24'</span>);
+$ips = [];
+<span class="hljs-keyword">foreach</span>($network <span class="hljs-keyword">as</span> $ip) {
+    array_push($ips,(string)$ip);
+}
+<span class="hljs-comment">// <span class="hljs-doctag">todo:</span> gateway,broadcast,range_begin,range_end</span>
+</code></pre><p>Issues: </p>
+<ul>
+<li>Allocate available IP to <em>Equipamento</em> in newAction/editAction</li>
+<li>Generate dhcp.conf</li>
+</ul>
+</section>
+</section>
+
+<section id="draft" class="slide" data-has-notes="false">
+<h1>Symfony Básico - Parte 1 - hasMany relationship e psych</h1><p>Tenha instalado:</p>
+<p>php7.1+, composer, mysql e git*</p>
+<p>composer create-project symfony/skeleton symfony_basico</p>
+<p>symfony require maker</p>
+<p>symfony require doctrine </p>
+<p>composer require theofidry/psysh-bundle</p>
+<p>create database symfony;
+grant all privileges on symfony.* to symfony@localhost identified by &#39;symfony&#39;;
+inserir informações no .env</p>
+<p>php bin/console make:entity Post
+php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate
+show tables</p>
+<p>php bin/console make:entity Comment
+php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate</p>
+<p>Adicionar os campos title e content na entity Post (as public)
+Adicionar os campos title, content, author_email e post_id (unsigned e referenciando um post) na entity Comment (as public)
+@ORM\ManyToOne(targetEntity=&quot;Rede&quot;, inversedBy=&quot;equipamentos&quot;)</p>
+<h1>Frizar que no relacionamento do symfony, a configuração vale tanto para o modelo quando para o db</h1><p>use Doctrine\Common\Collections\ArrayCollection;
+public function __construct()
+    {
+        $this-&gt;comments = new ArrayCollection();
+    }
+    /**</p>
+<pre><code> * @<span class="hljs-keyword">ORM</span>\<span class="hljs-keyword">OneToMany</span>(<span class="hljs-keyword">targetEntity</span>="<span class="hljs-keyword">Equipamento</span>",<span class="hljs-keyword">mappedBy</span>="<span class="hljs-keyword">rede</span>")
+ */
+private $equipamentos;
+</code></pre><p>Array collection em POst apontando para Comments</p>
+<p>php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate
+show tables
+desc Comment;
+desc Post;</p>
+<p>php bin/console psysh</p>
+<p>$post = new App\Entity\Post
+$post-&gt;title = &quot;primeiro post&quot;
+$post-&gt;content = &quot;texto maravilhoso sobre um super post.&quot;</p>
+<p>ls
+$em = $container-&gt;get(&#39;doctrine&#39;)-&gt;getManager()
+$em-&gt;persist($post)
+$em-&gt;flush()</p>
+<p>$p = $em-&gt;getRepository(&#39;App\Entity\Post&#39;)
+$posts = $p-&gt;findAll()</p>
+<h1>listar todos títulos</h1><p>foreach ($posts as $post) echo $post-&gt;title</p>
+<p>$comment = new App\Entity\Comment
+$comment-&gt;author_email = &#39;fulano@eu.com&#39;
+$comment-&gt;title = &#39;meu comentário&#39;
+$comment-&gt;content = &#39;Gostei muito do seu post&#39;
+$comment-&gt;post_id = $posts[&#39;id&#39;==1]
+$em-&gt;persist($comment)
+em-&gt;flush()</p>
+<p>select * from comment;</p>
+<p>$comment2 = new App\Entity\Comment
+$comment2-&gt;author_email = &#39;ciclano@eu.com&#39;
+$comment2-&gt;title = &#39;meu comentário 2&#39;
+$comment2-&gt;content = &#39;Eu não gostei&#39;
+$comment2-&gt;post = $posts[&#39;id&#39;==1]
+$em-&gt;persist($comment2)
+$em-&gt;flush()</p>
+<p>select * from comment;</p>
+<p>$c = $em-&gt;getRepository(&#39;App\Entity\Comment&#39;)
+$comments = $c-&gt;findAll()</p>
+<p>select * from Comment;</p>
+<p>$p-&gt;find(1)-&gt;comments-&gt;toArray()</p>
+<p>$c-&gt;find(2)
+$c-&gt;find(2)-&gt;post
+$c-&gt;find(2)-&gt;post-&gt;title</p>
+<p>[extra]
+$em-&gt;createQuery(&#39;SELECT A.title FROM App:Post A WHERE A.id=2&#39;)-&gt;getResult()</p>
+<p>$qb = $em-&gt;createQueryBuilder()
+$qb-&gt;select(&#39;u&#39;)-&gt;from(&#39;App\Entity\Post&#39;, &#39;u&#39;)-&gt;where(&#39;u.id = 2&#39;)-&gt;getQuery()-&gt;getResult()</p>
+<p>Criar um método em 
+src/Repository/CommentRepository.php
+e testar no console</p>
+<p>####################################################3</p>
+<h1>Laravel Básico - Parte 2 (hasManyThrough)</h1><ul>
+<li><a href="https://github.com/leandroramos/laravel_basico/tree/part1">Parte 1 - Setup do projeto, hasMany relationship e Laravel Tinker</a></li>
+<li><a href="https://github.com/leandroramos/laravel_basico/tree/part3">Parte 3 - Usando Factories</a></li>
+</ul>
+<h2>Criar o model Authors</h2><ul>
+<li>php artisan make:model Author -m</li>
+<li>Colocar as colunas na tabela authors em database/migrations/create_authors_table.php<pre><code class="lang-php">  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">up</span><span class="hljs-params">()</span>
+  </span>{
+      Schema::create(<span class="hljs-string">'authors'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Blueprint $table)</span> </span>{
+          $table-&gt;increments(<span class="hljs-string">'id'</span>);
+          $table-&gt;string(<span class="hljs-string">'name'</span>);
+          $table-&gt;string(<span class="hljs-string">'email'</span>);
+          $table-&gt;string(<span class="hljs-string">'bio'</span>)-&gt;nullable();
+          $table-&gt;timestamps();
+      });
+  }
+</code></pre>
+</li>
+</ul>
+<h2>Adicionar o ID do autor ao Post</h2><ul>
+<li>php artisan make:migration add_author_id_to_posts --table=posts</li>
+<li><p>Colocar a coluna de chave estrangeira em database/migrations/add_author_id_to_posts.php</p>
+<pre><code class="lang-php">  <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">up</span><span class="hljs-params">()</span>
+  </span>{
+          Schema::table(<span class="hljs-string">'posts'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Blueprint $table)</span> </span>{
+              $table-&gt;integer(<span class="hljs-string">'author_id'</span>)-&gt;unsigned();
+
+              $table-&gt;foreign(<span class="hljs-string">'author_id'</span>)-&gt;references(<span class="hljs-string">'id'</span>)-&gt;on(<span class="hljs-string">'authors'</span>);
+          });
+      }
+
+      <span class="hljs-comment">/**
+       * Reverse the migrations.
+       *
+       * <span class="hljs-doctag">@return</span> void
+       */</span>
+      <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">down</span><span class="hljs-params">()</span>
+      </span>{
+          Schema::table(<span class="hljs-string">'posts'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Blueprint $table)</span> </span>{
+              $table-&gt;dropColumn(<span class="hljs-string">'author_id'</span>);
+          });
+      }
+  }
+</code></pre>
+</li>
+</ul>
+<h2>Rodar as migrations</h2><ul>
+<li>Antes de rodar as migrations, temos que dar refresh no banco de dados, pois podem existir dados que impediriam a adição de novas chaves estrangeiras (PDOException::(&quot;SQLSTATE[23000]):<ul>
+<li>php artisan migrate:refresh</li>
+<li>php artisan migrate</li>
+</ul>
+</li>
+</ul>
+<h2>Adicionar os relacionamentos</h2><ul>
+<li><p>app/Post.php</p>
+<pre><code class="lang-php">  <span class="hljs-meta">&lt;?php</span>
+
+  <span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>;
+
+  <span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Database</span>\<span class="hljs-title">Eloquent</span>\<span class="hljs-title">Model</span>;
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Post</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Model</span>
+  </span>{
+      <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">comments</span><span class="hljs-params">()</span>
+      </span>{
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;hasMany(<span class="hljs-string">'App\Comment'</span>);
+      }
+
+      <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">author</span><span class="hljs-params">()</span>
+      </span>{
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;belongsTo(<span class="hljs-string">'App\Author'</span>);
+      }
+  }
+</code></pre>
+<ul>
+<li><p>app/Author.php</p>
+<pre><code class="lang-php">  <span class="hljs-meta">&lt;?php</span>
+
+  <span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>;
+
+  <span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Database</span>\<span class="hljs-title">Eloquent</span>\<span class="hljs-title">Model</span>;
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Author</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Model</span>
+  </span>{
+      <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">posts</span><span class="hljs-params">()</span>
+      </span>{
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;hasMany(<span class="hljs-string">'App\Post'</span>);
+      }
+      <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">comments</span><span class="hljs-params">()</span>
+      </span>{
+          <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;hasManyThrough(<span class="hljs-string">'App\Comment'</span>, <span class="hljs-string">'App\Post'</span>);
+      }
+  }
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Sugestões para testar o banco de dados no Tinker</h2><pre><code>-<span class="ruby"> php artisan tinker
+</span>-<span class="ruby"> $author = new Author
+</span>-<span class="ruby"> $author-&gt;name = <span class="hljs-string">'Leandro Ramos'</span>
+</span>-<span class="ruby"> $author-&gt;email = <span class="hljs-string">'leandroramos@usp.br'</span>
+</span>-<span class="ruby"> $author-&gt;save()
+</span>-<span class="ruby"> $post = new Post
+</span>-<span class="ruby"> $post-&gt;title = <span class="hljs-string">'Um Grande Post!'</span>
+</span>-<span class="ruby"> $post-&gt;content = <span class="hljs-string">'Um excelente texto explicando sobre uma grande novidade'</span>
+</span>-<span class="ruby"> $post-&gt;author_id = <span class="hljs-number">1</span>
+</span>-<span class="ruby"> $post = new Post
+</span>-<span class="ruby"> $post-&gt;title = <span class="hljs-string">'Segundo Grande Post!'</span>
+</span>-<span class="ruby"> $post-&gt;content = <span class="hljs-string">'Segundo texto espetacular sobre um grande post.'</span>
+</span>-<span class="ruby"> $post-&gt;author_id = <span class="hljs-number">1</span>
+</span>-<span class="ruby"> $post = new Post
+</span>-<span class="ruby"> $post-&gt;title = <span class="hljs-string">'Um Grande Post!'</span>
+</span>-<span class="ruby"> $post-&gt;content = <span class="hljs-string">'Um excelente texto explicando sobre uma grande novidade'</span>
+</span>-<span class="ruby"> $post-&gt;author_id = <span class="hljs-number">1</span> 
+</span>-<span class="ruby"> $post-&gt;save()
+</span>-<span class="ruby"> $post = new Post
+</span>-<span class="ruby"> $post-&gt;title = <span class="hljs-string">'Segundo Grande Post!'</span>
+</span>-<span class="ruby"> $post-&gt;content = <span class="hljs-string">'Segundo texto espetacular sobre um grande post.'</span>
+</span>-<span class="ruby"> $post-&gt;author_id = <span class="hljs-number">1</span> 
+</span>-<span class="ruby"> $post-&gt;save()
+</span>-<span class="ruby"> $comment = new Comment
+</span>-<span class="ruby"> $comment-&gt;author_email = <span class="hljs-string">'comentador@site.com'</span>
+</span>-<span class="ruby"> $comment-&gt;content = <span class="hljs-string">'Mas que post sensacional!'</span>
+</span>-<span class="ruby"> $comment-&gt;post_id = <span class="hljs-number">1</span>
+</span>-<span class="ruby"> $comment-&gt;save()
+</span>-<span class="ruby"> $comment = new Comment
+</span>-<span class="ruby"> $comment-&gt;author_email = <span class="hljs-string">'oriboncina@site.com'</span>
+</span>-<span class="ruby"> $comment-&gt;content = <span class="hljs-string">'Sei não... estás enganado!!'</span>
+</span>-<span class="ruby"> $comment-&gt;post_id = <span class="hljs-number">1</span>
+</span>-<span class="ruby"> $comment-&gt;save()
+</span>-<span class="ruby"> $comment = new Comment
+</span>-<span class="ruby"> $comment-&gt;author_email = <span class="hljs-string">'eu@site.com'</span>
+</span>-<span class="ruby"> $comment-&gt;content = <span class="hljs-string">'Estão faltando alguns links no post.'</span>
+</span>-<span class="ruby"> $comment-&gt;post_id = <span class="hljs-number">1</span>
+</span>-<span class="ruby"> $comment-&gt;save()
+</span>-<span class="ruby"> $comment = new Comment
+</span>-<span class="ruby"> $comment-&gt;author_email = <span class="hljs-string">'eu@site.com'</span>
+</span>-<span class="ruby"> $comment-&gt;content = <span class="hljs-string">'Obrigado, ajudou muito.'</span>
+</span>-<span class="ruby"> $comment-&gt;post_id = <span class="hljs-number">2</span>
+</span>-<span class="ruby"> $comment-&gt;save()
+</span>-<span class="ruby"> 
+</span>-<span class="ruby"> Mais <span class="hljs-symbol">testes:</span>
+</span>    -<span class="ruby"> $author = Author::first()
+</span>    -<span class="ruby"> $author-&gt;posts
+</span>    -<span class="ruby"> $author-&gt;comments
+</span>    -<span class="ruby"> $author-&gt;comments-&gt;where(<span class="hljs-string">'post_id'</span>, <span class="hljs-string">'2'</span>)
+</span>    -<span class="ruby"> $comment = Comment::first()
+</span>    -<span class="ruby"> $comment-&gt;post
+</span>    -<span class="ruby"> $comment-&gt;post-&gt;author
+</span>    -<span class="ruby"> $comment-&gt;post-&gt;author-&gt;name</span>
+</code></pre><h2>Links de referência</h2><ul>
+<li><a href="https://laravel.com/docs/5.6/eloquent-relationships#has-many-through">Laravel 5.6 - Eloquent Relationships</a></li>
+<li><a href="https://laravel.com/docs/5.6/migrations#generating-migrations">Laravel 5.6 - Database Migrations</a></li>
+</ul>
+<h1>Parte 3 - Factories</h1><ul>
+<li><a href="https://github.com/leandroramos/laravel_basico/tree/part1">Parte 1 - Setup do projeto, hasMany relationship e Laravel Tinker</a></li>
+<li><a href="https://github.com/leandroramos/laravel_basico/tree/part2">Parte 2 - Adicionando colunas às tabelas e hasManyThrough relationship</a></li>
+</ul>
+<h2>Criar as factories</h2><pre><code>-<span class="ruby"> php artisan <span class="hljs-symbol">make:</span>factory AuthorFactory --model=<span class="hljs-string">"App\\Author"</span>
+</span>-<span class="ruby"> php artisan <span class="hljs-symbol">make:</span>factory PostFactory --model=<span class="hljs-string">"App\\Post"</span>
+</span>-<span class="ruby"> php artisan <span class="hljs-symbol">make:</span>factory CommentFactory --model=<span class="hljs-string">"App\\Comment"</span></span>
+</code></pre><h2>Código das factories</h2><ul>
+<li><p>AuthorFactory</p>
+<pre><code class="lang-php">  <span class="hljs-meta">&lt;?php</span>
+
+  <span class="hljs-keyword">use</span> <span class="hljs-title">Faker</span>\<span class="hljs-title">Generator</span> <span class="hljs-title">as</span> <span class="hljs-title">Faker</span>;
+
+  $factory-&gt;define(App\Author::class, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Faker $faker)</span> </span>{
+      <span class="hljs-keyword">return</span> [
+          <span class="hljs-string">'name'</span>  =&gt; $faker-&gt;name,
+          <span class="hljs-string">'email'</span> =&gt; $faker-&gt;unique()-&gt;safeEmail,
+          <span class="hljs-string">'bio'</span>   =&gt; $faker-&gt;paragraph(<span class="hljs-number">1</span>),
+      ];
+  });
+</code></pre>
+</li>
+<li><p>PostFactory</p>
+<pre><code class="lang-php">  <span class="hljs-meta">&lt;?php</span>
+
+  <span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Author</span>;
+  <span class="hljs-keyword">use</span> <span class="hljs-title">Faker</span>\<span class="hljs-title">Generator</span> <span class="hljs-title">as</span> <span class="hljs-title">Faker</span>;
+
+  $factory-&gt;define(App\Post::class, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Faker $faker)</span> </span>{
+      <span class="hljs-keyword">return</span> [
+          <span class="hljs-string">'title'</span>     =&gt; $faker-&gt;sentence(<span class="hljs-number">4</span>),
+          <span class="hljs-string">'content'</span>   =&gt; $faker-&gt;paragraph(<span class="hljs-number">4</span>),
+
+          <span class="hljs-string">'author_id'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+              <span class="hljs-keyword">return</span> Author::orderByRaw(<span class="hljs-string">"RAND()"</span>)
+                  -&gt;take(<span class="hljs-number">1</span>)
+                  -&gt;first()
+                  -&gt;id;
+          }
+      ];
+  });
+</code></pre>
+</li>
+<li><p>CommentFactory</p>
+<pre><code class="lang-php">  <span class="hljs-meta">&lt;?php</span>
+
+  <span class="hljs-keyword">use</span> <span class="hljs-title">App</span>\<span class="hljs-title">Post</span>;
+  <span class="hljs-keyword">use</span> <span class="hljs-title">Faker</span>\<span class="hljs-title">Generator</span> <span class="hljs-title">as</span> <span class="hljs-title">Faker</span>;
+
+  $factory-&gt;define(App\Comment::class, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(Faker $faker)</span> </span>{
+      <span class="hljs-keyword">return</span> [
+          <span class="hljs-string">'author_email'</span>  =&gt; $faker-&gt;unique()-&gt;safeEmail,
+          <span class="hljs-string">'content'</span>       =&gt; $faker-&gt;paragraph(<span class="hljs-number">2</span>),
+
+          <span class="hljs-string">'post_id'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+              <span class="hljs-keyword">return</span> Post::orderByRaw(<span class="hljs-string">"RAND()"</span>)
+                  -&gt;take(<span class="hljs-number">1</span>)
+                  -&gt;first()
+                  -&gt;id;
+          }
+      ];
+  });
+</code></pre>
+</li>
+</ul>
+<h2>Código do DatabaseSeeder</h2><ul>
+<li><p>database/seeds/DatabaseSeeder.php</p>
+<pre><code class="lang-php">  <span class="hljs-meta">&lt;?php</span>
+
+  <span class="hljs-keyword">use</span> <span class="hljs-title">Illuminate</span>\<span class="hljs-title">Database</span>\<span class="hljs-title">Seeder</span>;
+
+  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">DatabaseSeeder</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Seeder</span>
+  </span>{
+      <span class="hljs-comment">/**
+       * Run the database seeds.
+       *
+       * <span class="hljs-doctag">@return</span> void
+       */</span>
+      <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">run</span><span class="hljs-params">()</span>
+      </span>{
+          <span class="hljs-comment">// $this-&gt;call(UsersTableSeeder::class);</span>
+          <span class="hljs-keyword">echo</span> <span class="hljs-string">"Criando 10 autores...\n"</span>;
+          factory(App\Author::class, <span class="hljs-number">10</span>)-&gt;create();
+
+          <span class="hljs-keyword">echo</span> <span class="hljs-string">"Criando 36 posts relacionados a autores aleatórios...\n"</span>;
+          factory(App\Post::class, <span class="hljs-number">36</span>)-&gt;create();
+
+          <span class="hljs-keyword">echo</span> <span class="hljs-string">"Criando 67 comentários relacionados a posts aleatórios...\n"</span>;
+          factory(App\Comment::class, <span class="hljs-number">67</span>)-&gt;create();
+      }
+  }
+</code></pre>
+</li>
+</ul>
+<h2>Links de referência</h2><ul>
+<li><a href="https://laravel.com/docs/5.6/database-testing">Laravel 5.6 - Database Testing</a></li>
+<li><a href="https://github.com/fzaninotto/Faker">Faker - Documentação (e repositório)</a></li>
+</ul>
+</section></div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      transition: Reveal.getQueryHash().transition || 'slide', // none/fade/slide/convex/concave/zoom
+
+      // Optional reveal.js plugins
+      dependencies: [
+        //{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        //{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        //{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/zoom-js/zoom.js', async: true },
+        { src: 'plugin/notes/notes.js', async: true }
+      ]
+    });
+    </script>
+
+    <script src="js/dynamic-theme.js"></script><script src="js/custom.js"></script>
+
+  </body>
+</html>

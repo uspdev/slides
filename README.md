@@ -37,4 +37,4 @@ Rodar o Lazy Presentator:
     ./present.sh symfony
 ```
 
-O seu broser deve abrir com sua apresentação já gerada
+O seu browser deve abrir com sua apresentação já gerada
