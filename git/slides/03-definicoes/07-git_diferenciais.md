@@ -6,5 +6,4 @@
 - Seguro (múltiplos backups)
 - Enxuto (modificação por conteúdo)
 - Íntegro (Sistema de Hash)
-- <strong>Curva de aprendizagem alta</strong>
-
+- <strong><span class='ciano'> Curva de aprendizagem alta</span></strong>
