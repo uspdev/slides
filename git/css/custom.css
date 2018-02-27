@@ -3,3 +3,11 @@
 #chapter-foo p {
 	text-transform: uppercase;
 }
+
+.ciano {
+    color: #FF00FF;
+}
+
+.marelo {
+    color: yellow;
+}
