@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Prez</title>
+
+    <meta name="description" content="-- DESCRIPTION HERE --">
+    <meta name="author" content="thiago">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/league.css" id="theme">
+
+    <!-- Code syntax highlighting -->
+    <link rel="stylesheet" href="css/highlight/styles/zenburn.css" id="highlight-theme">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+
+    <link rel="stylesheet" href="css/custom.css">
+
+  </head>
+
+  <body>
+
+    <div class="reveal">
+      <div class="slides"><section id="chapter-intro" class="chapter">
+<section id="intro-uspdev" class="slide" data-has-notes="false">
+<h2>Laravel Básico</h2><p><img src="./images/uspdev.png" height="220px" /></p>
+</section>
+
+<section id="intro-topicos" class="slide" data-has-notes="false">
+<h2>Tópicos</h2><ul>
+<li>Preparando infra para desenvolvimento</li>
+<li><em>M</em>odel</li>
+<li><em>C</em>ontroller</li>
+<li><em>V</em>iew</li>
+<li>Autenticação</li>
+</ul>
+</section>
+</section>
+
+<section id="chapter-infra" class="chapter">
+<section id="infra-infra" class="slide" data-has-notes="false">
+<h1>Preparação da infra</h1>
+
+<p><img src="./images/construction-company.png" height="400px" /></p>
+</section>
+
+<section id="infra-vagrant" class="slide" data-has-notes="false">
+<h3>Dica para começar:</h3><p><img src="./images/vagrant.png" height="130px"></p>
+<pre><code><span class="hljs-built_in">mkdir</span> vmsymfony
+vagrant init bento/ubuntu<span class="hljs-number">-16.04</span>
+</code></pre><p>Adicionar IP para acesso externo:</p>
+<pre><code><span class="hljs-selector-tag">config</span><span class="hljs-selector-class">.vm</span><span class="hljs-selector-class">.network</span> <span class="hljs-selector-pseudo">:private_network</span>, <span class="hljs-selector-tag">ip</span>: "192<span class="hljs-selector-class">.168</span><span class="hljs-selector-class">.100</span><span class="hljs-selector-class">.200</span>"
+</code></pre><p>Logar na nova VM:</p>
+<pre><code><span class="hljs-attribute">vagrant up
+vagrant ssh</span>
+</code></pre>
+</section>
+
+<section id="infra-ondrej" class="slide" data-has-notes="false">
+<p><img src="./images/php7.jpg" height="300px"></p>
+<p>Usar PHP em versões superiores &gt;= 7.1. </p>
+<p>Dica: usar o PPA do ondrej:</p>
+<pre><code>sudo<span class="hljs-built_in"> add-apt-repository </span>-y ppa:ondrej/php
+sudo apt-get update
+</code></pre>
+</section>
+
+<section id="infra-php" class="slide" data-has-notes="false">
+<p>Instalação do PHP:</p>
+<pre><code>sudo apt-<span class="hljs-builtin-name">get</span> -y install php7.2
+</code></pre><p>Bibliotecas mínimas para o symfony:</p>
+<pre><code>sudo apt-get -y install php7.<span class="hljs-number">2</span>-<span class="hljs-keyword">xml</span> <span class="hljs-title">php7</span>.<span class="hljs-number">2</span>-intl php7.<span class="hljs-number">2</span>-mbstring
+</code></pre><p>Bibliotecas de conexão para bancos de dados:</p>
+<pre><code><span class="hljs-selector-tag">sudo</span> <span class="hljs-selector-tag">apt-get</span> <span class="hljs-selector-tag">-y</span> <span class="hljs-selector-tag">install</span> <span class="hljs-selector-tag">php7</span><span class="hljs-selector-class">.2-pgsql</span> <span class="hljs-selector-tag">php7</span><span class="hljs-selector-class">.2-mysql</span> <span class="hljs-selector-tag">php7</span><span class="hljs-selector-class">.2-sqlite3</span>
+</code></pre>
+</section>
+
+<section id="infra-composer" class="slide" data-has-notes="false">
+<h2>Composer</h2><p><img src="./images/orchestra.jpg" height="300px"></p>
+<p>Instalação do composer globalmente:</p>
+<pre><code>curl -s <span class="hljs-string">https:</span><span class="hljs-comment">//getcomposer.org/installer | php</span>
+sudo mv composer.phar <span class="hljs-regexp">/usr/</span>local<span class="hljs-regexp">/bin/</span>composer
+</code></pre>
+</section>
+
+<section id="infra-git" class="slide" data-has-notes="false">
+<p>Instalação do git:</p>
+<pre><code>sudo apt-<span class="hljs-builtin-name">get</span> install -y git
+</code></pre><p>Configurações globais:</p>
+<pre><code>git<span class="hljs-built_in"> config </span>--global user.name <span class="hljs-string">"joazinho"</span>
+git<span class="hljs-built_in"> config </span>--global user.email <span class="hljs-string">"joaozinho@usp.br"</span>
+</code></pre>
+</section>
+
+<section id="infra-mysql" class="slide" data-has-notes="false">
+<h3>MariaDB</h3><p>Dependências mínimas:</p>
+<pre><code>sudo apt-<span class="hljs-builtin-name">get</span> -y install mariadb-server
+</code></pre><p>Criando usuário e banco:</p>
+<pre><code>sudo mysql
+<span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">DATABASE</span> uspdev;
+<span class="hljs-keyword">GRANT</span> ALL PROVILEGES <span class="hljs-keyword">ON</span> uspdev.* <span class="hljs-keyword">to</span> uspdev@<span class="hljs-string">'localhost'</span> <span class="hljs-keyword">identified</span> <span class="hljs-keyword">by</span> <span class="hljs-string">'uspdev'</span>;
+quit
+</code></pre>
+</section>
+
+<section id="infra-postgresql" class="slide" data-has-notes="false">
+<h3>PostgreSQL</h3><p>Dependências mínimas:</p>
+<pre><code>sudo apt-<span class="hljs-builtin-name">get</span> -y install postgresql
+</code></pre><p>Criando usuário e banco:</p>
+<pre><code>sudo su posgtres
+psql
+CREATE USER uspdev WITH PASSWORD <span class="hljs-string">'uspdev'</span>;
+CREATE DATABASE uspdev OWNER uspdev;
+\q
+<span class="hljs-keyword">exit</span>
+</code></pre>
+</section>
+</section>
+
+<section id="chapter-laravel" class="chapter">
+<section id="laravel-setup" class="slide" data-has-notes="false">
+<h3>Laravel</h3><p>Projeto symfony e suas dependências:</p>
+<pre><code><span class="hljs-string">composer </span><span class="hljs-built_in">create-project</span> <span class="hljs-string">laravel/</span><span class="hljs-string">laravel </span><span class="hljs-string">disciplinas</span>
+</code></pre><p>Exemplo de entrada no .env para mysql</p>
+</section>
+
+<section id="laravel-git" class="slide" data-has-notes="false">
+<p>Commit das mudanças:</p>
+<pre><code>git init
+git add <span class="hljs-comment">--all</span>
+git commit -m <span class="hljs-symbol">'The</span> best project <span class="hljs-keyword">in</span> the world <span class="hljs-keyword">is</span> alive'
+git push origin master
+</code></pre>
+</section>
+</section></div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+    // Full list of configuration options available at:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      transition: Reveal.getQueryHash().transition || 'slide', // none/fade/slide/convex/concave/zoom
+
+      // Optional reveal.js plugins
+      dependencies: [
+        //{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        //{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        //{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'plugin/zoom-js/zoom.js', async: true },
+        { src: 'plugin/notes/notes.js', async: true }
+      ]
+    });
+    </script>
+
+    <script src="js/dynamic-theme.js"></script><script src="js/custom.js"></script>
+
+  </body>
+</html>

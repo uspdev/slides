@@ -1,11 +1,40 @@
-Instalação dos pacotes:
+## Instalação dos pacotes
 
-    sudo npm install -g prez
+É necessário que tenha o node instalado na máquina.
 
-Gerar slides:
+## Prez globalmente instalado
 
+Caso queira utilizar o `prez` globalmente instale com:
+
+`sudo npm install -g prez`
+
+### Gerar slides
+
+```bash
+    # Exemplo para o curso de symfony
     prez symfony docs/symfony --theme=league
+```
 
-Assitir localmente:
+### Gerar Slides com preview no Browser
 
-    prez symfony docs/symfony --theme=league --serve --watch
+```bash
+    prez symfony docs/symfony --theme=league --watch --serve
+```
+
+## Utilizando o prez somente no projeto
+
+
+Instalar dependências:
+
+```bash
+    npm install
+```
+
+Rodar o Lazy Presentator:
+
+```bash
+    # Exemplo do curso de symfony
+    ./present.sh symfony
+```
+
+O seu browser deve abrir com sua apresentação já gerada
