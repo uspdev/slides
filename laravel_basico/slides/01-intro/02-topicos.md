@@ -5,4 +5,4 @@
  - abstração e desacoplamento
  - boas práticas
 
-<img src="/images/mvc.jpg">
+<img src="./images/mvc.jpg">
