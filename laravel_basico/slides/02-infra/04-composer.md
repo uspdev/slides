@@ -1,6 +1,6 @@
 ## Composer
 
-<img src="./images/orchestra.jpg" height="300px">
+<img src="./images/orchestra.jpg" height="280px">
 
 Instalação do composer globalmente:
 

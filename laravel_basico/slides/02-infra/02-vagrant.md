@@ -1,4 +1,4 @@
-### Dica para começar:
+### Dica 1
 <img src="./images/vagrant.png" height="130px">
 
     mkdir vmsymfony

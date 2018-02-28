@@ -1,10 +1,15 @@
 ### Laravel
 
-Projeto symfony e suas dependências:
+Projeto laravel e suas dependências:
 
     composer create-project laravel/laravel disciplinas
 
+Informações do banco de dados:
 
-Exemplo de entrada no .env para mysql
+    vim .env
+
+Se estiver tudo correto:
+
+    php artisan serve
 
 

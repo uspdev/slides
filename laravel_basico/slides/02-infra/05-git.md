@@ -1,4 +1,6 @@
-Instalação do git:
+### Git
+
+<img src="./images/git.png" height="240px">
 
     sudo apt-get install -y git
 
