@@ -3,4 +3,4 @@
 Implementaremos as camadas MVC para manipular os dados desse 
 *schema*:
 
-<img src="/images/model.png">
+<img src="./images/model.png">
