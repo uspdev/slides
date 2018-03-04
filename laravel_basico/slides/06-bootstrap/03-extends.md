@@ -1,13 +1,13 @@
-Nas views de index, edit, show e create extender master e usar a seção:
+Nas views de index, edit, show e create estender master e usar a seção:
 
     @extends ('layouts.master')
     @section ('content')
         seu conteúdo
-    @endsectionclass="btn btn-success"
+    @endsection
 
-Now we have power!
+**Now we have power!**
 
-use as classes do bootstrap para deixar mais *bunitinho* (tables e buttons)
+Use as classes do bootstrap para deixar mais *bunitinho* (tabelas, buttons e forms)
 
 <div style="color:red;">!!! please commit this !!!</div>
 

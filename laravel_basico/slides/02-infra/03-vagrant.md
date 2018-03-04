@@ -1,4 +1,4 @@
-### Dica 1
+### Dica 2
 <img src="./images/vagrant.png" height="130px">
 
     mkdir myvm && cd myvm

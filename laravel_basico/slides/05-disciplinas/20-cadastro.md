@@ -1,15 +1,15 @@
 Criar um formumário html para cadastro de disciplina:
 
-    <form method="POST" action="{{ url('disciplinas') }}">
+    <form method="POST" action="/disciplinas">
         {{ csrf_field() }}
         Nome: <input name="titulo">
         Ementa: <textarea name="ementa"> </textarea>
         <button type="submit"> Salvar </button>
     </form>
 
-Rotas para todas operações em Disciplinas:
+Rota para cadastro de Disciplinas:
 
-    Route::resource('disciplinas','DisciplinaController');
+    Route::get('/disciplinas/create','DisciplinaController@create');
 
 No método create retornar o formulário:
 
