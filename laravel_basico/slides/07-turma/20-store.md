@@ -18,4 +18,4 @@ Criar o método store turma:
 
 Que tal usar o relacionamento?
 
-    Disciplina::find($request->disciplina_id)->turmas()->save($turma);
+    Disciplina::find($disciplina_id)->turmas()->save($turma);
