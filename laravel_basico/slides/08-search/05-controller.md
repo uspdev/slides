@@ -4,7 +4,7 @@ Buscar:
     {
         $text = $request->text;
         $disciplinas = Disciplina::where('titulo', 'LIKE', "%{$text}%")->get();
-        return view('disciplinas.search',compact('disciplinas'));
+        return view('disciplinas.index',compact('disciplinas'));
     }
 
 Rota:

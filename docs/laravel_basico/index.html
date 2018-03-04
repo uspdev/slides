@@ -254,7 +254,7 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
 </code></pre><p>Qual você prefere?</p>
 <pre><code><span class="hljs-number">1</span>: [<span class="hljs-string">'disciplinas'</span> =&gt; $disciplinas]
 <span class="hljs-number">2</span>: compact(<span class="hljs-string">'disciplinas'</span>)
-</code></pre>
+</code></pre><div style="color:red;">!!! please commit this !!!</div>
 </section>
 
 <section id="disciplinas-create" class="slide" data-has-notes="false">
@@ -499,7 +499,7 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
     <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">"/disciplinas/$disciplina_id"</span>);
 }
 </code></pre><p>Que tal usar o relacionamento?</p>
-<pre><code><span class="hljs-symbol">Disciplina:</span><span class="hljs-symbol">:find</span>(<span class="hljs-variable">$request</span>-&gt;disciplina_id)-&gt;turmas()-&gt;save(<span class="hljs-variable">$turma</span>);
+<pre><code>Disciplina::find<span class="hljs-function"><span class="hljs-params">($disciplina_id)</span>-&gt;</span>turmas<span class="hljs-function"><span class="hljs-params">()</span>-&gt;</span>save($turma);
 </code></pre>
 </section>
 
@@ -507,9 +507,9 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
 <p>Mostrar as turmas, no show da disciplina:</p>
 <pre><code>@<span class="hljs-keyword">foreach</span> ($disciplina-&gt;turmas <span class="hljs-keyword">as</span> $turma)
     {{ $turma-&gt;ministrante }}
-{{ $turma-&gt;inicio }}
+    {{ $turma-&gt;inicio }}
 @<span class="hljs-keyword">endforeach</span>
-</code></pre>
+</code></pre><div style="color:red;">!!! please commit this !!!</div>
 </section>
 
 <section id="turma-date" class="slide" data-has-notes="false">
@@ -521,10 +521,16 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
     language: <span class="hljs-string">'pt-BR'</span>
 });
 </code></pre><p>No controller:</p>
-<pre><code><span class="hljs-symbol">Carbon:</span><span class="hljs-symbol">:createFromFormat</span>(<span class="hljs-string">'d/m/Y'</span>, <span class="hljs-variable">$request</span>-&gt;inicio)
+<pre><code><span class="hljs-keyword">use</span> <span class="hljs-title">Carbon</span>\<span class="hljs-title">Carbon</span>;
+Carbon::createFromFormat(<span class="hljs-string">'d/m/Y'</span>, $request-&gt;inicio)
 </code></pre><p>Que tal, ordernar pela da de início?</p>
 <pre><code>@<span class="hljs-keyword">foreach</span> ($disciplina-&gt;turmas-&gt;sortByDesc(<span class="hljs-string">'inicio'</span>) <span class="hljs-keyword">as</span> $turma)
-</code></pre>
+</code></pre><div style="color:red;">!!! please commit this !!!</div>
+</section>
+
+<section id="turma-implement_login" class="slide" data-has-notes="false">
+<p><br><br></p>
+<h2>Autenticação</h2>
 </section>
 
 <section id="turma-auth" class="slide" data-has-notes="false">
@@ -558,49 +564,44 @@ extender layout padrão:</p>
 <section id="turma-email" class="slide" data-has-notes="false">
 <p>Configure log local para testes:</p>
 <pre><code>storage/logs/laravel.<span class="hljs-built_in">log</span>
-</code></pre><p>Esconder o botão cadastrar disciplina e cadastrar turma para não logados</p>
+</code></pre><p><em>task</em>: Esconder o botão cadastrar disciplina e cadastrar turma para não logados</p>
+<div style="color:red;">!!! please commit this !!!</div>
 </section>
 </section>
 
 <section id="chapter-search" class="chapter">
+<section id="search-intro" class="slide" data-has-notes="false">
+<p><br><br></p>
+<h2>Search</h2>
+</section>
+
 <section id="search-controller" class="slide" data-has-notes="false">
 <p>Buscar:</p>
 <pre><code><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">search</span><span class="hljs-params">(Request $request)</span>
 </span>{
     $text = $request-&gt;text;
     $disciplinas = Disciplina::where(<span class="hljs-string">'titulo'</span>, <span class="hljs-string">'LIKE'</span>, <span class="hljs-string">"%{$text}%"</span>)-&gt;get();
-    <span class="hljs-keyword">return</span> view(<span class="hljs-string">'disciplinas.search'</span>,compact(<span class="hljs-string">'disciplinas'</span>));
+    <span class="hljs-keyword">return</span> view(<span class="hljs-string">'disciplinas.index'</span>,compact(<span class="hljs-string">'disciplinas'</span>));
 }
 </code></pre><p>Rota:</p>
 <pre><code>Route::post(<span class="hljs-string">'/disciplinas/search'</span>,<span class="hljs-string">'DisciplinaController@search'</span>);
 </code></pre>
 </section>
 
-<section id="search-view" class="slide" data-has-notes="false">
-<p>Template para resultado da busca:</p>
-<pre><code><span class="hljs-symbol">@extends</span> (<span class="hljs-string">'layouts.master'</span>)
-
-Resultados da busca:
-<span class="hljs-symbol">@section</span> (<span class="hljs-string">'content'</span>)
-&lt;ul&gt;
-    <span class="hljs-symbol">@foreach</span> ($disciplinas as $disciplina)
-           &lt;li&gt;&lt;a href=<span class="hljs-string">"/disciplinas/{{ $disciplina-&gt;id }}"</span>&gt; {{ $disciplina-&gt;titulo }} &lt;/a&gt;&lt;/li&gt;
-           <span class="hljs-symbol">@endforeach</span>
-    &lt;/ul&gt;
-
-<span class="hljs-symbol">@endsection</span>
-</code></pre>
-</section>
-
 <section id="search-form" class="slide" data-has-notes="false">
 <p>Campo de busca:</p>
-<pre><code>&lt;form method=<span class="hljs-string">"<span class="hljs-keyword">POST</span>"</span> action=<span class="hljs-string">"{{ action('DisciplinaController@search') }}"</span>&gt;
+<pre><code>&lt;form method=<span class="hljs-string">"<span class="hljs-keyword">POST</span>"</span> action=<span class="hljs-string">"/disciplinas/search"</span>&gt;
     {{ csrf_field() }}
     &lt;input name=<span class="hljs-string">"text"</span> type=<span class="hljs-string">"text"</span>&gt;
-    &lt;button type=<span class="hljs-string">"submit"</span>&gt; Search &lt;/button&gt;
+    &lt;button type=<span class="hljs-string">"submit"</span>&gt; Buscar &lt;/button&gt;
 &lt;/form&gt;
-</code></pre>
+</code></pre><div style="color:red;">!!! please commit this !!!</div>
 </section>
+</section>
+
+<section id="fim" class="slide" data-has-notes="false">
+<p><br><br></p>
+<h2>Obrigado!</h2>
 </section></div>
     </div>
 

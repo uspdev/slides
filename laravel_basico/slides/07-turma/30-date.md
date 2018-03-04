@@ -11,9 +11,12 @@ Que tal usar um calendário no cadastrato da turma?
 
 No controller:
 
+    use Carbon\Carbon;
     Carbon::createFromFormat('d/m/Y', $request->inicio)
 
 Que tal, ordernar pela da de início?
 
     @foreach ($disciplina->turmas->sortByDesc('inicio') as $turma)
+
+<div style="color:red;">!!! please commit this !!!</div>
 
