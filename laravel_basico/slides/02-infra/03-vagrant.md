@@ -1,7 +1,7 @@
-### Dica 1
+### Dica 2
 <img src="./images/vagrant.png" height="130px">
 
-    mkdir vmsymfony
+    mkdir myvm && cd myvm
     vagrant init bento/ubuntu-16.04
 
 Adicionar IP para acesso externo:

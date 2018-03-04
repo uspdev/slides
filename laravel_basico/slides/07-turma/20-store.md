@@ -1,10 +1,10 @@
 Criar uma rota para store de turma:
 
-    Route::post('/disciplinas/turmas','DisciplinaController@storeTurma');
+    Route::post('/disciplinas/{disciplina_id}/turmas','DisciplinaController@storeTurma');
 
 Criar o método store turma:
 
-    public function storeTurma(Request $request)
+    public function storeTurma(Request $request, $disciplina_id)
     {
         $turma = new \App\Turma;
         $turma->ministrante = $request->ministrante;
@@ -13,9 +13,9 @@ Criar o método store turma:
         $turma->bibliografia = $request->bibliografia;
         $turma->disciplina_id = $request->disciplina_id;
         $turma->save();
-        return redirect()->route('disciplinas.show',$request->disciplina_id);
+        return redirect("/disciplinas/$disciplina_id");
     }
 
-Que tal usar o relacionamento que nõs no model?
+Que tal usar o relacionamento?
 
     Disciplina::find($request->disciplina_id)->turmas()->save($turma);

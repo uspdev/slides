@@ -1,11 +1,15 @@
+Rota para persistir mudanças:
+
+    Route::patch('/disciplina/{disciplina}','DisciplinaController@update');
+
 Persistir mudança no método update:
 
         $disciplina->titulo = $request->titulo;
         $disciplina->ementa = $request->ementa;
         $disciplina->save();
-        return redirect()->route('disciplinas.index');
+        return redirect("/disciplinas/$disciplina->id");
 
-Em index.blade.php inserir botão de edição de disciplina:
+Em index.blade.php inserir link de edição de disciplina:
 
     <a href="/disciplinas/{{ $disciplina->id }}/edit"> Editar </a>
 

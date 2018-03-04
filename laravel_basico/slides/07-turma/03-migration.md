@@ -7,7 +7,7 @@ Inserir os campos na migration:
     $table->string('ministrante');
     $table->date('inicio');
     $table->date('fim');
-    $table->text('bibliografia');
+    $table->text('bibliografia')->nullable();
     $table->integer('disciplina_id')->unsigned();
     $table->foreign('disciplina_id')->references('id')->on('disciplinas');
 

@@ -43,18 +43,18 @@
 
 <section id="intro-topicos" class="slide" data-has-notes="false">
 <h2>Frameworks</h2><ul>
-<li>não reinvente a roda</li>
+<li>não reinventar a roda</li>
 <li>segurança</li>
 <li>abstração e desacoplamento</li>
-<li>boas práticas</li>
+<li>boas práticas, ex: MVC</li>
 </ul>
-<p><img src="/images/mvc.jpg"></p>
+<p><img src="./images/mvc.jpg"></p>
 </section>
 
 <section id="intro-model" class="slide" data-has-notes="false">
 <h2>Model usado neste curso</h2><p>Implementaremos as camadas MVC para manipular os dados desse 
 <em>schema</em>:</p>
-<p><img src="/images/model.png"></p>
+<p><img src="./images/model.png"></p>
 </section>
 </section>
 
@@ -77,10 +77,19 @@
 <h2>Good luck for you!</h2>
 </section>
 
+<section id="infra-ova" class="slide" data-has-notes="false">
+<h3>Dica 1</h3><p><img src="./images/virtualbox.png" height="130px"></p>
+<p>Instale o Virtualbox em seu SO:</p>
+<pre><code><span class="hljs-symbol">https:</span>//www.virtualbox<span class="hljs-meta">.org</span>/wiki/Downloads
+</code></pre><p>Importar .ova com tudo que é necessário para os treinamentos:</p>
+<pre><code><span class="hljs-symbol">https:</span><span class="hljs-comment">//uspdev.github.io/treinamentos</span>
+</code></pre>
+</section>
+
 <section id="infra-vagrant" class="slide" data-has-notes="false">
-<h3>Dica 1</h3><p><img src="./images/vagrant.png" height="130px"></p>
-<pre><code><span class="hljs-built_in">mkdir</span> vmsymfony
-vagrant init bento/ubuntu<span class="hljs-number">-16.04</span>
+<h3>Dica 2</h3><p><img src="./images/vagrant.png" height="130px"></p>
+<pre><code><span class="hljs-built_in">mkdir</span> myvm &amp;&amp; <span class="hljs-built_in">cd</span> myvm
+vagrant init bento/ubuntu-<span class="hljs-number">16</span>.<span class="hljs-number">04</span>
 </code></pre><p>Adicionar IP para acesso externo:</p>
 <pre><code><span class="hljs-selector-tag">config</span><span class="hljs-selector-class">.vm</span><span class="hljs-selector-class">.network</span> <span class="hljs-selector-pseudo">:private_network</span>, <span class="hljs-selector-tag">ip</span>: "192<span class="hljs-selector-class">.168</span><span class="hljs-selector-class">.100</span><span class="hljs-selector-class">.200</span>"
 </code></pre><p>Logar na nova VM:</p>
@@ -90,7 +99,7 @@ vagrant ssh</span>
 </section>
 
 <section id="infra-ondrej" class="slide" data-has-notes="false">
-<h3>Dica 2</h3><p><img src="./images/php7.jpg" height="200px"></p>
+<h3>Dica 3</h3><p><img src="./images/php7.jpg" height="200px"></p>
 <p>PPA do ondrej:</p>
 <pre><code>sudo<span class="hljs-built_in"> add-apt-repository </span>-y ppa:ondrej/php
 sudo apt-get update
@@ -129,10 +138,15 @@ quit
 </section>
 
 <section id="chapter-laravel" class="chapter">
+<section id="laravel-intro" class="slide" data-has-notes="false">
+<h2>Criando projeto com laravel</h2><p><br><br><br>
+<img src="./images/laravel.png"></p>
+</section>
+
 <section id="laravel-setup" class="slide" data-has-notes="false">
-<h3>Laravel</h3><p>Projeto laravel e suas dependências:</p>
+<h3>Projeto disciplinas</h3><p>Instalação com composer:</p>
 <pre><code><span class="hljs-string">composer </span><span class="hljs-built_in">create-project</span> <span class="hljs-string">laravel/</span><span class="hljs-string">laravel </span><span class="hljs-string">disciplinas</span>
-</code></pre><p>Informações do banco de dados:</p>
+</code></pre><p>Inserir informações do banco de dados:</p>
 <pre><code><span class="hljs-selector-tag">vim</span> <span class="hljs-selector-class">.env</span>
 </code></pre><p>Se estiver tudo correto:</p>
 <pre><code><span class="hljs-attribute">php artisan serve</span>
@@ -147,6 +161,50 @@ quit
 <li>Inicializar o projeto local com git</li>
 <li>Comitar e enviar projeto para github</li>
 </ul>
+</section>
+</section>
+
+<section id="chapter-basico" class="chapter">
+<section id="basico-00.intro" class="slide" data-has-notes="false">
+<p><br><br></p>
+<h1>Workflow básico do framework</h1>
+</section>
+
+<section id="basico-controller" class="slide" data-has-notes="false">
+<h3>Meu primeiro controller:</h3><pre><code><span class="php"><span class="hljs-meta">&lt;?php</span> 
+<span class="hljs-keyword">namespace</span> <span class="hljs-title">App</span>\<span class="hljs-title">Http</span>\<span class="hljs-title">Controllers</span>;
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">OlaController</span>
+</span>{
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">gritar</span><span class="hljs-params">()</span>
+    </span>{ 
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'OLLLLLÁÁÁÁ'</span>;
+    }
+}</span>
+</code></pre><h3>Minha primeira rota:</h3><pre><code>Route::<span class="hljs-keyword">get</span>(<span class="hljs-string">'/gritar'</span>,<span class="hljs-string">'OlaController@gritar'</span>);
+</code></pre>
+</section>
+
+<section id="basico-view" class="slide" data-has-notes="false">
+<h3>Que tal retornar um template?</h3><pre><code><span class="hljs-function"><span class="hljs-keyword">return</span> <span class="hljs-title">view</span><span class="hljs-params">(<span class="hljs-string">'gritar'</span>)</span></span>;
+</code></pre><h3>Template blade:</h3><pre><code><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>OLLLLÁÁÁÁ<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+</code></pre><h3>Enviando variáveis para o template</h3><pre><code><span class="hljs-function"><span class="hljs-keyword">return</span> <span class="hljs-title">view</span><span class="hljs-params">(<span class="hljs-string">'gritar'</span>,[<span class="hljs-string">'x'</span>=&gt;<span class="hljs-string">'OLLLÁÁÁ'</span>])</span></span>;
+</code></pre><h3>No template</h3><pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span> </span><span class="hljs-template-variable">{{ $x }}</span><span class="xml"> <span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span>
+</code></pre>
+</section>
+
+<section id="basico-rotas" class="slide" data-has-notes="false">
+<h3>Parâmetro na rota:</h3><pre><code>Route::<span class="hljs-keyword">get</span>(<span class="hljs-string">'/gritar/{nome}'</span>,<span class="hljs-string">'OlaController@gritar'</span>);
+</code></pre><h3>Recebendo parâmentro no controller:</h3><pre><code><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">gritar</span><span class="hljs-params">($nome)</span>
+</span>{ 
+    <span class="hljs-keyword">return</span> view(<span class="hljs-string">'gritar'</span>,[<span class="hljs-string">'x'</span>=&gt;<span class="hljs-string">"OLLLLLÁÁÁÁ {$nome}"</span>);
+}
+</code></pre>
+</section>
+
+<section id="basico-clean" class="slide" data-has-notes="false">
+<h2>Limpe tudo:</h2><pre><code>rm app/Http/Controllers/OlaController<span class="hljs-selector-class">.php</span>
+rm resources/view/gritar<span class="hljs-selector-class">.blade</span><span class="hljs-selector-class">.php</span>
+</code></pre>
 </section>
 </section>
 
@@ -167,6 +225,11 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
 </code></pre><p>Cadastrar disciplinas usando tinker:</p>
 <pre><code><span class="hljs-attribute">php artisan tinker</span>
 </code></pre><div style="color:red;">!!! please commit this !!!</div>
+</section>
+
+<section id="disciplinas-index" class="slide" data-has-notes="false">
+<p><br><br></p>
+<h2>Página para listar disciplinas cadastradas</h2>
 </section>
 
 <section id="disciplinas-rotas" class="slide" data-has-notes="false">
@@ -194,46 +257,67 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
 </code></pre>
 </section>
 
+<section id="disciplinas-create" class="slide" data-has-notes="false">
+<p><br><br></p>
+<h2>Formulário para cadastro de disciplina</h2>
+</section>
+
 <section id="disciplinas-cadastro" class="slide" data-has-notes="false">
 <p>Criar um formumário html para cadastro de disciplina:</p>
-<pre><code>&lt;form method=<span class="hljs-string">"<span class="hljs-keyword">POST</span>"</span> action=<span class="hljs-string">"{{ url('disciplinas') }}"</span>&gt;
+<pre><code>&lt;form method=<span class="hljs-string">"<span class="hljs-keyword">POST</span>"</span> action=<span class="hljs-string">"/disciplinas"</span>&gt;
     {{ csrf_field() }}
     Nome: &lt;input name=<span class="hljs-string">"titulo"</span>&gt;
     Ementa: &lt;textarea name=<span class="hljs-string">"ementa"</span>&gt; &lt;/textarea&gt;
     &lt;button type=<span class="hljs-string">"submit"</span>&gt; Salvar &lt;/button&gt;
 &lt;/form&gt;
-</code></pre><p>Rotas para todas operações em Disciplinas:</p>
-<pre><code>Route::resource(<span class="hljs-string">'disciplinas'</span>,<span class="hljs-string">'DisciplinaController'</span>);
+</code></pre><p>Rota para cadastro de Disciplinas:</p>
+<pre><code>Route::<span class="hljs-keyword">get</span>(<span class="hljs-string">'/disciplinas/create'</span>,<span class="hljs-string">'DisciplinaController@create'</span>);
 </code></pre><p>No método create retornar o formulário:</p>
 <pre><code><span class="hljs-function"><span class="hljs-keyword">return</span> <span class="hljs-title">view</span><span class="hljs-params">(<span class="hljs-string">'disciplinas.create'</span>)</span></span>;
 </code></pre>
 </section>
 
 <section id="disciplinas-store" class="slide" data-has-notes="false">
-<p>No método store, salvar no banco de dados:</p>
+<p>Rota para submissão:</p>
+<pre><code>Route::post(<span class="hljs-string">'/disciplinas'</span>,<span class="hljs-string">'DisciplinaController@store'</span>);
+</code></pre><p>No método store, salvar no banco de dados:</p>
 <pre><code> $disciplina = <span class="hljs-keyword">new</span> Disciplina;
  $disciplina-&gt;titulo = $request-&gt;titulo;
  $disciplina-&gt;ementa = $request-&gt;ementa;
  $disciplina-&gt;save();
- <span class="hljs-keyword">return</span> redirect()-&gt;route(<span class="hljs-string">'disciplinas.index'</span>);
+ <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">'/'</span>);
 </code></pre><p>Agora podemos colocar um botão no index.blade.php para cadastrar nova disciplina. Do it!</p>
 <div style="color:red;">!!! please commit this !!!</div>
+</section>
+
+<section id="disciplinas-showdisciplina" class="slide" data-has-notes="false">
+<p><br><br></p>
+<h2>Show: página para mostrar disciplina e ementa</h2>
 </section>
 
 <section id="disciplinas-show" class="slide" data-has-notes="false">
 <p>Implementar o método show para disciplina:</p>
 <pre><code><span class="hljs-keyword">return</span> view(<span class="hljs-string">'disciplinas.show'</span>,compact(<span class="hljs-string">'disciplina'</span>));
+</code></pre><p>Rota para show:</p>
+<pre><code><span class="hljs-attribute">Route</span>::get(<span class="hljs-string">'/disciplinas/{disciplina},'</span>DisciplinaController<span class="hljs-variable">@show</span>');
 </code></pre><p>Template para show:</p>
 <pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span></span><span class="hljs-template-variable">{{ $disciplina-&gt;titulo }}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span></span><span class="hljs-template-variable">{{ $disciplina-&gt;ementa }}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span>
-</code></pre><p>Colocar link para vizualização de disciplina no index.blade.php</p>
-<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/disciplinas/</span></span></span><span class="hljs-template-variable">{{ $disciplina-&gt;id }}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span> </span><span class="hljs-template-variable">{{ $disciplina-&gt;titulo }}</span><span class="xml"> <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span>
+</code></pre><p>Link em index.blade.php</p>
+<pre><code>&lt;a <span class="hljs-attribute">href</span>=<span class="hljs-string">"/disciplinas/{{ <span class="hljs-variable">$disciplina</span>-&gt;id }}"</span>&gt;
 </code></pre><div style="color:red;">!!! please commit this !!!</div>
 </section>
 
+<section id="disciplinas-editdisciplina" class="slide" data-has-notes="false">
+<p><br><br></p>
+<h2>Edição de disciplina</h2>
+</section>
+
 <section id="disciplinas-edit" class="slide" data-has-notes="false">
-<p>Formulário para editar disciplina:</p>
-<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">method</span>=<span class="hljs-string">"POST"</span> <span class="hljs-attr">action</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{{ url('disciplinas') . '/' . $disciplina-&gt;id  }}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>
+<p>Rota para edição:</p>
+<pre><code>Route::<span class="hljs-keyword">get</span>(<span class="hljs-string">'/disciplina/{disciplina}/edit'</span>,<span class="hljs-string">'DisciplinaController@edit'</span>);    
+</code></pre><p>Formulário para editar disciplina:</p>
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">method</span>=<span class="hljs-string">"POST"</span> <span class="hljs-attr">action</span>=<span class="hljs-string">"/disciplinas/</span></span></span><span class="hljs-template-variable">{{ $disciplina-&gt;id  }}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>
     </span><span class="hljs-template-variable">{{ csrf_field() }}</span><span class="xml">
     </span><span class="hljs-template-variable">{{ method_field('patch') }}</span><span class="xml">
     Nome: <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"titulo"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{{ $disciplina-&gt;titulo }}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>
@@ -242,29 +326,39 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
 <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></span>
 </code></pre><p>Renderizar formulário no método edit:</p>
 <pre><code><span class="hljs-keyword">return</span> view(<span class="hljs-string">'disciplinas.edit'</span>,compact(<span class="hljs-string">'disciplina'</span>));
-</code></pre><div style="color:red;">!!! please commit this !!!</div>
+</code></pre>
 </section>
 
 <section id="disciplinas-update" class="slide" data-has-notes="false">
-<p>Persistir mudança no método update:</p>
+<p>Rota para persistir mudanças:</p>
+<pre><code>Route::patch(<span class="hljs-string">'/disciplina/{disciplina}'</span>,<span class="hljs-string">'DisciplinaController@update'</span>);
+</code></pre><p>Persistir mudança no método update:</p>
 <pre><code>    <span class="hljs-variable">$disciplina</span>-&gt;titulo = <span class="hljs-variable">$request</span>-&gt;titulo;
     <span class="hljs-variable">$disciplina</span>-&gt;ementa = <span class="hljs-variable">$request</span>-&gt;ementa;
     <span class="hljs-variable">$disciplina</span>-&gt;save();
-    <span class="hljs-keyword">return</span> redirect()-&gt;route(<span class="hljs-string">'disciplinas.index'</span>);
-</code></pre><p>Em index.blade.php inserir botão de edição de disciplina:</p>
+    <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">"/disciplinas/$disciplina-&gt;id"</span>);
+</code></pre><p>Em index.blade.php inserir link de edição de disciplina:</p>
 <pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/disciplinas/</span></span></span><span class="hljs-template-variable">{{ $disciplina-&gt;id }}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">/edit"</span>&gt;</span> Editar <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
 </code></pre><div style="color:red;">!!! please commit this !!!</div>
 </section>
 
+<section id="disciplinas-deletedisciplina" class="slide" data-has-notes="false">
+<p><br><br></p>
+<h2>Deletar disciplina</h2>
+</section>
+
 <section id="disciplinas-delete" class="slide" data-has-notes="false">
-<p>Fazer um formumlário de delete em index.blade.php:</p>
-<pre><code>&lt;form method=<span class="hljs-string">"<span class="hljs-keyword">POST</span>"</span> action=<span class="hljs-string">"{{ url('disciplinas') .'/' . $disciplina-&gt;id }}"</span>&gt;
-    {{ csrf_field() }} {{ method_field('delete') }}
+<p>Rota para delete:</p>
+<pre><code>Route::<span class="hljs-keyword">delete</span>(<span class="hljs-string">'/disciplina/{disciplina}'</span>,<span class="hljs-string">'DisciplinaController@destroy'</span>);
+</code></pre><p>Fazer um formumlário de delete em index.blade.php:</p>
+<pre><code>&lt;form method=<span class="hljs-string">"<span class="hljs-keyword">POST</span>"</span> action=<span class="hljs-string">"/disciplina/{{ $disciplina-&gt;id }}"</span>&gt;
+    {{ csrf_field() }} 
+    {{ method_field('delete') }}
     &lt;button type=<span class="hljs-string">"submit"</span>&gt;Apagar&lt;/button&gt;
 &lt;/form&gt;
 </code></pre><p>Implementar o método destroy:</p>
-<pre><code>$disciplina-&gt;<span class="hljs-keyword">delete</span>();
-<span class="hljs-keyword">return</span> redirect<span class="hljs-function"><span class="hljs-params">()</span>-&gt;</span>route(<span class="hljs-string">'disciplinas.index'</span>);
+<pre><code><span class="hljs-variable">$disciplina</span>-&gt;delete();
+<span class="hljs-keyword">return</span> redirect(<span class="hljs-string">'/'</span>);
 </code></pre><div style="color:red;">!!! please commit this !!!</div>
 </section>
 </section>
@@ -302,31 +396,41 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
 </section>
 
 <section id="bootstrap-extends" class="slide" data-has-notes="false">
-<p>Nas views de index, edit, show e create extender master e usar a seção:</p>
+<p>Nas views de index, edit, show e create estender master e usar a seção:</p>
 <pre><code><span class="hljs-variable">@extends</span> (<span class="hljs-string">'layouts.master'</span>)
 <span class="hljs-variable">@section</span> (<span class="hljs-string">'content'</span>)
     seu conteúdo
-<span class="hljs-variable">@endsectionclass</span>=<span class="hljs-string">"btn btn-success"</span>
-</code></pre><p>Now we have power!</p>
-<p>use as classes do bootstrap para deixar mais <em>bunitinho</em> (tables e buttons)</p>
+<span class="hljs-variable">@endsection</span>
+</code></pre><p><strong>Now we have power!</strong></p>
+<p>Use as classes do bootstrap para deixar mais <em>bunitinho</em> (tabelas, buttons e forms)</p>
 <div style="color:red;">!!! please commit this !!!</div>
 </section>
 </section>
 
 <section id="chapter-turma" class="chapter">
-<section id="turma-migrations" class="slide" data-has-notes="false">
+<section id="turma-intro" class="slide" data-has-notes="false">
+<p><br><br></p>
+<h2>Cadastro de turma nas disciplinas</h2>
+</section>
+
+<section id="turma-migration" class="slide" data-has-notes="false">
 <p>Criar o model para cadastro de turma:</p>
 <pre><code><span class="hljs-selector-tag">php</span> <span class="hljs-selector-tag">artisan</span> <span class="hljs-selector-tag">make</span><span class="hljs-selector-pseudo">:model</span> <span class="hljs-selector-tag">Turma</span> <span class="hljs-selector-tag">-m</span>
 </code></pre><p>Inserir os campos na migration:</p>
-<pre><code>$<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span>string(<span class="hljs-string">'ministrante'</span>);
-$<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span>date(<span class="hljs-string">'inicio'</span>);
-$<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span>date(<span class="hljs-string">'fim'</span>);
-$<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><span class="hljs-keyword">text</span>(<span class="hljs-string">'bibliografia'</span>);
-$<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><span class="hljs-function"><span class="hljs-title">integer</span>('disciplina_id')-&gt;</span>unsigned();
-$<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><span class="hljs-function"><span class="hljs-title">foreign</span>('disciplina_id')-&gt;</span><span class="hljs-function"><span class="hljs-title">references</span>('id')-&gt;</span>on(<span class="hljs-string">'disciplinas'</span>);
+<pre><code><span class="hljs-variable">$table</span>-&gt;string(<span class="hljs-string">'ministrante'</span>);
+<span class="hljs-variable">$table</span>-&gt;date(<span class="hljs-string">'inicio'</span>);
+<span class="hljs-variable">$table</span>-&gt;date(<span class="hljs-string">'fim'</span>);
+<span class="hljs-variable">$table</span>-&gt;text(<span class="hljs-string">'bibliografia'</span>)-&gt;nullable();
+<span class="hljs-variable">$table</span>-&gt;integer(<span class="hljs-string">'disciplina_id'</span>)-&gt;unsigned();
+<span class="hljs-variable">$table</span>-&gt;foreign(<span class="hljs-string">'disciplina_id'</span>)-&gt;references(<span class="hljs-string">'id'</span>)-&gt;on(<span class="hljs-string">'disciplinas'</span>);
 </code></pre><p>Rodar migrations:</p>
 <pre><code><span class="hljs-attribute">php artisan migrate</span>
 </code></pre><div style="color:red;">!!! please commit this !!!</div>
+</section>
+
+<section id="turma-relacionamento" class="slide" data-has-notes="false">
+<p><br><br></p>
+<h2>Relacionamento entre turma e disciplina</h2>
 </section>
 
 <section id="turma-model" class="slide" data-has-notes="false">
@@ -343,6 +447,11 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
 </code></pre>
 </section>
 
+<section id="turma-cadastroturma" class="slide" data-has-notes="false">
+<p><br><br></p>
+<h2>Cadastro de turma</h2>
+</section>
+
 <section id="turma-create" class="slide" data-has-notes="false">
 <p>No controler de disciplina, método para inserção de turma:</p>
 <pre><code><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createTurma</span><span class="hljs-params">($disciplina_id)</span>
@@ -350,41 +459,35 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
     <span class="hljs-keyword">return</span> view(<span class="hljs-string">'disciplinas.turmas.create'</span>,compact(<span class="hljs-string">'disciplina_id'</span>));
 }
 </code></pre><p>Rota para inserir turma:</p>
-<pre><code>Route::<span class="hljs-keyword">get</span>(<span class="hljs-string">'/disciplinas/{id}/turmas/create'</span>,<span class="hljs-string">'DisciplinaController@createTurma'</span>);
+<pre><code>Route::<span class="hljs-keyword">get</span>(<span class="hljs-string">'/disciplinas/{disciplina_id}/turmas/create'</span>,<span class="hljs-string">'DisciplinaController@createTurma'</span>);
+</code></pre><p>Botão para inserir turma no show de disciplina:</p>
+<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/disciplinas/</span></span></span><span class="hljs-template-variable">{{ $disciplina-&gt;id }}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">/turmas/create"</span>&gt;</span>Inserir Turma<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
 </code></pre>
 </section>
 
 <section id="turma-form" class="slide" data-has-notes="false">
-<p>No formulário de show disciplina, criar botão para inserir turma e 
-enviar id da disciplina:</p>
-<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{{ <span class="hljs-builtin-name">action</span>('DisciplinaController@createTurma',$disciplina-&gt;id) }}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>Inserir Turma<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
-</code></pre><p>No formulário de cadastro de turma, enviar disciplina_id como campo oculto:</p>
-<pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">method</span>=<span class="hljs-string">"POST"</span> <span class="hljs-attr">action</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{{ <span class="hljs-builtin-name">action</span>('DisciplinaController@storeTurma') }}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>
-    </span><span class="hljs-template-variable">{{ csrf_field() }}</span><span class="xml">
-    <span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span>Ministrante:
-    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"ministrante"</span>&gt;</span>
+<p>Formulário para cadastro de turma:</p>
+<pre><code>&lt;<span class="hljs-selector-tag">form</span> method=<span class="hljs-string">"POST"</span> action=<span class="hljs-string">"/disciplinas/{{ $disciplina_id }}/turmas"</span>&gt;
+    {{ csrf_field() }}
 
-    <span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span>Data início:
-    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"inicio"</span>&gt;</span>
+    Ministrante: &lt;<span class="hljs-selector-tag">input</span> name=<span class="hljs-string">"ministrante"</span>&gt;
 
-    <span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span>Data fim:
-    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"fim"</span>&gt;</span>
+    Data <span class="hljs-keyword">in</span>ício: &lt;<span class="hljs-selector-tag">input</span> name=<span class="hljs-string">"inicio"</span>&gt;
 
-    <span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span>Bibliografia:
-    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"bibliografia"</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"hidden"</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"disciplina_id"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"</span></span></span><span class="hljs-template-variable">{{ $disciplina_id }}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">br</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"btn btn-success"</span>&gt;</span> Salvar <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    Data fim: &lt;<span class="hljs-selector-tag">input</span> name=<span class="hljs-string">"fim"</span>&gt;
 
-<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span></span>
+    Bibliografia: &lt;<span class="hljs-selector-tag">textarea</span> name=<span class="hljs-string">"bibliografia"</span>&gt;&lt;/textarea&gt;
+
+    &lt;<span class="hljs-selector-tag">button</span> type=<span class="hljs-string">"submit"</span> class=<span class="hljs-string">"btn btn-success"</span>&gt; Salvar &lt;/button&gt;
+&lt;/form&gt;
 </code></pre>
 </section>
 
 <section id="turma-store" class="slide" data-has-notes="false">
 <p>Criar uma rota para store de turma:</p>
-<pre><code>Route::post(<span class="hljs-string">'/disciplinas/turmas'</span>,<span class="hljs-string">'DisciplinaController@storeTurma'</span>);
+<pre><code>Route::post(<span class="hljs-string">'/disciplinas/{disciplina_id}/turmas'</span>,<span class="hljs-string">'DisciplinaController@storeTurma'</span>);
 </code></pre><p>Criar o método store turma:</p>
-<pre><code><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">storeTurma</span><span class="hljs-params">(Request $request)</span>
+<pre><code><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">storeTurma</span><span class="hljs-params">(Request $request, $disciplina_id)</span>
 </span>{
     $turma = <span class="hljs-keyword">new</span> \App\Turma;
     $turma-&gt;ministrante = $request-&gt;ministrante;
@@ -393,9 +496,9 @@ enviar id da disciplina:</p>
     $turma-&gt;bibliografia = $request-&gt;bibliografia;
     $turma-&gt;disciplina_id = $request-&gt;disciplina_id;
     $turma-&gt;save();
-    <span class="hljs-keyword">return</span> redirect()-&gt;route(<span class="hljs-string">'disciplinas.show'</span>,$request-&gt;disciplina_id);
+    <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">"/disciplinas/$disciplina_id"</span>);
 }
-</code></pre><p>Que tal usar o relacionamento que nõs no model?</p>
+</code></pre><p>Que tal usar o relacionamento?</p>
 <pre><code><span class="hljs-symbol">Disciplina:</span><span class="hljs-symbol">:find</span>(<span class="hljs-variable">$request</span>-&gt;disciplina_id)-&gt;turmas()-&gt;save(<span class="hljs-variable">$turma</span>);
 </code></pre>
 </section>

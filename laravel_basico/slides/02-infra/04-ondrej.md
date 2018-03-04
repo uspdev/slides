@@ -1,4 +1,4 @@
-### Dica 2
+### Dica 3
 
 <img src="./images/php7.jpg" height="200px">
 

@@ -1,10 +1,10 @@
-### Laravel
+### Projeto disciplinas
 
-Projeto laravel e suas dependências:
+Instalação com composer:
 
     composer create-project laravel/laravel disciplinas
 
-Informações do banco de dados:
+Inserir informações do banco de dados:
 
     vim .env
 
