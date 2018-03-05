@@ -1,3 +1,3 @@
 ## Afinal, o que é um VCS?
 
-<img src="/images/raptor.jpg">
+<img src="./images/raptor.jpg">

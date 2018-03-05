@@ -37,10 +37,9 @@
 
     <div class="reveal">
       <div class="slides"><section id="intro" class="slide" data-has-notes="false">
-<h2>Git Forever</h2><p><br>
-Por: André Girol</p>
-<p><br></p>
-<h3>Universidade de São Paulo</h3>
+<h2>Universidade de São Paulo</h2><h2><em>Git Forever</em></h2><p><br>
+Por: André Girol
+<br></p>
 </section>
 
 <section id="agenda" class="slide" data-has-notes="false">
@@ -61,7 +60,7 @@ Por: André Girol</p>
 
 <section id="chapter-definicoes" class="chapter">
 <section id="definicoes-vcs_what" class="slide" data-has-notes="false">
-<h2>Afinal, o que é um VCS?</h2><p><img src="/images/raptor.jpg"></p>
+<h2>Afinal, o que é um VCS?</h2><p><img src="./images/raptor.jpg"></p>
 </section>
 
 <section id="definicoes-vcs_definicao" class="slide" data-has-notes="false">
@@ -71,11 +70,11 @@ desenvolvimento de um documento qualquer.</em>&quot;</p>
 </section>
 
 <section id="definicoes-quem_nunca" class="slide" data-has-notes="false">
-<h3>Quem nunca?</h3><p><img src="/images/vcs_roots.png"></p>
+<h3>Quem nunca?</h3><p><img src="./images/vcs_roots.png"></p>
 </section>
 
 <section id="definicoes-guite_chloe" class="slide" data-has-notes="false">
-<h3>E esse tal de guiti?i</h3><p><img src="/images/chloe.jpg"></p>
+<h3>E esse tal de guiti?i</h3><p><img src="./images/chloe.jpg"></p>
 </section>
 
 <section id="definicoes-git_definicao" class="slide" data-has-notes="false">
@@ -83,15 +82,15 @@ desenvolvimento de um documento qualquer.</em>&quot;</p>
 Software), <span class="ciano"> distribuído</span>, criado por
 <span class="marelo"> Linus Torvalds </span> em 2005 para auxiliar
 no desenvolvimento do kernel do Linux.</p>
-<p><img src="/images/linus.jpeg"></p>
+<p><img src="./images/linus.jpeg"></p>
 </section>
 
 <section id="definicoes-bk_historia" class="slide" data-has-notes="false">
-<h3>Um pouco de história...</h3><p><img src="/images/bk_logo.png"></p>
+<h3>Um pouco de história...</h3><p><img src="./images/bk_logo.png"></p>
 </section>
 
 <section id="definicoes-git_vs_cvs" class="slide" data-has-notes="false">
-<p><img src="/images/git_svn.png"></p>
+<p><img src="./images/git_svn.png"></p>
 </section>
 
 <section id="definicoes-git_diferenciais" class="slide" data-has-notes="false">
@@ -102,18 +101,57 @@ no desenvolvimento do kernel do Linux.</p>
 <li>Seguro (múltiplos backups)</li>
 <li>Enxuto (modificação por conteúdo)</li>
 <li>Íntegro (Sistema de Hash)</li>
-<li><strong><span class='ciano'> Curva de aprendizagem alta</span></strong></li>
+<li><strong><span class='magenta'> Curva de aprendizagem alta</span></strong></li>
 </ul>
 </section>
 
 <section id="definicoes-pet_project" class="slide" data-has-notes="false">
-<h3>Abecedário - Pet Project</h3><p><img src="/images/abc_stranger.jpg"></p>
+<h3>Abecedário - Pet Project</h3><p><img src="./images/abc_stranger.jpg"></p>
 </section>
 
 <section id="definicoes-live_demo_abc" class="slide" data-has-notes="false">
 <p><br>
 <br>
-<img src="/images/got_live_demo.jpg"></p>
+<img src="./images/got_live_demo.jpg"></p>
+</section>
+</section>
+
+<section id="chapter-under_the_hood" class="chapter">
+<section id="under_the_hood-how_git_works" class="slide" data-has-notes="false">
+<h2>Como o git trabalha?</h2><p><img src="./images/keanu.png"></p>
+</section>
+
+<section id="under_the_hood-git_e_indice" class="slide" data-has-notes="false">
+<h2>Como o git trabalha?</h2><h3><span class="ciano"> índice </span></h3>
+
+<p><img src="./images/git_commits_xkcd.png"></p>
+</section>
+
+<section id="under_the_hood-indice_livro" class="slide" data-has-notes="false">
+<h2>Conhece isso?</h2><p><img src="./images/livro_indice.jpg"></p>
+</section>
+
+<section id="under_the_hood-modificacoes_livro" class="slide" data-has-notes="false">
+<h3>Como ele sabe que mudou?</h3><p><small> Estudos Avançados no Preparo de Poções - <em>Severo Snape</em></small>
+<img src="./images/adv_potion_pages.png"></p>
+</section>
+
+<section id="under_the_hood-def_grafo" class="slide" data-has-notes="false">
+<p>o <span class="marelo"><em>git</em></span> utiliza o conceito
+de <span class="magenta">grafo</span></p>
+<p><br></p>
+<p><span class="magenta">Grafo</span> é um conjunto de objetos 
+que se <span class="ciano">relacionam</span> entre si</p>
+<p><br></p>
+<p>O <span class="ciano">principal</span> objeto do git é o <span class="magenta"><strong><em>commit</em></strong></span></p>
+</section>
+
+<section id="under_the_hood-grafo1" class="slide" data-has-notes="false">
+<h2>Grafo de commits</h2><p><img src="./images/grafo_git_horizontal.png"></p>
+</section>
+
+<section id="under_the_hood-grafo2" class="slide" data-has-notes="false">
+<h2>Grafo de commits</h2><p><img src="./images/grafo_git_vertical.png"></p>
 </section>
 </section></div>
     </div>

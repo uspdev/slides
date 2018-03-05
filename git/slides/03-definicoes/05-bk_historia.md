@@ -1,3 +1,3 @@
 ### Um pouco de história...
 
-<img src="/images/bk_logo.png">
+<img src="./images/bk_logo.png">

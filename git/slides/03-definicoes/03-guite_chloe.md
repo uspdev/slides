@@ -1,3 +1,3 @@
 ### E esse tal de guiti?i
 
-<img src="/images/chloe.jpg">
+<img src="./images/chloe.jpg">

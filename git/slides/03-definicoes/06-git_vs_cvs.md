@@ -1,1 +1,1 @@
-<img src="/images/git_svn.png">
+<img src="./images/git_svn.png">
