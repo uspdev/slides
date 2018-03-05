@@ -1,6 +1,5 @@
 ## Universidade de São Paulo
 
-## _Git Forever_
-<br>
-Por: André Girol
-<br>
+## <span class="marelo">_Git Forever_</span>
+
+<img src="./images/uspdev.png" height="220px">
