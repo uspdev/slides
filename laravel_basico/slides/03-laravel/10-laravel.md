@@ -2,7 +2,7 @@
 
 Instalação com composer:
 
-    composer create-project laravel/laravel disciplinas
+    composer create-project laravel/laravel disciplinas_seunome
 
 Inserir informações do banco de dados:
 
