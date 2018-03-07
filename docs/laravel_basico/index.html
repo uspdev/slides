@@ -143,9 +143,9 @@ quit
 <img src="./images/laravel.png"></p>
 </section>
 
-<section id="laravel-setup" class="slide" data-has-notes="false">
+<section id="laravel-laravel" class="slide" data-has-notes="false">
 <h3>Projeto disciplinas</h3><p>Instalação com composer:</p>
-<pre><code><span class="hljs-string">composer </span><span class="hljs-built_in">create-project</span> <span class="hljs-string">laravel/</span><span class="hljs-string">laravel </span><span class="hljs-string">disciplinas</span>
+<pre><code><span class="hljs-string">composer </span><span class="hljs-built_in">create-project</span> <span class="hljs-string">laravel/</span><span class="hljs-string">laravel </span><span class="hljs-string">disciplinas_seunome</span>
 </code></pre><p>Inserir informações do banco de dados:</p>
 <pre><code><span class="hljs-selector-tag">vim</span> <span class="hljs-selector-class">.env</span>
 </code></pre><p>Se estiver tudo correto:</p>
@@ -154,12 +154,14 @@ quit
 </section>
 
 <section id="laravel-github" class="slide" data-has-notes="false">
-<h3>github</h3><p><img src="./images/github.png" height="240px"></p>
+<h3>github</h3><p><img src="./images/github.png" height="200px"></p>
 <ul>
-<li>Criar uma conta no github</li>
-<li>Criar o projeto disciplinas no github</li>
+<li>Fazer fork do projeto disciplinas_<strong>seunome</strong></li>
 <li>Inicializar o projeto local com git</li>
-<li>Comitar e enviar projeto para github</li>
+<li>Criar e apontar repo para branch <em>issue1</em></li>
+<li>Adicionar remotes <em>origin</em> e <em>upstream</em></li>
+<li>Commit e push da issue1 para o fork e criar PR</li>
+<li>Esperar aceite e atualizar master local</li>
 </ul>
 </section>
 </section>
@@ -198,13 +200,7 @@ quit
 </span>{ 
     <span class="hljs-keyword">return</span> view(<span class="hljs-string">'gritar'</span>,[<span class="hljs-string">'x'</span>=&gt;<span class="hljs-string">"OLLLLLÁÁÁÁ {$nome}"</span>);
 }
-</code></pre>
-</section>
-
-<section id="basico-clean" class="slide" data-has-notes="false">
-<h2>Limpe tudo:</h2><pre><code>rm app/Http/Controllers/OlaController<span class="hljs-selector-class">.php</span>
-rm resources/view/gritar<span class="hljs-selector-class">.blade</span><span class="hljs-selector-class">.php</span>
-</code></pre>
+</code></pre><p><strong>!!! Volte a master no estado do último commit  !!! </strong></p>
 </section>
 </section>
 
