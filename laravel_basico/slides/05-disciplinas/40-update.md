@@ -1,6 +1,6 @@
 Rota para persistir mudanças:
 
-    Route::patch('/disciplina/{disciplina}','DisciplinaController@update');
+    Route::patch('/disciplinas/{disciplina}','DisciplinaController@update');
 
 Persistir mudança no método update:
 

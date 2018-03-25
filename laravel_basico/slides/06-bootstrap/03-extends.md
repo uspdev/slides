@@ -1,6 +1,6 @@
 Nas views de index, edit, show e create estender master e usar a seção:
 
-    @extends ('layouts.master')
+    @extends ('master')
     @section ('content')
         seu conteúdo
     @endsection

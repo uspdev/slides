@@ -2,6 +2,7 @@
 
 # vim swapfiles
 *.swp
+*~
 
 # Logs
 logs

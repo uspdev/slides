@@ -1,4 +1,4 @@
-Qua tal formatar as datas no blade?
+Que tal formatar as datas no blade?
 
     Carbon\Carbon::parse($turma->inicio)->format('d/m/Y') 
 
@@ -14,7 +14,7 @@ No controller:
     use Carbon\Carbon;
     Carbon::createFromFormat('d/m/Y', $request->inicio)
 
-Que tal, ordernar pela da de início?
+Que tal ordernar pela da de início?
 
     @foreach ($disciplina->turmas->sortByDesc('inicio') as $turma)
 
