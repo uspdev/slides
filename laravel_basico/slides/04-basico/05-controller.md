@@ -12,5 +12,7 @@
 
 ### Minha primeira rota:
 
+    No arquivo routes/web.php:
+    
     Route::get('/gritar','OlaController@gritar');
 
