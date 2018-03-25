@@ -1,1 +1,1 @@
-<img src="/images/bootstrap.jpg">
+<img src="../../images/bootstrap.jpg">
