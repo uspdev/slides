@@ -1,6 +1,6 @@
 Rota para edição:
 
-    Route::get('/disciplina/{disciplina}/edit','DisciplinaController@edit');    
+    Route::get('/disciplinas/{disciplina}/edit','DisciplinaController@edit');    
 
 Formulário para editar disciplina:
 

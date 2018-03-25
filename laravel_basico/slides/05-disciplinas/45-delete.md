@@ -1,6 +1,6 @@
 Rota para delete:
 
-    Route::delete('/disciplina/{disciplina}','DisciplinaController@destroy');
+    Route::delete('/disciplinas/{disciplina}','DisciplinaController@destroy');
 
 Fazer um formumlário de delete em index.blade.php:
   
