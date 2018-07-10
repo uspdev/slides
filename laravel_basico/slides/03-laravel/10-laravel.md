@@ -1,8 +1,8 @@
-### Projeto disciplinas
+### Instalação
 
-Instalação com composer:
+Criação do projeto com composer:
 
-    composer create-project laravel/laravel disciplinas_seunome
+    composer create-project laravel/laravel meu_projeto
 
 Inserir informações do banco de dados:
 
