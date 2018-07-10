@@ -78,7 +78,7 @@
 </section>
 
 <section id="infra-ova" class="slide" data-has-notes="false">
-<h3>Dica 1</h3><p><img src="./images/virtualbox.png" height="130px"></p>
+<h3>Dica</h3><p><img src="./images/virtualbox.png" height="130px"></p>
 <p>Instale o Virtualbox em seu SO:</p>
 <pre><code><span class="hljs-symbol">https:</span>//www.virtualbox<span class="hljs-meta">.org</span>/wiki/Downloads
 </code></pre><p>Importar .ova com tudo que é necessário para os treinamentos:</p>
@@ -86,20 +86,8 @@
 </code></pre>
 </section>
 
-<section id="infra-vagrant" class="slide" data-has-notes="false">
-<h3>Dica 2</h3><p><img src="./images/vagrant.png" height="130px"></p>
-<pre><code><span class="hljs-built_in">mkdir</span> myvm &amp;&amp; <span class="hljs-built_in">cd</span> myvm
-vagrant init bento/ubuntu-<span class="hljs-number">16</span>.<span class="hljs-number">04</span>
-</code></pre><p>Adicionar IP para acesso externo:</p>
-<pre><code><span class="hljs-selector-tag">config</span><span class="hljs-selector-class">.vm</span><span class="hljs-selector-class">.network</span> <span class="hljs-selector-pseudo">:private_network</span>, <span class="hljs-selector-tag">ip</span>: "192<span class="hljs-selector-class">.168</span><span class="hljs-selector-class">.100</span><span class="hljs-selector-class">.200</span>"
-</code></pre><p>Logar na nova VM:</p>
-<pre><code><span class="hljs-attribute">vagrant up
-vagrant ssh</span>
-</code></pre>
-</section>
-
 <section id="infra-ondrej" class="slide" data-has-notes="false">
-<h3>Dica 3</h3><p><img src="./images/php7.jpg" height="200px"></p>
+<h3>Dica</h3><p><img src="./images/php7.jpg" height="200px"></p>
 <p>PPA do ondrej:</p>
 <pre><code>sudo<span class="hljs-built_in"> add-apt-repository </span>-y ppa:ondrej/php
 sudo apt-get update

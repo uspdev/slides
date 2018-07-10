@@ -1,4 +1,4 @@
-### Dica 1
+### Dica
 <img src="./images/virtualbox.png" height="130px">
 
 Instale o Virtualbox em seu SO:
