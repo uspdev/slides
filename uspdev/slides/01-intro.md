@@ -1,4 +1,4 @@
-## Codando seriamente com Symfony
+## 
 
 <br>
 ...
