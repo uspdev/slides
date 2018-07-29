@@ -9,5 +9,5 @@ Nas views de index, edit, show e create estender master e usar a seção:
 
 Use as classes do bootstrap para deixar mais *bunitinho* (tabelas, buttons e forms)
 
-<div style="color:red;">!!! please commit this !!!</div>
+<div style="color:red;">!!! teste e commit !!!</div>
 

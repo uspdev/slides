@@ -12,4 +12,4 @@ No método store, salvar no banco de dados:
 
 Agora podemos colocar um botão no index.blade.php para cadastrar nova disciplina. Do it!
 
-<div style="color:red;">!!! please commit this !!!</div>
+<div style="color:red;">!!! teste e commit !!!</div>

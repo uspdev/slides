@@ -13,4 +13,4 @@ Qual você prefere?
     1: ['disciplinas' => $disciplinas]
     2: compact('disciplinas')
 
-<div style="color:red;">!!! please commit this !!!</div>
+<div style="color:red;">!!! teste e commit !!!</div>

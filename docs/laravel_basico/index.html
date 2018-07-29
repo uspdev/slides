@@ -258,9 +258,21 @@ Route::<span class="hljs-keyword">get</span>(<span class="hljs-string">'/{n}'</s
 $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><span class="hljs-keyword">text</span>(<span class="hljs-string">'ementa'</span>);
 </code></pre><p>Rodar migrations:</p>
 <pre><code><span class="hljs-attribute">php artisan migrate</span>
-</code></pre><p>Cadastrar disciplinas usando tinker:</p>
+</code></pre>
+</section>
+
+<section id="issue-1-tinker" class="slide" data-has-notes="false">
+<p>Cadastrar disciplinas usando tinker:</p>
 <pre><code><span class="hljs-attribute">php artisan tinker</span>
-</code></pre><div style="color:red;">!!! please commit this !!!</div>
+</code></pre><p>Cadastre:</p>
+<ul>
+<li>Filosofia I:</li>
+<li>Filosofia Grega e Romana</li>
+</ul>
+<p><br>
+<br>
+<br></p>
+<div style="color:red;">!!! teste e commit !!!</div>
 </section>
 </section>
 
@@ -270,8 +282,9 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
 </section>
 
 <section id="issue-2-rotas" class="slide" data-has-notes="false">
-<p>Rota adicional para raiz do sistema:</p>
-<pre><code>Route::<span class="hljs-keyword">get</span>(<span class="hljs-string">'/'</span>,<span class="hljs-string">'DisciplinaController@index'</span>);
+<p>Rota resource e rota adicional para raiz do sistema:</p>
+<pre><code>Route::get(<span class="hljs-string">'/'</span>,<span class="hljs-string">'DisciplinaController@index'</span>);
+Route::resource(<span class="hljs-string">'disciplinas'</span>,<span class="hljs-string">'DisciplinaController'</span>)
 </code></pre><p>Implementar método index do controller disciplina:</p>
 <pre><code><span class="hljs-keyword">return</span> Disciplina::<span class="hljs-keyword">all</span>();
 </code></pre><p>Agora usando view:</p>
@@ -291,7 +304,7 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
 </code></pre><p>Qual você prefere?</p>
 <pre><code><span class="hljs-number">1</span>: [<span class="hljs-string">'disciplinas'</span> =&gt; $disciplinas]
 <span class="hljs-number">2</span>: compact(<span class="hljs-string">'disciplinas'</span>)
-</code></pre><div style="color:red;">!!! please commit this !!!</div>
+</code></pre><div style="color:red;">!!! teste e commit !!!</div>
 </section>
 </section>
 
@@ -308,7 +321,7 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
 <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span></span><span class="hljs-template-variable">{{ $disciplina-&gt;ementa }}</span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span>
 </code></pre><p>Link em index.blade.php</p>
 <pre><code>&lt;a <span class="hljs-attribute">href</span>=<span class="hljs-string">"/disciplinas/{{ <span class="hljs-variable">$disciplina</span>-&gt;id }}"</span>&gt;
-</code></pre><div style="color:red;">!!! please commit this !!!</div>
+</code></pre><div style="color:red;">!!! teste e commit !!!</div>
 </section>
 </section>
 
@@ -340,7 +353,7 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
  $disciplina-&gt;save();
  <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">'/'</span>);
 </code></pre><p>Agora podemos colocar um botão no index.blade.php para cadastrar nova disciplina. Do it!</p>
-<div style="color:red;">!!! please commit this !!!</div>
+<div style="color:red;">!!! teste e commit !!!</div>
 </section>
 </section>
 
@@ -371,7 +384,7 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
     <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">"/disciplinas/$disciplina-&gt;id"</span>);
 </code></pre><p>Em index.blade.php inserir link de edição de disciplina:</p>
 <pre><code><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/disciplinas/</span></span></span><span class="hljs-template-variable">{{ $disciplina-&gt;id }}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">/edit"</span>&gt;</span> Editar <span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span>
-</code></pre><div style="color:red;">!!! please commit this !!!</div>
+</code></pre><div style="color:red;">!!! teste e commit !!!</div>
 </section>
 </section>
 
@@ -390,7 +403,7 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
 </code></pre><p>Implementar o método destroy:</p>
 <pre><code><span class="hljs-variable">$disciplina</span>-&gt;delete();
 <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">'/'</span>);
-</code></pre><div style="color:red;">!!! please commit this !!!</div>
+</code></pre><div style="color:red;">!!! teste e commit !!!</div>
 </section>
 </section>
 
@@ -411,7 +424,7 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
 <span class="hljs-variable">$table</span>-&gt;foreign(<span class="hljs-string">'disciplina_id'</span>)-&gt;references(<span class="hljs-string">'id'</span>)-&gt;on(<span class="hljs-string">'disciplinas'</span>);
 </code></pre><p>Rodar migrations:</p>
 <pre><code><span class="hljs-attribute">php artisan migrate</span>
-</code></pre><div style="color:red;">!!! please commit this !!!</div>
+</code></pre><div style="color:red;">!!! teste e commit !!!</div>
 </section>
 </section>
 
@@ -501,7 +514,7 @@ $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><s
     {{ $turma-&gt;ministrante }}
     {{ $turma-&gt;inicio }}
 @<span class="hljs-keyword">endforeach</span>
-</code></pre><div style="color:red;">!!! please commit this !!!</div>
+</code></pre><div style="color:red;">!!! teste e commit !!!</div>
 </section>
 </section>
 
@@ -564,7 +577,7 @@ extender layout padrão:</p>
     &lt;input name=<span class="hljs-string">"text"</span> type=<span class="hljs-string">"text"</span>&gt;
     &lt;button type=<span class="hljs-string">"submit"</span>&gt; Buscar &lt;/button&gt;
 &lt;/form&gt;
-</code></pre><div style="color:red;">!!! please commit this !!!</div>
+</code></pre><div style="color:red;">!!! teste e commit !!!</div>
 </section>
 </section>
 
@@ -608,7 +621,7 @@ extender layout padrão:</p>
 <span class="hljs-variable">@endsection</span>
 </code></pre><p><strong>Now we have power!</strong></p>
 <p>Use as classes do bootstrap para deixar mais <em>bunitinho</em> (tabelas, buttons e forms)</p>
-<div style="color:red;">!!! please commit this !!!</div>
+<div style="color:red;">!!! teste e commit !!!</div>
 </section>
 </section>
 
@@ -630,7 +643,7 @@ extender layout padrão:</p>
 Carbon::createFromFormat(<span class="hljs-string">'d/m/Y'</span>, $request-&gt;inicio)
 </code></pre><p>Que tal ordernar pela da de início?</p>
 <pre><code>@<span class="hljs-keyword">foreach</span> ($disciplina-&gt;turmas-&gt;sortByDesc(<span class="hljs-string">'inicio'</span>) <span class="hljs-keyword">as</span> $turma)
-</code></pre><div style="color:red;">!!! please commit this !!!</div>
+</code></pre><div style="color:red;">!!! teste e commit !!!</div>
 </section>
 </section>
 

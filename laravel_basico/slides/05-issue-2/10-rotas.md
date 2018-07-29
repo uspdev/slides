@@ -1,6 +1,7 @@
-Rota adicional para raiz do sistema:
+Rota resource e rota adicional para raiz do sistema:
 
     Route::get('/','DisciplinaController@index');
+    Route::resource('disciplinas','DisciplinaController')
 
 Implementar método index do controller disciplina:
 

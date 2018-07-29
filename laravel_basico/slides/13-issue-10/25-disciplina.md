@@ -5,4 +5,4 @@ Mostrar as turmas, no show da disciplina:
         {{ $turma->inicio }}
     @endforeach
 
-<div style="color:red;">!!! please commit this !!!</div>
+<div style="color:red;">!!! teste e commit !!!</div>

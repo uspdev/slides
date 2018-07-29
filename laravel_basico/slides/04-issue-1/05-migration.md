@@ -11,8 +11,3 @@ Rodar migrations:
 
     php artisan migrate
 
-Cadastrar disciplinas usando tinker:
-
-    php artisan tinker
-
-<div style="color:red;">!!! please commit this !!!</div>

@@ -15,4 +15,4 @@ Rodar migrations:
 
     php artisan migrate
 
-<div style="color:red;">!!! please commit this !!!</div>
+<div style="color:red;">!!! teste e commit !!!</div>

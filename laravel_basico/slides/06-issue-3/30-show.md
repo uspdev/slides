@@ -11,4 +11,4 @@ Link em index.blade.php
 
     <a href="/disciplinas/{{ $disciplina->id }}">
 
-<div style="color:red;">!!! please commit this !!!</div>
+<div style="color:red;">!!! teste e commit !!!</div>

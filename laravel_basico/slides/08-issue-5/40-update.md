@@ -9,4 +9,4 @@ Em index.blade.php inserir link de edição de disciplina:
 
     <a href="/disciplinas/{{ $disciplina->id }}/edit"> Editar </a>
 
-<div style="color:red;">!!! please commit this !!!</div>
+<div style="color:red;">!!! teste e commit !!!</div>

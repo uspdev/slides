@@ -18,5 +18,5 @@ Que tal ordernar pela da de início?
 
     @foreach ($disciplina->turmas->sortByDesc('inicio') as $turma)
 
-<div style="color:red;">!!! please commit this !!!</div>
+<div style="color:red;">!!! teste e commit !!!</div>
 

@@ -11,7 +11,7 @@ Implementar o método destroy:
     $disciplina->delete();
     return redirect('/');
 
-<div style="color:red;">!!! please commit this !!!</div>
+<div style="color:red;">!!! teste e commit !!!</div>
 
 
 
