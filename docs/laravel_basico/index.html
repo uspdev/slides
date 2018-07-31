@@ -508,18 +508,19 @@ $t-&gt;disciplina-&gt;ementa
 
 <section id="issue-9-store" class="slide" data-has-notes="false">
 <p>Criar uma rota para store de turma:</p>
-<pre><code>Route::post(<span class="hljs-string">'/disciplinas/{disciplina_id}/turmas'</span>,<span class="hljs-string">'DisciplinaController@storeTurma'</span>);
+<pre><code>Route::post(<span class="hljs-string">'/disciplinas/{disciplina}/turmas'</span>,<span class="hljs-string">'DisciplinaController@storeTurma'</span>);
 </code></pre><p>Criar o método store turma:</p>
-<pre><code><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">storeTurma</span><span class="hljs-params">(Request $request, $disciplina_id)</span>
+<pre><code><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">storeTurma</span><span class="hljs-params">(Request $request,Disciplina $disciplina)</span>
 </span>{
     $turma = <span class="hljs-keyword">new</span> \App\Turma;
     $turma-&gt;ministrante = $request-&gt;ministrante;
     $turma-&gt;inicio = $request-&gt;inicio;
     $turma-&gt;fim = $request-&gt;fim;
     $turma-&gt;bibliografia = $request-&gt;bibliografia;
-    $turma-&gt;disciplina_id = $request-&gt;disciplina_id;
-    Disciplina::find($disciplina_id)-&gt;turmas()-&gt;save($turma);
-    <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">"/disciplinas/$disciplina_id"</span>);
+    $turma-&gt;disciplina_id = $disciplina-&gt;id;
+
+    $disciplina-&gt;turmas()-&gt;save($turma);
+    <span class="hljs-keyword">return</span> redirect(<span class="hljs-string">"/disciplinas/$disciplina-&gt;id"</span>);
 }
 </code></pre>
 </section>
