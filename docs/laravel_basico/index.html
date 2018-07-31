@@ -430,21 +430,43 @@ Route::resource(<span class="hljs-string">'disciplinas'</span>,<span class="hljs
 
 <section id="chapter-issue-8" class="chapter">
 <section id="issue-8-index" class="slide" data-has-notes="false">
-<h1>Issue 8</h1><p>Implementar relacionamento entre os Model de Turma e Disciplina</p>
+<h1>Issue 8</h1><p>Implementar relacionamento entre os Model de Turma e Disciplina.
+Testar novos métodos no Tinker</p>
 </section>
 
 <section id="issue-8-model" class="slide" data-has-notes="false">
-<p>No model de disciplina:</p>
+<p>No model Turma:</p>
+<pre><code><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">disciplina</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;belongsTo(<span class="hljs-string">'App\Disciplina'</span>);
+}
+</code></pre><p>No model de Disciplina:</p>
 <pre><code><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">turmas</span><span class="hljs-params">()</span>
 </span>{
     <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;hasMany(<span class="hljs-string">'App\Turma'</span>);
 }
-</code></pre><p>No model Turma:</p>
-<pre><code><span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">disciplina</span><span class="hljs-params">()</span>
-</span>{   
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">$this</span>-&gt;belongsTo(<span class="hljs-string">'App\Disciplina'</span>);
-}
 </code></pre>
+</section>
+
+<section id="issue-8-tinker" class="slide" data-has-notes="false">
+<p>tinker:</p>
+<pre><code>$d = <span class="hljs-keyword">new</span> Disciplina;
+$d-&gt;ementa = <span class="hljs-string">'Filosofia Grega e Romana'</span>
+$d-&gt;titulo = <span class="hljs-string">"Filosofia I"</span>
+$d-&gt;save()
+
+$t = <span class="hljs-keyword">new</span> Turma;
+$t-&gt;ministrante = <span class="hljs-string">'Pedro'</span>
+$t-&gt;inicio = <span class="hljs-string">'2015-10-10'</span>
+$t-&gt;fim = <span class="hljs-string">'2016-10-10'</span>
+$t-&gt;disciplina_id = $d-&gt;id
+$t-&gt;save()
+
+$d-&gt;turmas
+$d-&gt;turmas[<span class="hljs-number">0</span>]-&gt;ministrante
+$t-&gt;disciplina
+$t-&gt;disciplina-&gt;ementa
+</code></pre><div style="color:red;">!!! teste e commit !!!</div>
 </section>
 </section>
 
