@@ -41,22 +41,50 @@
 <h2>Laravel Básico</h2><p><img src="./images/uspdev.png" height="220px" /></p>
 </section>
 
+<section id="intro-mvc" class="slide" data-has-notes="false">
+<h2>MVC - Padrão de arquitetura</h2><p>A finalidade essencial de qualquer aplicação web é receber requisições do usuário e entregar respostas usado o protocolo http(s)</p>
+<p><img src="./images/mvc.jpg"></p>
+</section>
+
+<section id="intro-timeline" class="slide" data-has-notes="false">
+<h2>Histórico</h2><ul>
+<li>2004: Ruby on Rails</li>
+<li>2005: CakePHP<sup>1</sup>, Codeigniter,<sup>1</sup> e Symfony<sup>2</sup></li>
+<li>2006: Zend Framework<sup>2</sup></li>
+</ul>
+<p>1: Baixa curva de aprendizado, boa documentação, forte comunidade. Evolução lenta, novo recurso demoraram para ser introduzidos: ex: novos design patterns, composer, namespaces ...</p>
+<p>2: Evoluíram com a linguagem, mas sempre tiveram perspectiva <em>enterprise</em> e são lack community</p>
+</section>
+
+<section id="intro-laravel" class="slide" data-has-notes="false">
+<h2>Laravel</h2><p>2011: Laravel - O melhor dos dois mundos.</p>
+<p>2013: Laravel 4 - com componentes do symfony e outras libs externas. Publicação de suas próprias libs como componentes independentes no composer. Exemplo: Illuminate/Eloquent</p>
+</section>
+
+<section id="intro-laravelmarca" class="slide" data-has-notes="false">
+<h2>Marketing - Termos da documentação</h2><p>Laravel foi pensado para chamar a &quot;atenção&quot;: Illuminate, spark, artisan, elegant, eloquent, elixir etc</p>
+<ul>
+<li>diminuir o tempo de organização do código</li>
+<li>desenvolvedores felizes fazem melhores códigos</li>
+<li>felicidade do desenvolverdor do download até o deploy</li>
+<li>caro desenvolvedor, você merece ser feliz</li>
+<li>trazer suas ideias para realidade</li>
+</ul>
+</section>
+
 <section id="intro-frameworks" class="slide" data-has-notes="false">
-<h2>Frameworks</h2><ul>
-<li>separação da aplicação em componentes:<ul>
+<h2>Frameworks e componetes</h2><p>Vantagens no uso de componentes:</p>
+<ul>
 <li>simplicidade</li>
 <li>nichos especializado</li>
 </ul>
-</li>
-<li>&quot;terceirização&quot; das escolhas </li>
+<p>Framework:</p>
+<ul>
+<li>&quot;terceirização&quot; das escolhas</li>
 <li>seleção de componentes</li>
 <li>configurações pré-estabelecidas</li>
 <li>implementar uma ideia de forma rápida</li>
 </ul>
-</section>
-
-<section id="intro-mvc" class="slide" data-has-notes="false">
-<h2>MVC</h2><p><img src="./images/mvc.jpg"></p>
 </section>
 
 <section id="intro-model" class="slide" data-has-notes="false">
@@ -71,6 +99,12 @@
 <h1>Preparação da infra</h1>
 
 <p><img src="./images/construction-company.png" height="400px" /></p>
+</section>
+
+<section id="infra-php" class="slide" data-has-notes="false">
+<h2>nota sobre PHP</h2><p>Recursos modernos de PHP tem mais requisitos de máquina que
+o velho PHP, o que consequentemente dificulta o deploy.</p>
+<p>From: Laravel: Up &amp; Running - An O&#39;Reilly book by Matt Stauffer</p>
 </section>
 
 <section id="infra-requisitos" class="slide" data-has-notes="false">
