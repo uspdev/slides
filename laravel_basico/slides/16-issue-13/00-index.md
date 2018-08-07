@@ -1,5 +1,5 @@
 # Issue 13
 
-Criar o template master usando um exemplo do bootstrap4. Fazer todos outros templetes herdarem o estilo do template master
+Criar o template master usando um exemplo do Bootstrap 4. Fazer todos outros templates herdarem o estilo do template master
 
 
