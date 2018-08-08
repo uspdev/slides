@@ -679,21 +679,10 @@ extender layout padrão:</p>
 <span class="hljs-variable">@endsection</span>
 </code></pre><p>Em especial, alterar:</p>
 <ul>
-<li>Usar o menu do tema</li>
-<li>O campo de busca</li>
-<li>Tabela da página inicial</li>
+<li>menu do tema</li>
+<li>campo de busca</li>
+<li>tabela da página inicial</li>
 </ul>
-</section>
-
-<section id="issue-13-ajustes" class="slide" data-has-notes="false">
-<p>Nas views de index, edit, show e create estender master e usar a seção:</p>
-<pre><code><span class="hljs-variable">@extends</span> (<span class="hljs-string">'master'</span>)
-<span class="hljs-variable">@section</span> (<span class="hljs-string">'content'</span>)
-    seu conteúdo
-<span class="hljs-variable">@endsection</span>
-</code></pre><p><strong>Now we have power!</strong></p>
-<p>Use as classes do bootstrap para deixar mais <em>bunitinho</em> (tabelas, buttons e forms)</p>
-<div style="color:red;">!!! teste e commit !!!</div>
 </section>
 </section>
 
@@ -703,12 +692,7 @@ extender layout padrão:</p>
 </section>
 
 <section id="issue-14-cdn" class="slide" data-has-notes="false">
-<p>Mude tudo para CDN (BAD PRACTICE)</p>
-<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.2.1.slim.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-</code></pre><p>Datepicker:</p>
+<p>Datepicker:</p>
 <pre><code><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css"</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.pt-BR.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
@@ -716,17 +700,13 @@ extender layout padrão:</p>
 </section>
 
 <section id="issue-14-date" class="slide" data-has-notes="false">
-<p>Que tal formatar as datas no blade?</p>
-<pre><code>Carbon\<span class="hljs-symbol">Carbon:</span><span class="hljs-symbol">:parse</span>(<span class="hljs-variable">$turma</span>-&gt;inicio)-&gt;format(<span class="hljs-string">'d/m/Y'</span>) 
-</code></pre><p>Que tal usar um calendário no cadastrato da turma?</p>
+<p>Classe para datapicker no cadastro de turma:</p>
 <pre><code>$(<span class="hljs-string">'.datepicker'</span>).datepicker({
     <span class="hljs-keyword">format</span>: <span class="hljs-string">'dd/mm/yyyy'</span>,
     language: <span class="hljs-string">'pt-BR'</span>
 });
-</code></pre><p>No controller:</p>
-<pre><code><span class="hljs-keyword">use</span> <span class="hljs-title">Carbon</span>\<span class="hljs-title">Carbon</span>;
-Carbon::createFromFormat(<span class="hljs-string">'d/m/Y'</span>, $request-&gt;inicio)
-</code></pre><p>Que tal ordernar pela da de início?</p>
+</code></pre><p>dica de html: autocomplete=&quot;off&quot;</p>
+<p>Que tal ordernar turmas pela data de início?</p>
 <pre><code>@<span class="hljs-keyword">foreach</span> ($disciplina-&gt;turmas-&gt;sortByDesc(<span class="hljs-string">'inicio'</span>) <span class="hljs-keyword">as</span> $turma)
 </code></pre><div style="color:red;">!!! teste e commit !!!</div>
 </section>

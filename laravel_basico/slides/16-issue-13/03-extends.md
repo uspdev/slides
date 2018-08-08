@@ -7,7 +7,7 @@ Fazer todos templates herdarem master:
 
 Em especial, alterar:
 
- - Usar o menu do tema
- - O campo de busca
- - Tabela da página inicial
+ - menu do tema
+ - campo de busca
+ - tabela da página inicial
 
