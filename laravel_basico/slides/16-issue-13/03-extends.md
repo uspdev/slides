@@ -1,13 +1,13 @@
-Nas views de index, edit, show e create estender master e usar a seção:
+Fazer todos templates herdarem master:
 
     @extends ('master')
     @section ('content')
         seu conteúdo
     @endsection
 
-**Now we have power!**
+Em especial, alterar:
 
-Use as classes do bootstrap para deixar mais *bunitinho* (tabelas, buttons e forms)
-
-<div style="color:red;">!!! teste e commit !!!</div>
+ - Usar o menu do tema
+ - O campo de busca
+ - Tabela da página inicial
 

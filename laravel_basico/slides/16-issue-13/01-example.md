@@ -4,11 +4,12 @@ Vamos usar o exemplo do bootstrap:
 
 Adaptar o layout para nosso projeto:
 
- - Copiar o index para layouts/master.blade.php
+ - Criar master.blade.php
  - Copiar o css do tema para public/css/app.css (BAD PRACTICE)
  - Colocar link de app.css no master.blade.php
- - Limpar conteúdo e criar uma seção content: 
+ - Limpar conteúdo e criar uma seção *content*:
+ - Inserir CDN para bootstrap e jquery
 
-    
-    @yield ('content')
+    @section ('content')
+    @show
 
