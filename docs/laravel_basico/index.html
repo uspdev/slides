@@ -429,7 +429,7 @@ Route::resource(<span class="hljs-string">'disciplinas'</span>,<span class="hljs
 
 <section id="issue-6-delete" class="slide" data-has-notes="false">
 <p>Fazer um formumlário de delete em index.blade.php:</p>
-<pre><code>&lt;form method=<span class="hljs-string">"<span class="hljs-keyword">POST</span>"</span> action=<span class="hljs-string">"/disciplina/{{ $disciplina-&gt;id }}"</span>&gt;
+<pre><code>&lt;form method=<span class="hljs-string">"<span class="hljs-keyword">POST</span>"</span> action=<span class="hljs-string">"/disciplinas/{{ $disciplina-&gt;id }}"</span>&gt;
     {{ csrf_field() }} 
     {{ method_field('delete') }}
     &lt;button type=<span class="hljs-string">"submit"</span>&gt;Apagar&lt;/button&gt;
@@ -631,7 +631,8 @@ $t-&gt;disciplina-&gt;ementa
     &lt;input name=<span class="hljs-string">"text"</span> type=<span class="hljs-string">"text"</span>&gt;
     &lt;button type=<span class="hljs-string">"submit"</span>&gt; Buscar &lt;/button&gt;
 &lt;/form&gt;
-</code></pre><div style="color:red;">!!! teste e commit !!!</div>
+</code></pre><p>Deixar  método <em>search</em> público.</p>
+<div style="color:red;">!!! teste e commit !!!</div>
 </section>
 </section>
 

@@ -6,4 +6,6 @@ Campo de busca no template master:
         <button type="submit"> Buscar </button>
     </form>
 
+Deixar  método *search* público.
+
 <div style="color:red;">!!! teste e commit !!!</div>
