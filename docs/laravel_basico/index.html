@@ -548,8 +548,8 @@ $t-&gt;disciplina-&gt;ementa
 </span>{
     $turma = <span class="hljs-keyword">new</span> \App\Turma;
     $turma-&gt;ministrante = $request-&gt;ministrante;
-    $turma-&gt;inicio = $request-&gt;inicio;
-    $turma-&gt;fim = $request-&gt;fim;
+    $turma-&gt;inicio = $request-&gt;inicio; <span class="hljs-comment">#desafio! Receber dd/mm/YYYY</span>
+    $turma-&gt;fim = $request-&gt;fim; <span class="hljs-comment">#desafio: idem</span>
     $turma-&gt;bibliografia = $request-&gt;bibliografia;
     $turma-&gt;disciplina_id = $disciplina-&gt;id;
 
@@ -641,31 +641,32 @@ $t-&gt;disciplina-&gt;ementa
 <h1>Issue 13</h1><p>Criar o template master usando um exemplo do Bootstrap 4. Fazer todos outros templates herdarem o estilo do template master</p>
 </section>
 
-<section id="issue-13-example" class="slide" data-has-notes="false">
-<p>Vamos usar o exemplo do bootstrap:</p>
-<pre><code><span class="hljs-attribute">sticky-footer-navbar</span>
-</code></pre><p>Adaptar o layout para nosso projeto:</p>
-<ul>
-<li>Criar master.blade.php</li>
-<li>Copiar o css do tema para public/css/app.css (BAD PRACTICE)</li>
-<li>Colocar link de app.css no master.blade.php</li>
-<li>Limpar conteúdo e criar uma seção <em>content</em>:</li>
-<li><p>Inserir CDN para bootstrap e jquery</p>
-<p> @section (&#39;content&#39;)
- @show</p>
-</li>
-</ul>
+<section id="issue-13-bootstrap" class="slide" data-has-notes="false">
+<p>Adaptar o layout de exemplo do bootstrap 4:</p>
+<pre><code>sticky-footer-navbar -&gt; master<span class="hljs-selector-class">.blade</span><span class="hljs-selector-class">.php</span>
+</code></pre><p>Limpar conteúdo e criar uma seção <em>content</em>:</p>
+<pre><code><span class="hljs-variable">@section</span>(<span class="hljs-string">'content'</span>)
+<span class="hljs-variable">@show</span>
+</code></pre><p>Instalar dependências do npm:</p>
+<pre><code>npm <span class="hljs-keyword">install</span>
+</code></pre>
 </section>
 
-<section id="issue-13-cdn" class="slide" data-has-notes="false">
-<p>Dicas de CDN:</p>
-<pre><code><span class="hljs-symbol">https:</span><span class="hljs-comment">//www.bootstrapcdn.com/</span>
-<span class="hljs-symbol">https:</span><span class="hljs-comment">//code.jquery.com/</span>
-</code></pre><p>css:</p>
-<pre><code>&lt;link <span class="hljs-attribute">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attribute">href</span>=<span class="hljs-string">"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"</span>&gt;
-</code></pre><p>js:</p>
-<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://code.jquery.com/jquery-3.3.1.slim.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<section id="issue-13-mix" class="slide" data-has-notes="false">
+<p>Geração de <em>assets</em> com mix:</p>
+<pre><code>mix.styles([
+        <span class="hljs-symbol">'node_modules</span>/bootstrap/dist/css/bootstrap.css',
+        <span class="hljs-symbol">'resources</span>/assets/css/app.css',
+],<span class="hljs-symbol">'public</span>/assets/app.css');
+
+mix.js([
+        <span class="hljs-symbol">'node_modules</span>/jquery/dist/jquery.min.js',
+        <span class="hljs-symbol">'node_modules</span>/bootstrap/dist/js/bootstrap.js',
+        <span class="hljs-symbol">'resources</span>/assets/js/app.js',
+], <span class="hljs-symbol">'public</span>/assets/app.js');
+</code></pre><p>Colocar links no master.blade.php:</p>
+<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/assets/app.css"</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/assets/app.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre>
 </section>
 
@@ -689,21 +690,15 @@ $t-&gt;disciplina-&gt;ementa
 <h1>Issue 14</h1><p>Implementar calendário do tipo datepicker (jquery ou bootstrap) nos campos de data início e fim do cadastro de turma</p>
 </section>
 
-<section id="issue-14-cdn" class="slide" data-has-notes="false">
-<p>Datepicker:</p>
-<pre><code><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css"</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/locales/bootstrap-datepicker.pt-BR.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-</code></pre>
-</section>
-
 <section id="issue-14-date" class="slide" data-has-notes="false">
-<p>Classe para datapicker no cadastro de turma:</p>
+<p>Adicionar bootstrap-datepicker em packages.json:</p>
+<pre><code>npm <span class="hljs-keyword">install</span> bootstrap-datepicker
+</code></pre><p>Classe css para datapicker no cadastro de turma e deve ser inserida nos inputs:</p>
 <pre><code>$(<span class="hljs-string">'.datepicker'</span>).datepicker({
     <span class="hljs-keyword">format</span>: <span class="hljs-string">'dd/mm/yyyy'</span>,
     language: <span class="hljs-string">'pt-BR'</span>
 });
-</code></pre><p>dica de html: autocomplete=&quot;off&quot;</p>
+</code></pre><p>Dica para input: autocomplete=&quot;off&quot;</p>
 <p>Que tal ordernar turmas pela data de início?</p>
 <pre><code>@<span class="hljs-keyword">foreach</span> ($disciplina-&gt;turmas-&gt;sortByDesc(<span class="hljs-string">'inicio'</span>) <span class="hljs-keyword">as</span> $turma)
 </code></pre><div style="color:red;">!!! teste e commit !!!</div>
