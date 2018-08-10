@@ -38,3 +38,8 @@ Rodar o Lazy Presentator:
 ```
 
 O seu browser deve abrir com sua apresentação já gerada
+
+## Para geração de pdf no caso de impressão
+
+    sudo apt install phantomjs
+    prez laravel_basico --print
