@@ -643,6 +643,9 @@ $t-&gt;disciplina-&gt;ementa
 </code></pre><p>Limpar conteúdo e criar uma seção <em>content</em>:</p>
 <pre><code><span class="hljs-variable">@section</span>(<span class="hljs-string">'content'</span>)
 <span class="hljs-variable">@show</span>
+</code></pre><p>Atualizar node:</p>
+<pre><code>curl -sL http<span class="hljs-variable">s:</span>//<span class="hljs-keyword">deb</span>.nodesource.<span class="hljs-keyword">com</span>/setup_10.<span class="hljs-keyword">x</span> | sudo -E bash -
+sudo apt-<span class="hljs-built_in">get</span> install -<span class="hljs-keyword">y</span> nodejs linpng-dev
 </code></pre><p>Instalar dependências do npm:</p>
 <pre><code>npm <span class="hljs-keyword">install</span>
 </code></pre>
@@ -653,13 +656,14 @@ $t-&gt;disciplina-&gt;ementa
 <pre><code>mix.styles([
         <span class="hljs-symbol">'node_modules</span>/bootstrap/dist/css/bootstrap.css',
         <span class="hljs-symbol">'resources</span>/assets/css/app.css',
-],<span class="hljs-symbol">'public</span>/assets/app.css');
-
+],<span class="hljs-symbol">'public</span>/assets/app.css');   
 mix.js([
         <span class="hljs-symbol">'node_modules</span>/jquery/dist/jquery.min.js',
         <span class="hljs-symbol">'node_modules</span>/bootstrap/dist/js/bootstrap.js',
         <span class="hljs-symbol">'resources</span>/assets/js/app.js',
 ], <span class="hljs-symbol">'public</span>/assets/app.js');
+</code></pre><p>Compilação dos assets:</p>
+<pre><code>npm <span class="hljs-keyword">run</span><span class="bash"> dev </span>
 </code></pre><p>Colocar links no master.blade.php:</p>
 <pre><code><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"/assets/app.css"</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">"stylesheet"</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"/assets/app.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
@@ -686,17 +690,36 @@ mix.js([
 <h1>Issue 14</h1><p>Implementar calendário do tipo datepicker (jquery ou bootstrap) nos campos de data início e fim do cadastro de turma</p>
 </section>
 
-<section id="issue-14-date" class="slide" data-has-notes="false">
+<section id="issue-14-config" class="slide" data-has-notes="false">
 <p>Adicionar bootstrap-datepicker em packages.json:</p>
 <pre><code>npm <span class="hljs-keyword">install</span> bootstrap-datepicker
-</code></pre><p>Classe css para datapicker no cadastro de turma e deve ser inserida nos inputs:</p>
+</code></pre><p>Autoload para Jquery em <em>webpack.mix.js</em>:</p>
+<pre><code>mix.autoload({
+    <span class="hljs-string">'jquery'</span>: [<span class="hljs-string">'jQuery'</span>, <span class="hljs-string">'$'</span>],
+})
+</code></pre><p>Adicionar método datepicker em uma classe css:</p>
+<pre><code><span class="hljs-meta">$</span><span class="bash">(<span class="hljs-string">'.datepicker'</span>).datepicker();</span>
+</code></pre><p>No controller, tratar data recebida:</p>
+<pre><code><span class="hljs-symbol">Carbon:</span><span class="hljs-symbol">:createFromFormat</span>(<span class="hljs-string">'m/d/Y'</span>,<span class="hljs-variable">$request</span>-&gt;inicio);
+</code></pre><p>Dica para input: autocomplete=&quot;off&quot;</p>
+</section>
+
+<section id="issue-14-date" class="slide" data-has-notes="false">
+<p>Configuração do calendário em pt-BR:</p>
 <pre><code>$(<span class="hljs-string">'.datepicker'</span>).datepicker({
     <span class="hljs-keyword">format</span>: <span class="hljs-string">'dd/mm/yyyy'</span>,
     language: <span class="hljs-string">'pt-BR'</span>
 });
-</code></pre><p>Dica para input: autocomplete=&quot;off&quot;</p>
+</code></pre><p>Arquivo com as traduções em pt-BR:</p>
+<pre><code><span class="hljs-keyword">bootstrap</span>-datepicker/js/locales/<span class="hljs-keyword">bootstrap</span>-datepicker.pt-<span class="hljs-keyword">BR</span>.js
+</code></pre>
+</section>
+
+<section id="issue-14-sort" class="slide" data-has-notes="false">
 <p>Que tal ordernar turmas pela data de início?</p>
 <pre><code>@<span class="hljs-keyword">foreach</span> ($disciplina-&gt;turmas-&gt;sortByDesc(<span class="hljs-string">'inicio'</span>) <span class="hljs-keyword">as</span> $turma)
+</code></pre><p>Usando carbon no blade:</p>
+<pre><code>{{ Carbon\Carbon::parse($turma-&gt;inicio)-&gt;format(<span class="hljs-name">'d/m/Y'</span>) }}
 </code></pre><div style="color:red;">!!! teste e commit !!!</div>
 </section>
 </section>
