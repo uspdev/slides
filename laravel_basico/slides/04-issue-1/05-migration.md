@@ -1,8 +1,9 @@
-Gerar model para Disciplina:
+Configurar .env com info do bd.
+Gerar model, controller, resource e migrations para Disciplina:
 
     php artisan make:model Disciplina -crm
 
-Edita migrations e inserir campos para titulo e ementa:
+Editair migrations e inserir campos para titulo e ementa:
 
     $table->string('titulo');
     $table->text('ementa');

@@ -176,8 +176,6 @@ quit
 <section id="laravel-laravel" class="slide" data-has-notes="false">
 <h3>Instalação</h3><p>Criação do projeto com composer:</p>
 <pre><code><span class="hljs-string">composer </span><span class="hljs-built_in">create-project</span> <span class="hljs-string">laravel/</span><span class="hljs-string">laravel </span><span class="hljs-string">meu_projeto</span>
-</code></pre><p>Inserir informações do banco de dados:</p>
-<pre><code><span class="hljs-selector-tag">vim</span> <span class="hljs-selector-class">.env</span>
 </code></pre><p>Se estiver tudo correto:</p>
 <pre><code><span class="hljs-attribute">php artisan serve</span>
 </code></pre>
@@ -281,9 +279,10 @@ Route::<span class="hljs-keyword">get</span>(<span class="hljs-string">'/{n}'</s
 </section>
 
 <section id="issue-1-migration" class="slide" data-has-notes="false">
-<p>Gerar model para Disciplina:</p>
+<p>Configurar .env com info do bd.
+Gerar model, controller, resource e migrations para Disciplina:</p>
 <pre><code><span class="hljs-selector-tag">php</span> <span class="hljs-selector-tag">artisan</span> <span class="hljs-selector-tag">make</span><span class="hljs-selector-pseudo">:model</span> <span class="hljs-selector-tag">Disciplina</span> <span class="hljs-selector-tag">-crm</span>
-</code></pre><p>Edita migrations e inserir campos para titulo e ementa:</p>
+</code></pre><p>Editair migrations e inserir campos para titulo e ementa:</p>
 <pre><code>$<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span>string(<span class="hljs-string">'titulo'</span>);
 $<span class="hljs-function"><span class="hljs-title">table</span>-&gt;</span><span class="hljs-keyword">text</span>(<span class="hljs-string">'ementa'</span>);
 </code></pre><p>Rodar migrations:</p>
