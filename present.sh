@@ -23,19 +23,17 @@ if [ -z "$1" ]; then
 fi
 
 # Testa se a pasta de entrada existe e roda o prez
-if [ -d "$1" ]; then
+if [ -d "source/$1" ]; then
 
     echo -e "${yellow} [ Iniciando ] ${nc}\n"
     echo -e "Iniciando servidor interno. Para desligar, ${lblue} use Ctrl + C ${nc} \n\n\a"
-    
-    node $prez $1 docs/$1 --theme=league --watch --serve
+    node $prez source/$1 docs/$1 --theme=league --watch --serve
 
 else
 
     echo -e "${red} [ ERRO ] ${nc}"
     echo "Diretório não encontrado"
     exit 1
-
 fi
 
 
