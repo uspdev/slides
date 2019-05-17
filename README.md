@@ -41,3 +41,4 @@ O seu browser deve abrir com sua apresentação já gerada
  - [git](https://uspdev.github.io/slides/git/)
  - [laravel básico](https://uspdev.github.io/slides/laravel_basico/)
  - [symfony básico](https://uspdev.github.io/slides/symfony_basico/)
+ - [Template USP em projetos Laravel](https://uspdev.github.io/slides/laravel-usp-theme/)
