@@ -1,0 +1,17 @@
+/* custom styles can go here */
+
+#chapter-foo p {
+	text-transform: uppercase;
+}
+
+.ciano {
+    color: #00FFFF;
+}
+
+.marelo {
+    color: yellow;
+}
+
+.magenta {
+    color: #FF00FF;
+}

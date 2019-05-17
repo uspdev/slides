@@ -5,44 +5,33 @@ Os slides são gerados usando:
  
  - [https://github.com/byteclubfr/prez](https://github.com/byteclubfr/prez)
 
-## Prez globalmente instalado
+Os arquivos markdown são criandos na pasta *source* e são processados
+pelo *prez* e transformados em html para a apresentação em si na pasta *output*.
 
-Caso queira utilizar o `prez` globalmente instale com:
+## Instalado dependências
 
-`sudo npm install -g prez`
+`npm install`
 
 ### Gerar slides
 
 ```bash
     # Exemplo para o curso de symfony
-    prez git docs/git --theme=league
+    ./node_modules/prez/bin/prez.js source/git docs/git --theme=league
 ```
 
 ### Gerar Slides com preview no Browser
 
 ```bash
-    prez git docs/git --theme=league --watch --serve
+    ./node_modules/prez/bin/prez.js source/git docs/git --theme=league --watch --serve
 ```
 
 ## Utilizando o prez somente no projeto
-
-
-Instalar dependências:
-
-```bash
-    npm install
-```
 
 Rodar o Lazy Presentator:
 
 ```bash
     # Exemplo do curso de symfony
-    ./present.sh git
+    ./present.sh source/git
 ```
 
 O seu browser deve abrir com sua apresentação já gerada
-
-## Para geração de pdf:
-
-    sudo apt install phantomjs
-    prez git --print
