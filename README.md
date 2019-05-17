@@ -31,7 +31,7 @@ Rodar o Lazy Presentator:
 
 ```bash
     # Exemplo do curso de symfony
-    ./present.sh source/git
+    ./present.sh git
 ```
 
 O seu browser deve abrir com sua apresentação já gerada
