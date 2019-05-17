@@ -28,7 +28,7 @@ if [ -d "$1" ]; then
     echo -e "${yellow} [ Iniciando ] ${nc}\n"
     echo -e "Iniciando servidor interno. Para desligar, ${lblue} use Ctrl + C ${nc} \n\n\a"
     
-    node $prez $1 output/$1 --theme=league --watch --serve
+    node $prez $1 docs/$1 --theme=league --watch --serve
 
 else
 

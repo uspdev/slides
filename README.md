@@ -6,7 +6,7 @@ Os slides são gerados usando:
  - [https://github.com/byteclubfr/prez](https://github.com/byteclubfr/prez)
 
 Os arquivos markdown são criandos na pasta *source* e são processados
-pelo *prez* e transformados em html para a apresentação em si na pasta *output*.
+pelo *prez* e transformados em html para a apresentação em si na pasta *docs*.
 
 ## Instalado dependências
 
