@@ -1,0 +1,5 @@
+/* custom styles can go here */
+
+h3 {
+  text-transform: lowercase;
+}
