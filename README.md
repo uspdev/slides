@@ -35,3 +35,9 @@ Rodar o Lazy Presentator:
 ```
 
 O seu browser deve abrir com sua apresentação já gerada
+
+## Apresentações
+
+ - [git](https://uspdev.github.io/slides/git/)
+ - [laravel básico](https://uspdev.github.io/slides/laravel_basico/)
+ - [symfony básico](https://uspdev.github.io/slides/symfony_basico/)
