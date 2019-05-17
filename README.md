@@ -1,6 +1,9 @@
 ## Instalação dos pacotes
 
 É necessário que tenha o node instalado na máquina.
+Os slides são gerados usando:
+ 
+ - [https://github.com/byteclubfr/prez](https://github.com/byteclubfr/prez)
 
 ## Prez globalmente instalado
 
