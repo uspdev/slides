@@ -12,13 +12,13 @@ Caso queira utilizar o `prez` globalmente instale com:
 
 ```bash
     # Exemplo para o curso de symfony
-    prez symfony docs/symfony --theme=league
+    prez git docs/git --theme=league
 ```
 
 ### Gerar Slides com preview no Browser
 
 ```bash
-    prez symfony docs/symfony --theme=league --watch --serve
+    prez git docs/git --theme=league --watch --serve
 ```
 
 ## Utilizando o prez somente no projeto
@@ -34,12 +34,12 @@ Rodar o Lazy Presentator:
 
 ```bash
     # Exemplo do curso de symfony
-    ./present.sh symfony
+    ./present.sh git
 ```
 
 O seu browser deve abrir com sua apresentação já gerada
 
-## Para geração de pdf no caso de impressão
+## Para geração de pdf:
 
     sudo apt install phantomjs
-    prez laravel_basico --print
+    prez git --print
