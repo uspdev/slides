@@ -30,7 +30,7 @@ pelo *prez* e transformados em html para a apresentação em si na pasta *docs*.
 Rodar o Lazy Presentator:
 
 ```bash
-    # Exemplo do curso de symfony
+    # Exemplo para geração do curso de git que está em source/git:
     ./present.sh git
 ```
 
