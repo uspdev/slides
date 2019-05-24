@@ -14,7 +14,7 @@
 </section>
 
 <section data-transition="slide">
-    <div style="font-size: 2em; ">Desacoplamento entre aplicação e template</div>
+    <div style="font-size: 1.8em; ">Desacoplamento entre aplicação e template. Ou: O poder dos pacotes</div>
 </section>
 
 <section data-transition="slide">
@@ -22,11 +22,11 @@
 </section>
 
 <section data-transition="slide">
-    <div style="font-size: 2.5em; ">Genérico para todos</div>
+    <div style="font-size: 2em; ">Genérico para todos, mas não ideal para tudo</div>
 </section>
 
 <section data-transition="slide">
-    <div style="font-size: 2.5em; ">Bootstrap! Power</div>
+    <div style="font-size: 2.5em; ">Bootstrap!</div>
 </section>
 
 <section data-transition="slide">
